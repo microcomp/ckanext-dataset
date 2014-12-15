@@ -1,0 +1,18 @@
+{% ckan_extends %}
+{% block basic_fields_url %}
+{{ super() }}
+{{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
+{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
+{{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
+<div class="control-group">
+<label class="control-label" for="field-periodicity">{{ _("periodicity") }}</label>
+<div class="controls">
+<select id="field-periodicity" name="periodicity" data-module="autocomplete">
+{% print data %}
+{% for periodicity in h.periodicities() %}
+<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ periodicity }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+{% endblock %}

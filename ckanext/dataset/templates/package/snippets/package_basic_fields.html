@@ -1,0 +1,15 @@
+{% ckan_extends %}
+
+{% block package_basic_fields_custom %}
+<div class="control-group">
+<label class="control-label" for="field-spatial">{{ _("Spatial") }}</label>
+<div class="controls">
+<select id="field-spatial" name="spatial" data-module="autocomplete">
+{% for tag in h.geo_tags() %}
+{% set name = h.convert_geojson_to_name(data.get('extras', None)) %}
+<option value="{{ tag }}" {% if tag==name %}selected="selected"{% endif %}>{{ tag }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+{% endblock %}
