@@ -1,6 +1,0 @@
-
-        [ckan.plugins]
-        # Add plugins here, e.g.
-        # myplugin=ckanext.dataset.plugin:PluginClass
-        dataset=ckanext.dataset.plugin:ExtendedDatasetPlugin
-    
