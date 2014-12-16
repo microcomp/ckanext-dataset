@@ -17,7 +17,12 @@ def create_tag_info_table(context):
     if db.tag_info_table is None:
         db.init_db(context['model'])
 
+@ckan.logic.side_effect_free
 def insert_tag_info(context, data_dict):
+    '''
+    This function inserts an extra value for given tag_id in the form key:value.
+    data_dict must have keys tag_id, key, value.
+    '''
     create_tag_info_table(context)
     info = db.TagInfo()
     info.tag_id = data_dict.get('tag_id')
@@ -27,8 +32,14 @@ def insert_tag_info(context, data_dict):
     session = context['session']
     session.add(info)
     session.commit()
-    
+    return {"status":"success"}
+
+@ckan.logic.side_effect_free
 def get_tag_info(context, data_dict):
+    '''
+    This function retrieves extra information about given tag_id and
+    possibly more filtering criterias. 
+    '''
     if db.tag_info_table is None:
         db.init_db(context['model'])
     res = db.TagInfo.get(**data_dict)
