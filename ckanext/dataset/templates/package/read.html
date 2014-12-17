@@ -1,0 +1,5 @@
+{% ckan_extends %}
+
+{% block package_additional_info %}
+    {% snippet "package/snippets/custom_additional_info.html", pkg_dict=pkg %}
+{% endblock %}

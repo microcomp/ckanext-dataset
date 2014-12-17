@@ -7,6 +7,7 @@ import json
 import os
 
 import db
+import ckan.logic
 
 data_path = "/data/"
 
@@ -158,6 +159,13 @@ def retrieve_name_of_geojson(data_extras):
                     raise Exception('Inconsistency in database between table tags and ckanext_tag_info ')
             return None    
     
+def get_users(data):
+    users = tk.get_action('user_list')(data_dict={})
+    log.info(users)
+    log.info('---current_user---')
+    log.info(data)
+    log.info(tk.c.user)
+    return users, tk.c.user
 
 
 class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
@@ -188,7 +196,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     def get_helpers(self):
         return {'periodicities': periodicities,
                 'geo_tags': geo_tags,
-                'convert_geojson_to_name' : retrieve_name_of_geojson}
+                'convert_geojson_to_name' : retrieve_name_of_geojson,
+                'get_users' : get_users }
     
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
