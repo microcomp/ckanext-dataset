@@ -161,10 +161,6 @@ def retrieve_name_of_geojson(data_extras):
     
 def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
-    log.info(users)
-    log.info('---current_user---')
-    log.info(data)
-    log.info(tk.c.user)
     return users, tk.c.user
 
 
