@@ -22,10 +22,14 @@ setup(
     install_requires=[
         # -*- Extra requirements: -*-
     ],
-    entry_points='''
-        [ckan.plugins]
-        # Add plugins here, e.g.
-        # myplugin=ckanext.dataset.plugin:PluginClass
-        dataset=ckanext.dataset.plugin:ExtendedDatasetPlugin
-    ''',
+    entry_points={
+        'babel.extractors': [
+                'ckan = ckan.lib.extract:extract_ckan',
+                ],
+                'ckan.plugins' : [
+                        'dataset=ckanext.dataset.plugin:ExtendedDatasetPlugin',
+                ]
+        }
+
+    
 )
