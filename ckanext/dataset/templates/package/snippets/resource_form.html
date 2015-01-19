@@ -2,8 +2,79 @@
 {% block basic_fields_url %}
 {{ super() }}
 {{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
-{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
+{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from2', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
+
+<!--label class="control-label" for="field-valid_to">Valid to</label>
+<input id="field-valid_to" type="" name="valid_to" value="" placeholder="today" -->
+
 {{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
+<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
+
+<!--label class="control-label" for="field-valid_from">{{_('Valid from')}}</label>
+<div class="controls ">     
+    <input type="text" id="field-valid_from"/>
+</div>
+
+<label class="control-label" for="field-valid_to">{{_('Valid to')}}</label>
+<div class="controls ">     
+    <input type="text" id="field-valid_to"/>
+</div -->
+<script src="/jquery.js"></script>
+<script src="/jquery.datetimepicker.js"></script>
+<script>
+
+$('#datetimepicker').datetimepicker({
+dayOfWeekStart : 1,
+lang:'en',
+disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+startDate:	'1986/01/05'
+});
+$('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+
+$('.some_class').datetimepicker();
+
+$('#default_datetimepicker').datetimepicker({
+	formatTime:'H:i',
+	formatDate:'d.m.Y',
+	defaultDate:'8.12.1986', // it's my birthday
+	defaultTime:'10:00',
+	timepickerScrollbar:false
+});
+
+
+$('#datetimepicker_mask').datetimepicker({
+	mask:'9999/19/39 29:59'
+});
+
+$('#field-valid_from').datetimepicker({
+	yearOffset:0,
+	lang:'en',
+	timepicker:false,
+	format:'Y/m/d',
+	formatDate:'Y/m/d',
+	
+});
+$('#field-valid_to').datetimepicker({
+	yearOffset:0,
+	lang:'en',
+	timepicker:false,
+	format:'Y/m/d',
+	formatDate:'Y/m/d',
+	
+});
+
+$('#open').click(function(){
+	$('#datetimepicker4').datetimepicker('show');
+});
+$('#close').click(function(){
+	$('#datetimepicker4').datetimepicker('hide');
+});
+$('#reset').click(function(){
+	$('#datetimepicker4').datetimepicker('reset');
+});
+
+</script>
+
 <div class="control-group">
 <label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
 <div class="controls">
