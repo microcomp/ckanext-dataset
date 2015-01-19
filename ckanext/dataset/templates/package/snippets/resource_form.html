@@ -5,12 +5,11 @@
 {{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
 {{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
 <div class="control-group">
-<label class="control-label" for="field-periodicity">{{ _("periodicity") }}</label>
+<label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
 <div class="controls">
 <select id="field-periodicity" name="periodicity" data-module="autocomplete">
-{% print data %}
 {% for periodicity in h.periodicities() %}
-<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ periodicity }}</option>
+<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
 {% endfor %}
 </select>
 </div>

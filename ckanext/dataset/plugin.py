@@ -1,18 +1,37 @@
 import logging
+import datetime
 
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
-
+#import ckan.plugins.toolkit.Invalid as Invalid
+import ckan.lib.navl.dictization_functions as df
+#Invalid = df.Invalid
+import ckan.lib.helpers as h
 import json
 import os
 
 import db
 import ckan.logic
 
+_ = tk._
 data_path = "/data/"
 
 
 log = logging.getLogger(__name__)
+
+def valid_date(value):
+    if isinstance(value, datetime.datetime):
+        return value
+    if value == '':
+        return None
+    try:
+        date = h.date_str_to_datetime(value)
+    except (TypeError, ValueError), e:
+        raise df.Invalid(_('Date format incorrect'))
+    return value
+
+def valid_url(value):
+    pass
 
 def create_tag_info_table(context):
     if db.tag_info_table is None:
@@ -115,17 +134,28 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
+    p = (u'yearly', u'semiyearly', u'quaterly', _(u'monthly'), _(u'weekly'), _(u'daily'), _(u'irregularly'))
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
         data = {'id': 'periodicities'}
-        tk.get_action('vocabulary_show')(context, data)
-        log.info("Periodicities vocabulary already exists, skipping.")
+        v = tk.get_action('vocabulary_show')(context, data).get('tags')
+        tag_names = [tag.get('display_name') for tag in v]
+        log.info('---tag names---')
+        log.info(tag_names)
+        if len(tag_names)!=len(p):
+            for name in p:
+                if name not in tag_names:
+                    log.info("Adding tag {0} to vocab 'periodicities'".format(tag))
+                    data = {'name': name, 'vocabulary_id': v[0]['vocabulary_id']}
+                    tk.get_action('tag_create')(context, data) 
+        else:
+            log.info("Periodicities vocabulary already exists, skipping.")
     except tk.ObjectNotFound:
         log.info("Creating vocab 'periodicities'")
         data = {'name': 'periodicities'}
         vocab = tk.get_action('vocabulary_create')(context, data)
-        for tag in (u'yearly', u'monthly', u'weekly', u'daily'):
+        for tag in p:
             log.info("Adding tag {0} to vocab 'periodicities'".format(tag))
             data = {'name': tag, 'vocabulary_id': vocab['id']}
             tk.get_action('tag_create')(context, data)
@@ -140,7 +170,8 @@ def periodicities():
         periodicity = tk.get_action('tag_list')(
         data_dict={'vocabulary_id': 'periodicities'})
         log.info(periodicity)
-        return periodicity
+        periodicity_translated = [name for name in periodicity] 
+        return periodicity_translated
     except tk.ObjectNotFound:
         return None
 
@@ -173,6 +204,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     plugins.implements(plugins.IDatasetForm, inherit=False)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
     plugins.implements(plugins.IActions, inherit=False)
+    #plugins.implements(plugins.IValidators, inherit=False)
     #plugins.implements(plugins.IPackageController, inherit=True)
     
     num_times_new_template_called = 0
@@ -184,6 +216,9 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     num_times_check_data_dict_called = 0
     num_times_setup_template_variables_called = 0  
     
+    #def get_validators(self):
+    #    return {}
+    
     def get_actions(self):
         return {'ckanext_dataset_create_tag_info' : insert_tag_info,
                 'ckanext_dataset_get_tag_info' : get_tag_info}
@@ -192,6 +227,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
         # that CKAN will use this plugin's custom templates.
         tk.add_template_directory(config, 'templates')
+        tk.add_public_directory(config, 'public')
+        
     
     def get_helpers(self):
         return {'periodicities': periodicities,
@@ -219,9 +256,9 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 })
                
         schema['resources'].update({
-                        'valid_from' : [tk.get_validator('ignore_missing')],
-                        'valid_to' : [tk.get_validator('ignore_missing')],
-                        'schema': [tk.get_validator('ignore_missing')],
+                        'valid_from' : [tk.get_validator('not_empty'), valid_date],
+                        'valid_to' : [tk.get_validator('not_empty'), valid_date],
+                        'schema': [tk.get_validator('url_validator'), tk.get_validator('ignore_missing')],
                         'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_tags')('periodicities')]
             })
        
@@ -251,9 +288,9 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         schema['resources'].update({
-                        'valid_from' : [tk.get_validator('ignore_missing')],
-                        'valid_to' : [tk.get_validator('ignore_missing')],
-                        'schema': [tk.get_validator('ignore_missing')],
+                        'valid_from' : [tk.get_validator('not_empty'), valid_date],
+                        'valid_to' : [tk.get_validator('not_empty'), valid_date],
+                        'schema': [tk.get_validator('url_validator'), tk.get_validator('ignore_missing')],
                         'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_tags')('periodicities')]
             })
         
