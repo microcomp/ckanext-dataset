@@ -5,6 +5,7 @@
 # Packages
 *.egg
 *.egg-info
+.settings
 dist
 build
 eggs
