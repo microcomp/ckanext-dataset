@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
+
 import logging
 import datetime
-
+import re
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
-#import ckan.plugins.toolkit.Invalid as Invalid
 import ckan.lib.navl.dictization_functions as df
-#Invalid = df.Invalid
+
 import ckan.lib.helpers as h
 import json
 import os
@@ -19,19 +20,35 @@ data_path = "/data/"
 
 log = logging.getLogger(__name__)
 
-def valid_date(value):
-    if isinstance(value, datetime.datetime):
-        return value
-    if value == '':
-        return None
+def owner_org_validator(key, data, errors, context):
+    if 'datovy-kurator' in tk.get_action('user_custom_roles')(context):
+        return
+    tk.get_validator('owner_org_validator')(key, data, errors, context)
+
+def valid_date(value, context):
     try:
-        date = h.date_str_to_datetime(value)
+        valid_date = tk.get_validator('isodate')(value, context)
+        if not valid_date or not isinstance(valid_date, datetime.datetime):
+            raise df.Invalid(_('Date format incorrect'))
     except (TypeError, ValueError), e:
         raise df.Invalid(_('Date format incorrect'))
     return value
 
-def valid_url(value):
-    pass
+def valid_url(value, context):
+    if value=='':
+        return value
+    regex = re.compile(
+    r'^(?:http|ftp)s?://' # http:// or https://
+    r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # domain...
+    r'localhost|' # localhost...
+    r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|' # ...or ipv4
+    r'\[?[A-F0-9]*:[A-F0-9:]+\]?)' # ...or ipv6
+    r'(?::\d+)?' # optional port
+    r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    if regex.match(value):
+        return value
+    raise df.Invalid(_('Please provide a valid URL'))
+    
 
 def create_tag_info_table(context):
     if db.tag_info_table is None:
@@ -134,7 +151,7 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    p = (u'yearly', u'semiyearly', u'quaterly', _(u'monthly'), _(u'weekly'), _(u'daily'), _(u'irregularly'))
+    p = (u'ročne', u'polročne', u'štvrťročne', u'mesačne', u'týždenne', u'denne', u'nepravidelne')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
@@ -148,7 +165,7 @@ def create_periodicities():
                 if name not in tag_names:
                     log.info("Adding tag {0} to vocab 'periodicities'".format(tag))
                     data = {'name': name, 'vocabulary_id': v[0]['vocabulary_id']}
-                    tk.get_action('tag_create')(context, data) 
+                    tk.get_action('tag_create')(context, data)
         else:
             log.info("Periodicities vocabulary already exists, skipping.")
     except tk.ObjectNotFound:
@@ -252,13 +269,14 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         #tk.get_validator('ignore_missing'),
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]
         schema.update({
-                'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]
+                'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')],
+                'owner_org': [owner_org_validator]
                 })
                
         schema['resources'].update({
                         'valid_from' : [tk.get_validator('not_empty'), valid_date],
                         'valid_to' : [tk.get_validator('not_empty'), valid_date],
-                        'schema': [tk.get_validator('url_validator'), tk.get_validator('ignore_missing')],
+                        'schema': [tk.get_validator('ignore_missing'), valid_url],
                         'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_tags')('periodicities')]
             })
        
@@ -283,14 +301,15 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         # Add our custom_text field to the dataset schema.
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
         schema.update({
-            'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
+            'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')],
+            'owner_org': [owner_org_validator]
                 })
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         schema['resources'].update({
                         'valid_from' : [tk.get_validator('not_empty'), valid_date],
                         'valid_to' : [tk.get_validator('not_empty'), valid_date],
-                        'schema': [tk.get_validator('url_validator'), tk.get_validator('ignore_missing')],
+                        'schema': [tk.get_validator('ignore_missing'), valid_url],
                         'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_tags')('periodicities')]
             })
         
