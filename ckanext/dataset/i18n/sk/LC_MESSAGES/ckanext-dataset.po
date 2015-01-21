@@ -2,101 +2,112 @@
 # Copyright (C) 2014 ORGANIZATION
 # This file is distributed under the same license as the ckanext-dataset
 # project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
 #
+# Translators:
+# Dominik Kapisinsky <kapisinsky@microcomp.sk>, 2014-2015
 msgid ""
 msgstr ""
-"Project-Id-Version: ckanext-dataset 0.1\n"
+"Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2014-12-22 13:25+0100\n"
-"PO-Revision-Date: 2014-12-22 13:33+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: sk <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"POT-Creation-Date: 2015-01-20 11:22+0100\n"
+"PO-Revision-Date: 2015-01-10 16:44+0000\n"
+"Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
+"Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
+"dataset/language/sk/)\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
+#: ckanext/dataset/plugin.py:27 ckanext/dataset/plugin.py:29
+msgid "Date format incorrect"
+msgstr "Zadajte prosím správny formát dátumu (YYYY/MM/DD)"
+
+#: ckanext/dataset/plugin.py:45
+msgid "Please provide a valid URL"
+msgstr "Zadajte prosím platnú URL"
+
 #: ckanext/dataset/templates/package/snippets/additional_info.html:4
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:2
 msgid "Additional Info"
-msgstr ""
+msgstr "Dodatočné informácie"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:8
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:6
 msgid "Field"
-msgstr ""
+msgstr "Pole"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:9
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:7
 msgid "Value"
-msgstr ""
+msgstr "Hodnota"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:16
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:14
 msgid "Source"
-msgstr ""
+msgstr "Zdroj"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:23
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:21
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:26
 #: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:13
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:28
 msgid "Author custom"
-msgstr ""
+msgstr "Autor"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:35
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
 #: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:27
 msgid "Maintainer"
-msgstr ""
+msgstr "Správca"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:40
 msgid "Maintainer custom"
-msgstr ""
+msgstr "Autor"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:46
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
-msgstr ""
+msgstr "Verzia"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:53
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:51
 msgid "State"
-msgstr ""
+msgstr "Stav"
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:5
 msgid "Spatial"
-msgstr ""
+msgstr "lokalita"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:4
 msgid "Schema"
-msgstr ""
+msgstr "Schéma"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:4
 msgid "url"
-msgstr ""
+msgstr "url"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:5
 msgid "Valid from"
-msgstr ""
+msgstr "Platný od"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:5
 #: ckanext/dataset/templates/package/snippets/resource_form.html:6
 msgid "today"
-msgstr ""
+msgstr "dnes"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:6
 msgid "Valid to"
-msgstr ""
+msgstr "Platný do"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:8
-msgid "periodicity"
-msgstr ""
+#: ckanext/dataset/templates/package/snippets/resource_form.html:63
+#, fuzzy
+#| msgid "periodicity"
+msgid "Periodicity"
+msgstr "Periodicita"
 
