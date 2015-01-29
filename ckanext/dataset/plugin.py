@@ -139,7 +139,6 @@ def geo_tags():
     try:
         geo_tags = tk.get_action('tag_list')(
         data_dict={'vocabulary_id': 'geo_tags'})
-        log.info(geo_tags)
         return geo_tags
     except tk.ObjectNotFound:
         return None
