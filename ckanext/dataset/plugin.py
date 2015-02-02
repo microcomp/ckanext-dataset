@@ -21,7 +21,8 @@ data_path = "/data/"
 log = logging.getLogger(__name__)
 
 def owner_org_validator(key, data, errors, context):
-    if 'datovy-kurator' in tk.get_action('user_custom_roles')(context):
+    roles = tk.get_action('enum_roles')(data_dict={})
+    if roles.ROLE_DATA_CURATOR in tk.get_action('user_custom_roles')(context):
         return
     tk.get_validator('owner_org_validator')(key, data, errors, context)
 
