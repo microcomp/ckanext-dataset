@@ -49,7 +49,11 @@ def valid_url(value, context):
     if regex.match(value):
         return value
     raise df.Invalid(_('Please provide a valid URL'))
-    
+
+def selected_option_validator(value, context):
+    if value == 'Undefined':
+        raise df.Invalid(_('Please select a location'))
+    return value
 
 def create_tag_info_table(context):
     if db.tag_info_table is None:
@@ -269,7 +273,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         #tk.get_validator('ignore_missing'),
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]
         schema.update({
-                'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')],
+                'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_to_extras')],
                 'owner_org': [owner_org_validator]
                 })
                
@@ -301,7 +305,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         # Add our custom_text field to the dataset schema.
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
         schema.update({
-            'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')],
+            'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_from_extras')],
             'owner_org': [owner_org_validator]
                 })
                 
