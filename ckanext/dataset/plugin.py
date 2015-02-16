@@ -7,6 +7,7 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
 import ckan.lib.navl.dictization_functions as df
 
+
 import ckan.lib.helpers as h
 import json
 import os
@@ -23,8 +24,15 @@ log = logging.getLogger(__name__)
 def owner_org_validator(key, data, errors, context):
     roles = tk.get_action('enum_roles')(data_dict={})
     if roles.ROLE_DATA_CURATOR in tk.get_action('user_custom_roles')(context):
-        return
-    tk.get_validator('owner_org_validator')(key, data, errors, context)
+        model = context['model']
+        value = data.get(key)
+        group = model.Group.get(value)
+        if not group:
+            raise df.Invalid(_('Organization does not exist'))
+        group_id = group.id
+        data[key] = group_id
+    else:
+        tk.get_validator('owner_org_validator')(key, data, errors, context)
 
 def valid_date(value, context):
     try:
@@ -213,10 +221,6 @@ def retrieve_name_of_geojson(data_extras):
     
 def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
-    log.info(users)
-    log.info('---current_user---')
-    log.info(data)
-    log.info(tk.c.user)
     return users, tk.c.user
 
 
@@ -274,9 +278,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]
         schema.update({
                 'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_to_extras')],
-                'owner_org': [owner_org_validator]
+                'owner_org': [tk.get_validator('ignore_missing'), owner_org_validator]
                 })
-               
         schema['resources'].update({
                         'valid_from' : [tk.get_validator('not_empty'), valid_date],
                         'valid_to' : [tk.get_validator('not_empty'), valid_date],
@@ -305,8 +308,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         # Add our custom_text field to the dataset schema.
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
         schema.update({
-            'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_from_extras')],
-            'owner_org': [owner_org_validator]
+            'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_from_extras')]
                 })
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
