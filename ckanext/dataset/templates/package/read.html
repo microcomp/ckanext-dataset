@@ -3,3 +3,10 @@
 {% block package_additional_info %}
     {% snippet "package/snippets/custom_additional_info.html", pkg_dict=pkg %}
 {% endblock %}
+{% block package_social %}
+    {% snippet "snippets/social.html", id=c.current_package_id %}
+  {% endblock %}
+{% block content_primary_nav %}
+{{super()}}
+<li ><a href='/dataset/{{c.pkg_dict.id}}'> {{_('Permanent URL')}}</a></li>
+{%endblock%}
