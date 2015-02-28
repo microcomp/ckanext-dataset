@@ -1,0 +1,37 @@
+{%ckan_extends%}
+{% set current_url = h.full_current_url() %}
+{% block social %}
+<script type="text/javascript">
+//<![CDATA[
+         function sendit2(){
+          var emailAddr=prompt("Zadaj email-ovu adresu prijemcu","");
+          var subject= 'Odkaz z data.gov.sk';
+
+      var bodyText= escape("");
+        
+      var bodyUrl="{{ request.host_url }}/dataset/{{id}}";
+          window.open("mailto:"+emailAddr+"?Subject="+subject+"&body="+bodyText+bodyUrl,"_self"); 
+      }
+         function Sendit(){
+     if (navigator.appName == 'Netscape') {sendit2()} else{
+       if (navigator.appName == 'Opera') {sendit2()}
+                else {alert("Je nám lúto váš prehliadač, "+navigator.appName+ ", nepodporuje túto funkciu. Prosím použite \n File » Send » Link by Email...\n vo vašom prehliadači na odoslanie");}} }//
+ //]]>   
+ </script>
+
+
+
+  <section class="module module-narrow social">
+    {% block social_title %}
+      <h2 class="module-heading"><i class="icon-medium icon-share"></i> {{ _('Social') }}</h2>
+    {% endblock %}
+    {% block social_nav %}
+      <ul class="nav nav-simple" style="font-size: 1.2em;">
+        <li class="nav-item"><a href="https://plus.google.com/share?url={{ current_url }}" target="_blank"><i class="icon-google-plus-sign"></i> Google+</a></li>
+        <li class="nav-item"><a href="https://twitter.com/share?url={{ current_url }}" target="_blank"><i class="icon-twitter-sign"></i> Twitter</a></li>
+        <li class="nav-item"><a href="https://www.facebook.com/sharer.php?u={{ current_url }}" target="_blank"><i class="icon-facebook-sign"></i> Facebook</a></li>
+        <li class="nav-item"><a href="javascript:Sendit()" title="odoslať odkaz na článok emailom"><i class="fa fa-at"></i> E-mail</a></li>
+      </ul>
+    {% endblock %}
+  </section>
+{% endblock %}
