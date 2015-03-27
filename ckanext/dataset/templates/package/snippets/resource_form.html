@@ -2,12 +2,101 @@
 {% block basic_fields_url %}
 {{ super() }}
 {{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
-{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
-{{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
+<div class="control-group">
+<label class="control-label">{{ _("Validity") }}</label>
+<div class="controls">
+	  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" checked="checked">Valid permanently</label>
+	  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid">Validness in data</label>
+	  <label class="radio"><input id="other" type="radio" name="validity" value="other">Other</label>
+</div>
+</div>
+<div id="valid_text">
+		{{ form.input('custom_valid_text', label=_('Description of data column'), id='field-custom_valid_text', placeholder=_('description'), value=data.custom_valid_text, error=errors.custom_valid_text, classes=['control-medium']) }}
+</div>
+{# {{ form.checkbox('perm_valid', label=_('Valid permanently'), id='field-perm_valid', value='permanent', error=errors.perm_valid, classes=['control-medium']) }} #}
+<div id="dates">
+	<div id="custom_valid">
+	{# {{ form.checkbox('custom_valid', label=_('Validness in data'), id='field-custom_valid', value='custom', error=errors.custom_valid, classes=['control-medium']) }} #}
+	</div>
+	<div id="date_valid">
+	{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
+	{{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
+	</div>
+	{{ form.checkbox('active', label=_('Active time different from valid time'), id='field-active', value='active', error=errors.active_from, classes=['control-medium']) }}
+	<div id="date_active">
+	{{ form.input('active_from', label=_('Active from'), id='field-active_from', placeholder=_('today'), type=date, value=data.active_from, error=errors.active_from, classes=['control-medium']) }}
+	{{ form.input('active_to', label=_('Active to'), id='field-active_to', placeholder=_('today'), type=date, value=data.active_to, error=errors.active_to, classes=['control-medium']) }}
+	</div>
+</div>
+
 <link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
 <script src="/jquery.js"></script>
 <script src="/jquery.datetimepicker.js"></script>
 <script>
+$( document ).ready(function() {
+	if ($("#field-custom_valid").is(':checked')){
+		$("#valid_text").show();
+		$("#date_active").hide();
+		$("#date_valid").hide();
+	} else {
+		$("#valid_text").hide();
+		$("#date_active").show();
+		$("#date_valid").show();
+	}
+	if ($("#field-active").is(':checked')){
+		$("#date_active").show();	
+	} else {
+		$("#date_active").hide();
+	}
+	if ($("#field-perm_valid").is(':checked')){
+		$("#dates").hide();	
+	} else {
+		$("#dates").show();
+	}
+	});
+
+$(document).ready(function(){
+	$("input[id='field-custom_valid']").change(function() {
+	if (this.checked) {
+	        $("#valid_text").show();
+	 		$("#dates").hide();
+	} else {
+	  $("#valid_text").hide();
+	  $("#dates").show();
+	}
+	});
+	});
+$(document).ready(function(){
+	$("input[id='field-perm_valid']").change(function() {
+	if (this.checked) {
+	         $("#dates").hide();
+	         $("#valid_text").hide();
+	} else {
+	  $("#dates").show();
+	  $("#valid_text").show();
+	}
+	});
+	});
+$(document).ready(function(){
+	$("input[id='field-active']").change(function() {
+	if (this.checked) {
+	         $("#date_active").show();
+	} else {
+	  $("#date_active").hide();
+	}
+	});
+	});
+$(document).ready(function(){
+	$("input[id='other']").change(function() {
+	if (this.checked) {
+	         $("#dates").show();
+	} else {
+	  $("#dates").hide();
+	}
+	});
+	});
+
+
 $('#datetimepicker').datetimepicker({
 dayOfWeekStart : 1,
 lang:'en',
@@ -46,6 +135,25 @@ $('#field-valid_from').datetimepicker({
 	
 });
 $('#field-valid_to').datetimepicker({
+	yearOffset:0,
+	lang:'sk',
+	timepicker:false,
+	format:'Y/m/d',
+	formatDate:'Y/m/d',
+	closeOnDateSelect: true,
+	
+});
+
+$('#field-active_from').datetimepicker({
+	yearOffset:0,
+	lang:'sk',
+	timepicker:false,
+	format:'Y/m/d',
+	formatDate:'Y/m/d',
+	closeOnDateSelect: true,
+	
+});
+$('#field-active_to').datetimepicker({
 	yearOffset:0,
 	lang:'sk',
 	timepicker:false,
