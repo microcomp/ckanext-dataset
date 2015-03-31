@@ -4,13 +4,54 @@
 <div class="control-group">
 <label class="control-label" for="field-spatial">{{ _("Spatial") }}</label>
 <div class="controls">
-<select id="field-spatial" name="spatial" data-module="autocomplete">
+<select id="field-spatial_enum" name="spatial_enum" data-module="autocomplete">
 {% set name = h.convert_geojson_to_name(data.get('extras', None)) %}
+{% set geojson = h.retrieve_geojson(data.get('extras', None)) %}
 <option value="Undefined" {% if name %} selected="selected"{% endif %}>{{ _("Undefined") }}</option>
+<option value="Custom" {% if not name and geojson %} selected="selected"{% endif %}>{{ _("Enter custom GeoJSON") }}</option>
 {% for tag in h.geo_tags() %}
 <option value="{{ tag }}" {% if tag==name %}selected="selected"{% endif %}>{{ tag }}</option>
 {% endfor %}
 </select>
+<div id="spatial_text">
+<input type="text" id="field-spatial_text" name="spatial_text" value="{{ geojson }}">
+{# {{ form.input('spatial_text', id='field-spatial_text', label=_('Enter custom geoJSON'), value=geojson, error=errors.spatial) }} #}
 </div>
 </div>
+</div>
+
+<input id="field-spatial" name="spatial" type="hidden" value="{{ geojson }}" >
+<script>
+//copy dates
+$(document).ready(function () {
+	var $spatial = $("#field-spatial");
+	$("#field-spatial_text").keyup(function() {
+	    $spatial.val( this.value );
+	});	
+	$("#field-spatial_text").blur(function() {
+		$spatial.val( this.value );
+	});
+	$("#field-spatial_enum").change(function() {
+	    $spatial.val( this.value );
+	});	
+});
+//onload hide/show
+$(document).ready(function() {
+	if ($("#field-spatial_enum").val()=="Custom") {
+		$("#spatial_text").show();
+	} else {
+		$("#spatial_text").hide();
+	}
+});
+	
+$(document).ready(function() {
+	$("#field-spatial_enum").change(function() {
+	if ($(this).val()=="Custom") {
+	         $("#spatial_text").show();
+	} else {
+			$("#spatial_text").hide();
+	}
+	});
+});
+</script>
 {% endblock %}

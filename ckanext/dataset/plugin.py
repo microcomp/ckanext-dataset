@@ -36,6 +36,8 @@ def owner_org_validator(key, data, errors, context):
 
 def valid_date(value, context):
     try:
+        if value=='':
+            return value
         valid_date = tk.get_validator('isodate')(value, context)
         if not valid_date or not isinstance(valid_date, datetime.datetime):
             raise df.Invalid(_('Date format incorrect'))
@@ -163,7 +165,7 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    p = (u'ročne', u'polročne', u'štvrťročne', u'mesačne', u'týždenne', u'denne', u'nepravidelne')
+    p = (u'ročne', u'polročne', u'štvrťročne', u'mesačne', u'týždenne', u'denne', u'iné')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
@@ -217,8 +219,17 @@ def retrieve_name_of_geojson(data_extras):
                     if tag:
                         return tag.get('name', None)
                     raise Exception('Inconsistency in database between table tags and ckanext_tag_info ')
-            return None    
-    
+            return None
+
+def retrieve_geojson(data_extras):
+    if not data_extras:
+        return ''
+    for extra in data_extras:
+        if extra.get('key', '') == 'spatial':
+            return extra.get('value', '')
+    return ''
+        
+ 
 def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
     return users, tk.c.user
@@ -259,6 +270,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         return {'periodicities': periodicities,
                 'geo_tags': geo_tags,
                 'convert_geojson_to_name' : retrieve_name_of_geojson,
+                'retrieve_geojson' : retrieve_geojson,
                 'get_users' : get_users }
     
     def is_fallback(self):
@@ -281,10 +293,17 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 'owner_org': [tk.get_validator('ignore_missing'), owner_org_validator]
                 })
         schema['resources'].update({
-                        'valid_from' : [tk.get_validator('not_empty'), valid_date],
-                        'valid_to' : [tk.get_validator('not_empty'), valid_date],
+                        'validity' : [tk.get_validator('ignore_missing'),],
+                        'valid_from' : [tk.get_validator('ignore_missing'), valid_date],
+                        'valid_to' : [tk.get_validator('ignore_missing'), valid_date],
+                        'active_from' : [tk.get_validator('ignore_missing'), valid_date],
+                        'active_to' : [tk.get_validator('ignore_missing'), valid_date],
+                        'custom_valid_text' : [tk.get_validator('ignore_missing'),],
+                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_tags')('periodicities')],
+                        'periodicity_description' : [tk.get_validator('ignore_missing'),],
                         'schema': [tk.get_validator('ignore_missing'), valid_url],
-                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_tags')('periodicities')]
+                        'data_correctness' : [tk.get_validator('ignore_missing'),],
+                        'data_correctness_description' : [tk.get_validator('ignore_missing'),]
             })
        
         return schema
@@ -308,15 +327,22 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         # Add our custom_text field to the dataset schema.
         #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
         schema.update({
-            'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_from_extras')]
+            'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
                 })
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         schema['resources'].update({
-                        'valid_from' : [tk.get_validator('not_empty'), valid_date],
-                        'valid_to' : [tk.get_validator('not_empty'), valid_date],
+                        'validity' : [tk.get_validator('ignore_missing'),],
+                        'valid_from' : [tk.get_validator('ignore_missing'), valid_date],
+                        'valid_to' : [tk.get_validator('ignore_missing'), valid_date],
+                        'active_from' : [tk.get_validator('ignore_missing'), valid_date],
+                        'active_to' : [tk.get_validator('ignore_missing'), valid_date],
+                        'custom_valid_text' : [tk.get_validator('ignore_missing'),],
+                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_tags')('periodicities')],
+                        'periodicity_description' : [tk.get_validator('ignore_missing'),],
                         'schema': [tk.get_validator('ignore_missing'), valid_url],
-                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_tags')('periodicities')]
+                        'data_correctness' : [tk.get_validator('ignore_missing'),],
+                        'data_correctness_description' : [tk.get_validator('ignore_missing'),]
             })
         
         return schema

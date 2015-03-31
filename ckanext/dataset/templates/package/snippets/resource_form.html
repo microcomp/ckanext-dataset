@@ -1,97 +1,173 @@
 {% ckan_extends %}
-{% block basic_fields_url %}
+{% block metadata_fields %}
 {{ super() }}
 {{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
 <div class="control-group">
-<label class="control-label">{{ _("Validity") }}</label>
-<div class="controls">
-	  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" checked="checked">Valid permanently</label>
-	  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid">Validness in data</label>
-	  <label class="radio"><input id="other" type="radio" name="validity" value="other">Other</label>
+	<label class="control-label">{{ _("Validity") }}</label>
+	<div class="controls">
+		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') or not data.get('validity', '') %} checked="checked" {% endif %}>Valid permanently</label>
+		  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid" {% if 'custom_valid' == data.get('validity', '') %} checked="checked" {% endif %}>Validness in data</label>
+		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>Other</label>
+	</div>
 </div>
-</div>
-<div id="valid_text">
+<div id="valid_text_input">
 		{{ form.input('custom_valid_text', label=_('Description of data column'), id='field-custom_valid_text', placeholder=_('description'), value=data.custom_valid_text, error=errors.custom_valid_text, classes=['control-medium']) }}
 </div>
-{# {{ form.checkbox('perm_valid', label=_('Valid permanently'), id='field-perm_valid', value='permanent', error=errors.perm_valid, classes=['control-medium']) }} #}
 <div id="dates">
-	<div id="custom_valid">
-	{# {{ form.checkbox('custom_valid', label=_('Validness in data'), id='field-custom_valid', value='custom', error=errors.custom_valid, classes=['control-medium']) }} #}
-	</div>
 	<div id="date_valid">
 	{{ form.input('valid_from', label=_('Valid from'), id='field-valid_from', placeholder=_('today'), type=date, value=data.valid_from, error=errors.valid_from, classes=['control-medium']) }}
 	{{ form.input('valid_to', label=_('Valid to'), id='field-valid_to', placeholder=_('today'), type=date, value=data.valid_to, error=errors.valid_to, classes=['control-medium']) }}
 	</div>
-	{{ form.checkbox('active', label=_('Active time different from valid time'), id='field-active', value='active', error=errors.active_from, classes=['control-medium']) }}
+	<div class="control-group">
+	<div class="controls">
+	<label class="checkbox"><input id="field-active" type="checkbox" name="field-active" value="active">Active time not same as valid time</label>
+	</div>
+	</div>
+	{#{{ form.checkbox('active', label=_('Active time different from valid time'), id='field-active', value='active', error=errors.active_from, classes=['control-medium']) }}#}
 	<div id="date_active">
 	{{ form.input('active_from', label=_('Active from'), id='field-active_from', placeholder=_('today'), type=date, value=data.active_from, error=errors.active_from, classes=['control-medium']) }}
 	{{ form.input('active_to', label=_('Active to'), id='field-active_to', placeholder=_('today'), type=date, value=data.active_to, error=errors.active_to, classes=['control-medium']) }}
 	</div>
 </div>
 
+<div class="control-group">
+<label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
+<div class="controls">
+<select id="field-periodicity" name="periodicity" data-module="autocomplete">
+{% for periodicity in h.periodicities() %}
+<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+<div id="periodicity_text">
+{{ form.textarea('periodicity_description', id='field-periodicity_description', label=_('Periodicity description'), value=data.periodicity_description, error=errors.periodicity_description) }}
+</div>
+
+<div class="control-group">
+<label class="control-label" for="field-data_correctness">{{ _("Data correctness") }}</label>
+<div class="controls">
+<select id="field-data_correctness" name="data_correctness" data-module="autocomplete">
+<option value="correct and exact" {% if "correct and exact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('correct and exact') }}</option>
+<option value="incorrect or inexact" {% if "incorrect or inexact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('incorrect or inexact') }}</option>
+<option value="stated in data" {% if "stated in data" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('stated in data') }}</option>
+</select>
+</div>
+</div>
+
+<div id="correctness_text">
+	{{ form.input('correctness_description', label=_('Description'), id='field-correctness_description', placeholder=_('description'), value=data.correctness_description, error=errors.correctness_description, classes=['control-medium']) }}
+</div>
+
+<div class="control-group">
+<label class="control-label" for="field-status">{{ _("Status") }}</label>
+<div class="controls">
+<select id="field-status" name="status" data-module="autocomplete">
+<option value="private" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Private') }}</option>
+<option value="public" {% if "public" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Public') }}</option>
+</select>
+</div>
+</div>
+
 <link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
 <script src="/jquery.js"></script>
 <script src="/jquery.datetimepicker.js"></script>
 <script>
-$( document ).ready(function() {
-	if ($("#field-custom_valid").is(':checked')){
-		$("#valid_text").show();
-		$("#date_active").hide();
-		$("#date_valid").hide();
-	} else {
-		$("#valid_text").hide();
-		$("#date_active").show();
-		$("#date_valid").show();
-	}
-	if ($("#field-active").is(':checked')){
-		$("#date_active").show();	
-	} else {
-		$("#date_active").hide();
-	}
-	if ($("#field-perm_valid").is(':checked')){
-		$("#dates").hide();	
-	} else {
+
+//copy dates
+$(document).ready(function () {
+	var $active_from = $("#field-active_from");
+	$("#field-valid_from").keyup(function() {
+	    $active_from.val( this.value );
+	});	
+	$("#field-valid_from").blur(function() {
+	    $active_from.val( this.value );
+	});
+	
+	var $active_to = $("#field-active_to");
+	$("#field-valid_to").keyup(function() {
+	    $active_to.val( this.value );
+	});	
+	$("#field-valid_to").blur(function() {
+	    $active_to.val( this.value );
+	});
+});
+
+//onload hide/show
+$(document).ready(function() {
+	if ($("input[type=radio][value='other']")[0].checked) {
 		$("#dates").show();
+		$("#valid_text_input").hide();
 	}
+	if ($("input[type=radio][value='custom_valid']")[0].checked) {
+		$("#dates").hide();
+		$("#valid_text_input").show();
+	}
+	if ($("input[type=radio][value='perm_valid']")[0].checked) {
+		$("#dates").hide();
+		$("#valid_text_input").hide();
+	}
+	if ($("input[id='field-active']").prop('checked')) {
+		$("#date_active").show();
+	} else {
+		$("#date_active").hide();
+	}
+	if ($("#field-periodicity").val()=="nepravidelne") {
+		$("#periodicity_text").show();
+	} else {
+		$("#periodicity_text").hide();
+	}
+	if ($("#field-data_correctness").val()=="stated in data") {
+		$("#correctness_text").show();
+	} else {
+		$("#correctness_text").hide();
+	}
+	
 	});
 
 $(document).ready(function(){
-	$("input[id='field-custom_valid']").change(function() {
-	if (this.checked) {
-	        $("#valid_text").show();
-	 		$("#dates").hide();
+	$("#field-periodicity").change(function() {
+	if ($(this).val()=="nepravidelne") {
+	         $("#periodicity_text").show();
 	} else {
-	  $("#valid_text").hide();
-	  $("#dates").show();
+			$("#periodicity_text").hide();
 	}
 	});
 	});
+
 $(document).ready(function(){
-	$("input[id='field-perm_valid']").change(function() {
-	if (this.checked) {
-	         $("#dates").hide();
-	         $("#valid_text").hide();
+	$("#field-data_correctness").change(function() {
+	if ($(this).val()=="stated in data") {
+	         $("#correctness_text").show();
 	} else {
-	  $("#dates").show();
-	  $("#valid_text").show();
+			$("#correctness_text").hide();
 	}
 	});
 	});
+
+$(document).ready(function(){
+	$("input[type=radio][name='validity']").on('change', function() {
+	if ($(this).val()== 'custom_valid') {
+	    $("#valid_text_input").show();
+	    $("#dates").hide();
+	}
+	if ($(this).val()=='perm_valid') {
+		$("#valid_text_input").hide();
+        $("#dates").hide();
+		}
+	if ($(this).val()== 'other') {
+		$("#dates").show();
+        $("#valid_text_input").hide();
+	}
+	});
+	});
+
 $(document).ready(function(){
 	$("input[id='field-active']").change(function() {
-	if (this.checked) {
+	if ($(this).prop('checked')) {
 	         $("#date_active").show();
 	} else {
-	  $("#date_active").hide();
-	}
-	});
-	});
-$(document).ready(function(){
-	$("input[id='other']").change(function() {
-	if (this.checked) {
-	         $("#dates").show();
-	} else {
-	  $("#dates").hide();
+			$("#date_active").hide();
 	}
 	});
 	});
@@ -174,14 +250,4 @@ $('#reset').click(function(){
 });
 </script>
 
-<div class="control-group">
-<label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
-<div class="controls">
-<select id="field-periodicity" name="periodicity" data-module="autocomplete">
-{% for periodicity in h.periodicities() %}
-<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
-{% endfor %}
-</select>
-</div>
-</div>
 {% endblock %}

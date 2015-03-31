@@ -1,0 +1,10 @@
+{% ckan_extends %}
+{% block resource_item_explore %}
+{% if res.status=='private' %}
+	<span class="dataset-private label label-inverse pull-left">
+	<i class="icon-lock"></i>
+	{{ _('Private') }}
+	</span>
+{% endif%}
+{{ super() }}
+{% endblock %}

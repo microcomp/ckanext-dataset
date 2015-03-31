@@ -7,6 +7,15 @@
         	<textarea style="width:97%">&lt;iframe src="{{ request.url }}/preview" frameborder="0" width="100%" height="600px"&gt;&lt;/iframe&gt;</textarea>
         </div>
 {% endblock %}
+{% block resource_content %}
+	{% if res.status=='private' %}
+	<span class="dataset-private label label-inverse pull-right">
+	<i class="icon-lock"></i>
+	{{ _('Private') }}
+	</span>
+	{% endif %}	
+	{{ super() }}
+{% endblock %}
 {% block resource_additional_information_inner %}
 <div class="module-content">
 <h2>{{ _('Additional Information') }}</h2>
