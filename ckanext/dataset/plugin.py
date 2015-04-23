@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import ckan.lib.navl.dictization_functions as df
 
 import logging
 import datetime
@@ -6,20 +7,64 @@ import re
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as tk
 import ckan.lib.navl.dictization_functions as df
-
-
 import ckan.lib.helpers as h
 import json
 import os
-
 import db
+import dataset_logic
 import ckan.logic
 
 _ = tk._
+missing = df.missing
+StopOnError = df.StopOnError
 data_path = "/data/"
+validity_possible_values = ['perm_valid', 'custom_valid', 'other']
+correctness_possible_values = ['correct and exact', 'incorrect or inexact', 'stated in data', 'Undefined']
 
 
 log = logging.getLogger(__name__)
+
+def custom_ignore_missing(key, data, errors, context):
+    '''If the key is missing from the data, ignore the rest of the key's
+    schema.
+
+    By putting ignore_missing at the start of the schema list for a key,
+    you can allow users to post a dict without the key and the dict will pass
+    validation. But if they post a dict that does contain the key, then any
+    validators after ignore_missing in the key's schema list will be applied.
+
+    :raises ckan.lib.navl.dictization_functions.StopOnError: if ``data[key]``
+        is :py:data:`ckan.lib.navl.dictization_functions.missing` or ``None``
+
+    :returns: ``None``
+
+    '''
+    value = data.get(key)
+    if value is missing or value is None:
+        if _retrieve_key_value('status', key, data) != 'public':
+            #errors[key].append(_('Missing attribute {0}').format(key))
+            data.pop(key, None)
+            raise StopOnError
+
+
+def _is_missing(key, data):
+    value = data.get(key)
+    if value is missing or value is None:
+        return True
+    return False
+
+def resource_validator(key, data, errors, context):
+    origin_key_list = list(key)
+    origin_key_list[2]='status'
+    status_key = tuple(origin_key_list)
+    status_value = data.get(status_key,'')
+    log.info('resource validator')
+    log.info('key: %s', key)
+    log.info('status key: %s', status_key)
+    log.info('status value: %s', status_value)
+    if _is_missing(status_key, data) or not status_value in ['private', 'public']:
+        data[status_key] = unicode('private')
+        
 
 def owner_org_validator(key, data, errors, context):
     roles = tk.get_action('enum_roles')(data_dict={})
@@ -33,19 +78,207 @@ def owner_org_validator(key, data, errors, context):
         data[key] = group_id
     else:
         tk.get_validator('owner_org_validator')(key, data, errors, context)
+        
+def _retrieve_key_value(key_name, key, data):
+    origin_key_list = list(key)
+    origin_key_list[2]= key_name
+    custom_key = tuple(origin_key_list)
+    return data.get(custom_key, None)
 
-def valid_date(value, context):
-    try:
-        if value=='':
-            return value
-        valid_date = tk.get_validator('isodate')(value, context)
-        if not valid_date or not isinstance(valid_date, datetime.datetime):
-            raise df.Invalid(_('Date format incorrect'))
-    except (TypeError, ValueError), e:
-        raise df.Invalid(_('Date format incorrect'))
-    return value
+def _clear_key_value(key_name, key, data):
+    origin_key_list = list(key)
+    origin_key_list[2]= key_name
+    custom_key = tuple(origin_key_list)
+    if custom_key in data:
+        data[custom_key] = ''
 
-def valid_url(value, context):
+def valid_periodicity_text(key, data, errors, context):
+    value = data[key]
+    periodicity_value = _retrieve_key_value('periodicity', key, data)
+    if _retrieve_key_value('status', key, data) =='public' and periodicity_value == 'iné':
+        min_length = 10
+        if len(value)<min_length:
+            errors[key].append(_('Please insert a description. The mimimal length is {0} characters').format(min_length))
+  
+def valid_corretness(key, data, errors, context):
+    global correctness_possible_values
+    value = data[key]
+    if data[key] == correctness_possible_values[0] or data[key] == correctness_possible_values[1]:
+        _clear_key_value('data_correctness_description', key, data)
+    if _retrieve_key_value('status', key, data) =='public':
+        if not value in validity_possible_values:
+            errors[key].append(_('Please select the type of validity!'))
+        
+
+def valid_text(key, data, errors, context):
+    global validity_possible_values
+    value = data[key]
+    validity_value = _retrieve_key_value('validity', key, data)
+    if _retrieve_key_value('status', key, data) =='public' and _retrieve_key_value('validity', key, data) == validity_possible_values[1]:
+        min_length = 10
+        if len(value)<min_length:
+            errors[key].append(_('Please insert a description. The mimimal length is {0} characters').format(min_length))
+ 
+def validator_validity(key, data, errors, context):
+    global validity_possible_values
+    value = data[key]
+    missing = _is_missing(key, data)
+    if _retrieve_key_value('status', key, data) =='public':
+        if missing:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+        if not value in validity_possible_values:
+            errors[key].append(_('Please select the type of validity!'))
+    else:
+        #no key
+        if missing:
+            data.pop(key, None)
+            raise StopOnError
+        else:
+        #if key is present, it has to have reasonable value
+            if not value in validity_possible_values:
+                errors[key].append(_('Please select the type of validity!'))
+
+def validator_date(key, data, errors, context):
+    global validity_possible_values
+    missing = _is_missing(key, data)
+    value = data[key]
+    validity_value = _retrieve_key_value('validity', key, data)
+    if validity_value == validity_possible_values[2]:
+        if missing:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+            data.pop(key, None)
+            raise StopOnError
+        else:
+            if (value != '' and _retrieve_key_value('status', key, data) =='private') or _retrieve_key_value('status', key, data) =='public':
+                try:
+                    valid_date = tk.get_validator('isodate')(value, context)
+                    if not valid_date or not isinstance(valid_date, datetime.datetime):
+                            errors[key].append(_('Date format incorrect'))
+                except (TypeError, ValueError), e:
+                    errors[key].append(_('Date format incorrect'))
+    else:
+        if not missing:
+            data[key] = ''
+
+def validator_validity_descr(key, data, errors, context):
+    global validity_possible_values
+    missing = _is_missing(key, data)
+    value = data[key]
+    validity_value = _retrieve_key_value('validity', key, data)
+    if validity_value == validity_possible_values[1]:
+        if missing:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+            data.pop(key, None)
+            raise StopOnError
+        else:
+            if (value != '' and _retrieve_key_value('status', key, data) =='private') or _retrieve_key_value('status', key, data) =='public':
+                #TODO REGEX
+                if len(value)<1:
+                    errors[key].append(_('Please provide an explanation of validity'))
+    else:
+        if not missing:
+            data[key] = ''
+            
+def validator_periodicity(key, data, errors, context):
+    periodicity_possible_values = periodicities()
+    value = data[key]
+    if type(value) is list:
+        value = value[0]
+    status = _retrieve_key_value('status', key, data)
+    missing = _is_missing(key, data)
+    if not missing:
+        if not value in periodicity_possible_values:
+            errors[key].append(_('Please enter a valid value!'))
+        else:
+            if value=='undefined' and status =='public':
+                errors[key].append(_('Please select an option!'))
+    else:
+        if status=='public':
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+        data.pop(key, None)
+        raise StopOnError
+    
+def validator_periodicity_descr(key, data, errors, context):
+    periodicity = _retrieve_key_value('periodicity', key, data)
+    status = _retrieve_key_value('status', key, data)
+    value = data[key]
+    missing = _is_missing(key, data)
+    if periodicity == 'iné':
+        if missing:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+            data.pop(key, None)
+            raise StopOnError
+        if value == '' and status == 'public':
+            errors[key].append(_('Please enter a periodicity description!'))
+    else:
+        if not missing:
+            data[key] = ''
+        else:
+            data.pop(key, None)
+            raise StopOnError
+
+def validator_data_correctness(key, data, errors, context):
+    global correctness_possible_values
+    status = _retrieve_key_value('status', key, data)
+    value = data[key]
+    missing = _is_missing(key, data)
+    if not missing:
+        #unexpected value
+        if value != '' and not value in correctness_possible_values:
+            errors[key].append(_('Please enter a valid option!'))
+        #undefined or empty
+        if value == '' or (value == correctness_possible_values[3] and status=='public'):
+            errors[key].append(_('Please select appropriate option!'))
+    else:
+        if status=='public':
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+        data.pop(key, None)
+        raise StopOnError
+
+def validator_data_correctness_descr(key, data, errors, context):
+    global correctness_possible_values
+    status = _retrieve_key_value('status', key, data)
+    data_correctness = _retrieve_key_value('data_correctness', key, data)
+    value = data[key]
+    missing = _is_missing(key, data)
+    if data_correctness == correctness_possible_values[2]:
+        if missing:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+            data.pop(key, None)
+            raise StopOnError
+        if value=='' and status=='public':
+            errors[key].append(_('Please fill in this field!'))
+    else:
+        if not missing:
+            data[key] = ''
+        else:
+            data.pop(key, None)
+            raise StopOnError
+
+def validator_spatial(key, data, errors, context):
+    value = data[key]
+    if value=='None':
+        data[key]='undefined'
+    log.info('spatial value in validator: %s', value)
+    log.info('value type: %s', type(value))
+    private = data[('private',)]
+    missing = _is_missing(key, data)
+    if not missing:
+        if not private and (not value or value=='undefined'):
+            errors[key].append(_('Please select an appropriate option!'))
+        #elif not value or value=='undefined':
+            #data.pop(key, None)
+            #raise StopOnError
+        #    data[key] = '{ "type": "Polygon", "coordinates": []}'
+    else:
+        if not private:
+            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+        data.pop(key, None)
+        raise StopOnError
+        
+        
+
+def validator_url(value, context):
     if value=='':
         return value
     regex = re.compile(
@@ -60,10 +293,15 @@ def valid_url(value, context):
         return value
     raise df.Invalid(_('Please provide a valid URL'))
 
-def selected_option_validator(value, context):
+def validator_selected_option(value, context):
     if value == 'Undefined':
         raise df.Invalid(_('Please select a location'))
     return value
+
+def validator_status(value, context):
+    if value == 'private' or value == 'public':
+        return value
+    raise df.Invalid(_('The possible values for status are "private" or "public"'))
 
 def create_tag_info_table(context):
     if db.tag_info_table is None:
@@ -165,20 +403,22 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    p = (u'ročne', u'polročne', u'štvrťročne', u'mesačne', u'týždenne', u'denne', u'iné')
+    just_for_translation = (_('yearly'), _('semiyearly'), _('quaterly'), _('monthly'), _('weekly'), _('daily'), _('other'), _('undefined'))
+    p = ( u'yearly', u'semiyearly', u'quaterly', u'monthly', u'weekly', u'daily', u'other', u'undefined')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
         data = {'id': 'periodicities'}
-        v = tk.get_action('vocabulary_show')(context, data).get('tags')
+        res = tk.get_action('vocabulary_show')(context, data)
+        v = res.get('tags')
         tag_names = [tag.get('display_name') for tag in v]
         log.info('---tag names---')
         log.info(tag_names)
         if len(tag_names)!=len(p):
             for name in p:
                 if name not in tag_names:
-                    log.info("Adding tag {0} to vocab 'periodicities'".format(tag))
-                    data = {'name': name, 'vocabulary_id': v[0]['vocabulary_id']}
+                    log.info("Adding tag {0} to vocab 'periodicities'".format(name))
+                    data = {'name': name, 'vocabulary_id': res['id']}
                     tk.get_action('tag_create')(context, data)
         else:
             log.info("Periodicities vocabulary already exists, skipping.")
@@ -195,7 +435,6 @@ def periodicities():
     '''Return the list of country codes from the country codes vocabulary.'''
     create_periodicities()
     try:
-        #log.info('autocomplete moj custom')
         #res=tk.get_action('tag_autocomplete')(data_dict={'query' : 'y', 'vocabulary_id' : 'periodicities'})
         #log.info(res)
         periodicity = tk.get_action('tag_list')(
@@ -206,20 +445,17 @@ def periodicities():
     except tk.ObjectNotFound:
         return None
 
-def retrieve_name_of_geojson(data_extras):
-    if not data_extras:
-        return None
-    for extra in data_extras:
-        if extra.get('key', None) == 'spatial':
-            json_value = extra.get('value', None)
-            res = tk.get_action('ckanext_dataset_get_tag_info')(data_dict={'value': json_value})
-            if res:
-                for tag_info in res:
-                    tag = tk.get_action('tag_show')(data_dict={'id' : tag_info.tag_id})
-                    if tag:
-                        return tag.get('name', None)
-                    raise Exception('Inconsistency in database between table tags and ckanext_tag_info ')
-            return None
+def retrieve_name_of_geojson(json_value):
+    log.info('retrieve name to geojson: %s', json_value)
+    if json_value:
+        res = tk.get_action('ckanext_dataset_get_tag_info')(data_dict={'value': json_value})
+        if res:
+            for tag_info in res:
+                tag = tk.get_action('tag_show')(data_dict={'id' : tag_info.tag_id})
+                if tag:
+                    return tag.get('name', None)
+                raise Exception('Inconsistency in database between table tags and ckanext_tag_info ')
+    return None
 
 def retrieve_geojson(data_extras):
     if not data_extras:
@@ -240,6 +476,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     plugins.implements(plugins.IDatasetForm, inherit=False)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
     plugins.implements(plugins.IActions, inherit=False)
+    #plugins.implements(plugins.IResourceController, inherit=True)
     #plugins.implements(plugins.IValidators, inherit=False)
     #plugins.implements(plugins.IPackageController, inherit=True)
     
@@ -255,9 +492,15 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     #def get_validators(self):
     #    return {}
     
+    #def before_show(self, resource_dict):
+    #    log.info("resource before show: %s", resource_dict)
+    #    if resource_dict.get('status','')=='private':
+    #        del(resource_dict)
     def get_actions(self):
         return {'ckanext_dataset_create_tag_info' : insert_tag_info,
-                'ckanext_dataset_get_tag_info' : get_tag_info}
+                'ckanext_dataset_get_tag_info' : get_tag_info,
+                'package_show' : dataset_logic.package_show,
+                'resource_search' : dataset_logic.resource_search}
     
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
@@ -286,26 +529,30 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     def _modify_package_schema(self, schema):
         # Add our custom_test metadata field to the schema, this one will use
         # convert_to_extras instead of convert_to_tags.
-        #tk.get_validator('ignore_missing'),
-        #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_extras')]
+
         schema.update({
-                'spatial': [tk.get_validator('ignore_missing'), selected_option_validator, tk.get_converter('convert_to_extras')],
+                #'spatial': [tk.get_validator('ignore_missing'), validator_selected_option, tk.get_converter('convert_to_extras')],
+                'spatial': [validator_spatial, tk.get_converter('convert_to_extras')],
                 'owner_org': [tk.get_validator('ignore_missing'), owner_org_validator]
                 })
+        
         schema['resources'].update({
-                        'validity' : [tk.get_validator('ignore_missing'),],
-                        'valid_from' : [tk.get_validator('ignore_missing'), valid_date],
-                        'valid_to' : [tk.get_validator('ignore_missing'), valid_date],
-                        'active_from' : [tk.get_validator('ignore_missing'), valid_date],
-                        'active_to' : [tk.get_validator('ignore_missing'), valid_date],
-                        'custom_valid_text' : [tk.get_validator('ignore_missing'),],
-                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_to_tags')('periodicities')],
-                        'periodicity_description' : [tk.get_validator('ignore_missing'),],
-                        'schema': [tk.get_validator('ignore_missing'), valid_url],
-                        'data_correctness' : [tk.get_validator('ignore_missing'),],
-                        'data_correctness_description' : [tk.get_validator('ignore_missing'),]
+                        '__before' : [resource_validator],
+                        'validity' : [validator_validity, unicode],
+                        'valid_from' : [validator_date, unicode],
+                        'valid_to' : [validator_date, unicode],
+                        'active_from' : [validator_date, unicode],
+                        'active_to' : [validator_date, unicode],
+                        'custom_valid_text' : [validator_validity_descr, unicode],
+                        #'periodicity' : [validator_periodicity, tk.get_converter('convert_to_tags')('periodicities')],
+                        'periodicity' : [validator_periodicity, unicode],
+                        'periodicity_description' : [validator_periodicity_descr, unicode],
+                        'schema': [tk.get_validator('ignore_missing'), validator_url],
+                        'data_correctness' : [validator_data_correctness, unicode],
+                        'data_correctness_description' : [validator_data_correctness_descr, unicode],
+                        'status' : [tk.get_validator('ignore_missing'), validator_status]
             })
-       
+        
         return schema
 
     def create_package_schema(self):
@@ -320,29 +567,26 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
 
     def show_package_schema(self):
         schema = super(ExtendedDatasetPlugin, self).show_package_schema()
-
-        # Don't show vocab tags mixed in with normal 'free' tags
-        # (e.g. on dataset pages, or on the search page)
-        
-        # Add our custom_text field to the dataset schema.
-        #'schema_url' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
         schema.update({
-            'spatial': [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_extras')]
+            'spatial': [tk.get_converter('convert_from_extras'), validator_spatial]
                 })
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
         schema['resources'].update({
-                        'validity' : [tk.get_validator('ignore_missing'),],
-                        'valid_from' : [tk.get_validator('ignore_missing'), valid_date],
-                        'valid_to' : [tk.get_validator('ignore_missing'), valid_date],
-                        'active_from' : [tk.get_validator('ignore_missing'), valid_date],
-                        'active_to' : [tk.get_validator('ignore_missing'), valid_date],
-                        'custom_valid_text' : [tk.get_validator('ignore_missing'),],
-                        'periodicity' : [tk.get_validator('ignore_missing'), tk.get_converter('convert_from_tags')('periodicities')],
-                        'periodicity_description' : [tk.get_validator('ignore_missing'),],
-                        'schema': [tk.get_validator('ignore_missing'), valid_url],
-                        'data_correctness' : [tk.get_validator('ignore_missing'),],
-                        'data_correctness_description' : [tk.get_validator('ignore_missing'),]
+                        '__before' : [resource_validator],
+                        'validity' : [validator_validity, unicode],
+                        'valid_from' : [validator_date, unicode],
+                        'valid_to' : [validator_date, unicode],
+                        'active_from' : [validator_date, unicode],
+                        'active_to' : [validator_date, unicode],
+                        'custom_valid_text' : [validator_validity_descr, unicode],
+                        #'periodicity' : [tk.get_converter('convert_from_tags')('periodicities'),validator_periodicity],
+                        'periodicity' : [validator_periodicity, unicode],
+                        'periodicity_description' : [validator_periodicity_descr, unicode],
+                        'schema': [tk.get_validator('ignore_missing'), validator_url],
+                        'data_correctness' : [validator_data_correctness, unicode],
+                        'data_correctness_description' : [validator_data_correctness_descr, unicode],
+                        'status' : [tk.get_validator('ignore_missing'), validator_status]
             })
         
         return schema

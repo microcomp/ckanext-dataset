@@ -26,9 +26,12 @@ setup(
         'babel.extractors': [
                 'ckan = ckan.lib.extract:extract_ckan',
                 ],
-                'ckan.plugins' : [
-                        'dataset=ckanext.dataset.plugin:ExtendedDatasetPlugin',
-                ]
+        'ckan.plugins' : [
+                'dataset=ckanext.dataset.plugin:ExtendedDatasetPlugin',
+                ],
+        'paste.paster_command' : [
+                'dataset-cmd = ckanext.dataset.dataset_cmd:DatasetCmd'
+                ],
         }
 
     

@@ -45,14 +45,18 @@
             <td class="dataset-details">{{ pkg_dict.version }}</td>
           </tr>
         {% endif %}
-
         {% if h.check_access('package_update',{'id':pkg_dict.id}) %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("State") }}</th>
             <td class="dataset-details">{{ pkg_dict.state }}</td>
           </tr>
         {% endif %}
-
+		{% if pkg_dict.spatial %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Spatial") }}</th>
+            <td class="dataset-details">{{ pkg_dict.spatial }}</td>
+          </tr>
+        {% endif %}
       {% block extras scoped %}
         {% for extra in h.sorted_extras(pkg_dict.extras) %}
           {% set key, value = extra %}
@@ -67,4 +71,16 @@
     </tbody>
   </table>
 </section>
+<script>
+//onload hide/show
+$(document).ready(function() {
+	var spatial_td;
+	$('td').each(function(index, element){
+		if(element.innerHTML.substring(0,34)=='{"type": "Polygon", "coordinates":'){
+			spatial_td = element
+		}
+		}
+	});
+	});
+</script>
 

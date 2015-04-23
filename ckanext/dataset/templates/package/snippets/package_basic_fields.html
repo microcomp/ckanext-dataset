@@ -5,10 +5,10 @@
 <label class="control-label" for="field-spatial">{{ _("Spatial") }}</label>
 <div class="controls">
 <select id="field-spatial_enum" name="spatial_enum" data-module="autocomplete">
-{% set name = h.convert_geojson_to_name(data.get('extras', None)) %}
-{% set geojson = h.retrieve_geojson(data.get('extras', None)) %}
-<option value="Undefined" {% if name %} selected="selected"{% endif %}>{{ _("Undefined") }}</option>
-<option value="Custom" {% if not name and geojson %} selected="selected"{% endif %}>{{ _("Enter custom GeoJSON") }}</option>
+{% set name = h.convert_geojson_to_name(data.get('spatial', None)) %}
+{% set geojson = data.get('spatial', None) %}
+<option value="undefined" {% if not geojson or geojson == 'undefined' %} selected="selected"{% endif %}>{{ _("Undefined") }}</option>
+<option value="Custom" {% if not name and geojson and geojson != 'undefined' %} selected="selected"{% endif %}>{{ _("Enter custom GeoJSON") }}</option>
 {% for tag in h.geo_tags() %}
 <option value="{{ tag }}" {% if tag==name %}selected="selected"{% endif %}>{{ tag }}</option>
 {% endfor %}

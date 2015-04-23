@@ -34,8 +34,9 @@
 <label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
 <div class="controls">
 <select id="field-periodicity" name="periodicity" data-module="autocomplete">
+{% set data_per = data.get('periodicity', []) %}
 {% for periodicity in h.periodicities() %}
-<option value="{{ periodicity }}" {% if periodicity in data.get('periodicity', []) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
+<option value="{{ periodicity }}" {% if periodicity in data_per or (periodicity == 'undefined' and not data_per) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
 {% endfor %}
 </select>
 </div>
@@ -48,6 +49,7 @@
 <label class="control-label" for="field-data_correctness">{{ _("Data correctness") }}</label>
 <div class="controls">
 <select id="field-data_correctness" name="data_correctness" data-module="autocomplete">
+<option value="Undefined" selected="selected">{{ _("Undefined") }}</option>
 <option value="correct and exact" {% if "correct and exact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('correct and exact') }}</option>
 <option value="incorrect or inexact" {% if "incorrect or inexact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('incorrect or inexact') }}</option>
 <option value="stated in data" {% if "stated in data" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('stated in data') }}</option>
@@ -56,7 +58,7 @@
 </div>
 
 <div id="correctness_text">
-	{{ form.input('correctness_description', label=_('Description'), id='field-correctness_description', placeholder=_('description'), value=data.correctness_description, error=errors.correctness_description, classes=['control-medium']) }}
+	{{ form.input('data_correctness_description', label=_('Description'), id='field-correctness_description', placeholder=_('description'), value=data.data_correctness_description, error=errors.data_correctness_description, classes=['control-medium']) }}
 </div>
 
 <div class="control-group">
