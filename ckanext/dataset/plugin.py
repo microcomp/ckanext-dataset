@@ -500,7 +500,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         return {'ckanext_dataset_create_tag_info' : insert_tag_info,
                 'ckanext_dataset_get_tag_info' : get_tag_info,
                 'package_show' : dataset_logic.package_show,
-                'resource_search' : dataset_logic.resource_search}
+                'resource_search' : dataset_logic.resource_search,
+                'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources}
     
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so

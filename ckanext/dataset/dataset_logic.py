@@ -24,7 +24,9 @@ _check_access = logic.check_access
 NotFound = logic.NotFound
 ValidationError = logic.ValidationError
 _get_or_bust = logic.get_or_bust
+_ = toolkit._
 
+@ckan.logic.side_effect_free
 def package_show(context, data_dict):
     '''Return the metadata of a dataset (package) and its resources.
 
@@ -142,7 +144,8 @@ def _add_tracking_summary_to_resource_dict(resource_dict, model):
     tracking_summary = model.TrackingSummary.get_for_resource(
         resource_dict['url'])
     resource_dict['tracking_summary'] = tracking_summary
-    
+
+@ckan.logic.side_effect_free  
 @logic.validate(logic.schema.default_resource_search_schema)
 def resource_search(context, data_dict):
     '''
@@ -332,3 +335,65 @@ def resource_search(context, data_dict):
 
     return {'count': count,
             'results': results}
+
+
+@ckan.logic.side_effect_free
+@logic.validate(logic.schema.default_package_list_schema)
+def current_package_list_with_resources(context, data_dict):
+    '''Return a list of the site's datasets (packages) and their resources.
+
+    The list is sorted most-recently-modified first.
+
+    :param limit: if given, the list of datasets will be broken into pages of
+        at most ``limit`` datasets per page and only one page will be returned
+        at a time (optional)
+    :type limit: int
+    :param offset: when ``limit`` is given, the offset to start returning packages from
+    :type offset: int
+    :param page: when ``limit`` is given, which page to return, Deprecated use ``offset``
+    :type page: int
+
+    :rtype: list of dictionaries
+
+    '''
+    model = context["model"]
+    limit = data_dict.get('limit')
+    offset = data_dict.get('offset', 0)
+
+    if not 'offset' in data_dict and 'page' in data_dict:
+        log.warning('"page" parameter is deprecated.  '
+                    'Use the "offset" parameter instead')
+        page = data_dict['page']
+        if limit:
+            offset = (page - 1) * limit
+        else:
+            offset = 0
+
+    _check_access('current_package_list_with_resources', context, data_dict)
+
+    query = model.Session.query(model.PackageRevision)
+    query = query.filter(model.PackageRevision.state=='active')
+    query = query.filter(model.PackageRevision.current==True)
+    query = query.filter(model.PackageRevision.private==False)
+    
+    query = query.order_by(model.package_revision_table.c.revision_timestamp.desc())
+    if limit is not None:
+        query = query.limit(limit)
+    query = query.offset(offset)
+    pack_rev = query.all()
+    log.info('filtered packages: %s', pack_rev)
+    return _package_list_with_resources(context, pack_rev)
+
+def _package_list_with_resources(context, package_revision_list):
+    package_list = []
+    for package in package_revision_list:
+        result_dict = model_dictize.package_dictize(package,context)
+        log.info('package resources: %s', result_dict)
+        valid_resources = []
+        for resource in result_dict['resources']:
+            if resource.get('status','') != 'private':
+                valid_resources.append(resource)
+        result_dict['resources'] = valid_resources    
+        package_list.append(result_dict)
+    return package_list
+
