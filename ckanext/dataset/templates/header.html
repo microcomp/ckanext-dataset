@@ -1,6 +1,9 @@
 {% ckan_extends %}
 {% block header_site_navigation_tabs %}
+{% if c.controller == 'package' %}
+{% if  c.action == 'read' %}
 <script>
+
 	var rows = document.getElementsByTagName('td')
 	var x = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3><a onclick='hide()' alt='hide content' class='btn btn-primary'>{{_('Hide')}}</a><br />"
 	var ii = 0
@@ -38,5 +41,6 @@
 	window.onload = start
 	
 </script>
+{%endif%}{%endif%}
 {{super()}}
 {%endblock%}
