@@ -304,7 +304,7 @@ def validator_status(value, context):
     raise df.Invalid(_('The possible values for status are "private" or "public"'))
 
 def create_tag_info_table(context):
-    if db.tag_info_table is None:
+    if not db.tag_info_table.exists():
         db.init_db(context['model'])
 
 @ckan.logic.side_effect_free
@@ -313,15 +313,11 @@ def insert_tag_info(context, data_dict):
     This function inserts an extra value for given tag_id in the form key:value.
     data_dict must have keys tag_id, key, value.
     '''
-    create_tag_info_table(context)
     info = db.TagInfo()
     info.tag_id = data_dict.get('tag_id')
     info.key = data_dict.get('key')
     info.value = data_dict.get('value')
     info.save()
-    session = context['session']
-    session.add(info)
-    session.commit()
     return {"status":"success"}
 
 @ckan.logic.side_effect_free
@@ -330,11 +326,20 @@ def get_tag_info(context, data_dict):
     This function retrieves extra information about given tag_id and
     possibly more filtering criterias. 
     '''
-    if db.tag_info_table is None:
-        db.init_db(context['model'])
     res = db.TagInfo.get(**data_dict)
     return res
 
+@ckan.logic.side_effect_free
+def delete_tag_info(context, data_dict):
+    #model = context['model']
+    #res = db.TagInfo.get(**data_dict)
+    #if res:
+    #    for t in res:
+    #       t.delete()
+    #        model.repo.commit()
+    tag_id = data_dict['tag_id']
+    db.tag_info_table.delete(db.TagInfo.tag_id==tag_id).execute()
+    
 def extract_data():
     def _extract_data_from_file(abs_path):
         json_data=open(abs_path)
@@ -360,11 +365,7 @@ def extract_data():
     return res
 
 def create_geo_tags():
-    '''Create country_codes vocab and tags, if they don't exist already.
-    Note that you could also create the vocab and tags using CKAN's API,
-    and once they are created you can edit them (e.g. to add and remove
-    possible dataset country code values) using the API.
-    '''
+
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
@@ -499,6 +500,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     def get_actions(self):
         return {'ckanext_dataset_create_tag_info' : insert_tag_info,
                 'ckanext_dataset_get_tag_info' : get_tag_info,
+                'ckanext_dataset_delete_tag_info' : delete_tag_info,
                 'package_show' : dataset_logic.package_show,
                 'resource_search' : dataset_logic.resource_search,
                 'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources}
