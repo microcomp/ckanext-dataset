@@ -1,8 +1,10 @@
 {% ckan_extends %}
 {% block metadata_fields %}
+
 {{ super() }}
-{% block basic_fields_url %}
+
 <script> 
+$('.image-upload').append("<div id='filename' style='padding-left: 7.5em; padding-bottom: 1em;font-size: 120%;'></div>");
 if($("#field-image-upload").val() == ""){
 	var y  = "{{data['url']}}";
 	var z = y.split('/')[y.split('/').length-1]
@@ -16,9 +18,7 @@ $("#field-image-upload").change(function(){
 //$('#filename').text($("#field-image-upload").val());
 
 </script>
-<div id='filename' style="padding-left: 7.5em; font-size: 120%; "></div>
-{{super()}}
-    {% endblock %}
+
 {{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
 <div class="control-group">
 	<label class="control-label">{{ _("Validity") }}</label>
