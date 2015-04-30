@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import ckan.lib.navl.dictization_functions as df
 
+import ckan.model as model
 import logging
 import datetime
 import re
@@ -470,6 +471,10 @@ def retrieve_geojson(data_extras):
 def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
     return users, tk.c.user
+def get_name(login):
+    name = model.Session.query(model.User).filter(model.User.name == login).first().fullname
+    return name
+
 
 
 class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
@@ -517,7 +522,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 'geo_tags': geo_tags,
                 'convert_geojson_to_name' : retrieve_name_of_geojson,
                 'retrieve_geojson' : retrieve_geojson,
-                'get_users' : get_users }
+                'get_users' : get_users,
+                'get_name' : get_name }
     
     def is_fallback(self):
         # Return True to register this plugin as the default handler for
