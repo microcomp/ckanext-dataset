@@ -1,0 +1,8 @@
+{% ckan_extends %}
+
+
+{% block content_primary_nav %}
+{{super()}}
+<li> <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
+<li><a href='/dataset/{{c.pkg_dict.id}}'> {{_('Permanent URL')}}</a></li>
+{%endblock%}
