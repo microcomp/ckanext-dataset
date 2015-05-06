@@ -21,12 +21,12 @@
         {% if pkg_dict.author_email %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Author") }}</th>
-            <td class="dataset-details" property="dc:creator">{{ h.mail_to(email_address=pkg_dict.author_email, name=pkg_dict.author) }}</td>
+            <td class="dataset-details" property="dc:creator">{{ h.mail_to(email_address=pkg_dict.author_email, name=h.get_name(pkg_dict.author)) }}</td>
           </tr>
         {% elif pkg_dict.author %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Author") }}</th>
-            <td class="dataset-details" property="dc:creator"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.author) }}">{{ pkg_dict.author }}</a> </td>
+            <td class="dataset-details" property="dc:creator"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.author) }}" target="_blank" >{{ h.get_name(pkg_dict.author) }}
           </tr>
         {% endif %}
 
@@ -38,7 +38,7 @@
         {% elif pkg_dict.maintainer %}
           <tr>
             <th scope="row" class="dataset-label">{{ _('Maintainer') }}</th>
-            <td class="dataset-details" property="dc:contributor"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.maintainer) }}">{{ pkg_dict.maintainer }}</a></td>
+             <td class="dataset-details" property="dc:contributor"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.maintainer) }}" target="_blank" >{{ h.get_name(pkg_dict.maintainer) }}</a></td>
           </tr>
         {% endif %}
         {% if pkg_dict.version %}
@@ -53,6 +53,7 @@
             <td class="dataset-details">{{ pkg_dict.spatial }}</td>
           </tr>
         {% endif %}
+		
         {% if h.check_access('package_update',{'id':pkg_dict.id}) %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("State") }}</th>
