@@ -35,7 +35,7 @@ class DatasetCmd(CkanCommand):
             else:
                 log.info("tag_info table already exists")
 
-        if cmd == 'vocab-delete':
+        if cmd == 'vocab-delete-per':
             import ckan.plugins.toolkit as toolkit
             log.info('Deleting vocabulary periodicities')
             try:
@@ -51,6 +51,8 @@ class DatasetCmd(CkanCommand):
                 log.info('vocabulary deleted')
             except toolkit.ObjectNotFound:
                 log.warn('Vocabulary "periodicities" does not exist!')
+        if cmd == 'vocab-delete-geo':
+            import ckan.plugins.toolkit as toolkit
             log.info('Deleting vocabulary geo_tags')
             try:
                 vocab = toolkit.get_action('vocabulary_show')(data_dict={'id': 'geo_tags'})
