@@ -1,5 +1,6 @@
 {%ckan_extends%}
 {% set current_url = h.full_current_url() %}
+{% set id = current_url.split("/")[current_url.split("/")|length -1]%}
 {% block social %}
 <script type="text/javascript">
 //<![CDATA[
