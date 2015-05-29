@@ -4,5 +4,13 @@
 {% block content_primary_nav %}
 {{super()}}
 <li> <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
-<li><a href='/dataset/{{c.pkg_dict.id}}'> {{_('Permanent URL')}}</a></li>
+<li ><a onclick="showURL()"> {{_('Permanent URL')}}</a></li>
+<noscript>
+{{_('Permanent URL')}}:<input type="text" name="permanentURL" value="{{request.host_url}}/dataset/{{c.pkg_dict.id}}" ></input>
+</noscript>
+<script>
+function showURL() {
+    var person = prompt("{{_('Permanent URL:')}}", "{{request.host_url}}/dataset/{{c.pkg_dict.id}}");
+}
+</script>
 {%endblock%}
