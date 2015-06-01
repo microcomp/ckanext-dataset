@@ -8,9 +8,5 @@
 <noscript>
 {{_('Permanent URL')}}:<input type="text" name="permanentURL" value="{{request.host_url}}/dataset/{{c.pkg_dict.id}}" ></input>
 </noscript>
-<script>
-function showURL() {
-    var person = prompt("{{_('Permanent URL:')}}", "{{request.host_url}}/dataset/{{c.pkg_dict.id}}");
-}
-</script>
+
 {%endblock%}
