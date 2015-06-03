@@ -23,9 +23,9 @@ $("#field-image-upload").change(function(){
 <div class="control-group">
 	<label class="control-label">{{ _("Validity") }}</label>
 	<div class="controls">
-		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') or not data.get('validity', '') %} checked="checked" {% endif %}>Valid permanently</label>
-		  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid" {% if 'custom_valid' == data.get('validity', '') %} checked="checked" {% endif %}>Validness in data</label>
-		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>Other</label>
+		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') or not data.get('validity', '') %} checked="checked" {% endif %}>{{_('Valid permanently')}}</label>
+		  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid" {% if 'custom_valid' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Validness in data')}}</label>
+		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Other')}}</label>
 	</div>
 </div>
 <div id="valid_text_input">

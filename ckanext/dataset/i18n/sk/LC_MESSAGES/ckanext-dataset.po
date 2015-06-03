@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-02-23 15:44+0100\n"
+"POT-Creation-Date: 2015-06-02 08:55+0100\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -20,21 +20,154 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/dataset/plugin.py:31
+#: ckanext/dataset/dataset_logic.py:298
+msgid "Missing value"
+msgstr ""
+
+#: ckanext/dataset/dataset_logic.py:302
+msgid "Do not specify if using \"query\" parameter"
+msgstr ""
+
+#: ckanext/dataset/dataset_logic.py:311
+msgid "Must be <field>:<value> pair(s)"
+msgstr ""
+
+#: ckanext/dataset/dataset_logic.py:342
+msgid "Field \"{field}\" not recognised in resource_search."
+msgstr ""
+
+#: ckanext/dataset/plugin.py:77
 msgid "Organization does not exist"
 msgstr "Organizácia neexistuje"
 
-#: ckanext/dataset/plugin.py:41 ckanext/dataset/plugin.py:43
+#: ckanext/dataset/plugin.py:102 ckanext/dataset/plugin.py:121
+msgid "Please insert a description. The mimimal length is {0} characters"
+msgstr "Prosím vložte opis. Najmenej {0} znakov"
+
+#: ckanext/dataset/plugin.py:111 ckanext/dataset/plugin.py:131
+#: ckanext/dataset/plugin.py:140
+msgid "Please select the type of validity!"
+msgstr "Prosím vyberte typ validity!"
+
+#: ckanext/dataset/plugin.py:129 ckanext/dataset/plugin.py:150
+#: ckanext/dataset/plugin.py:176 ckanext/dataset/plugin.py:206
+#: ckanext/dataset/plugin.py:217 ckanext/dataset/plugin.py:243
+#: ckanext/dataset/plugin.py:255
+msgid "Missing attribute {0}!"
+msgstr "Chýbajúce atribúty"
+
+#: ckanext/dataset/plugin.py:158 ckanext/dataset/plugin.py:160
 msgid "Date format incorrect"
 msgstr "Nesprávny formát dátumu"
 
-#: ckanext/dataset/plugin.py:59
+#: ckanext/dataset/plugin.py:183
+#, fuzzy
+msgid "Please provide an explanation of validity"
+msgstr "Prosím zadajte valídnu URL"
+
+#: ckanext/dataset/plugin.py:200
+#, fuzzy
+msgid "Please enter a valid value!"
+msgstr "Prosím zadajte valídnu hodnotu!"
+
+#: ckanext/dataset/plugin.py:203
+#, fuzzy
+msgid "Please select an option!"
+msgstr "Prosím zvoľte lokalitu"
+
+#: ckanext/dataset/plugin.py:221
+msgid "Please enter a periodicity description!"
+msgstr "Zadajte prosím pravideľnosť popisu"
+
+#: ckanext/dataset/plugin.py:237
+#, fuzzy
+msgid "Please enter a valid option!"
+msgstr "Prosím zvoľte lokalitu"
+
+#: ckanext/dataset/plugin.py:240
+msgid "Please select appropriate option!"
+msgstr "Prosím vyberte vhodnú možnosť!"
+
+#: ckanext/dataset/plugin.py:259
+msgid "Please fill in this field!"
+msgstr ""
+
+#: ckanext/dataset/plugin.py:277
+#, fuzzy
+#| msgid "Please select appropriate option!"
+msgid "Please select an appropriate option!"
+msgstr "Prosím vyberte vhodnú možnosť!"
+
+#: ckanext/dataset/plugin.py:284
+#, fuzzy
+#| msgid "Missing attribute {0}!"
+msgid "Missing attribute!"
+msgstr "Chýbajúce atribúty"
+
+#: ckanext/dataset/plugin.py:303
 msgid "Please provide a valid URL"
 msgstr "Prosím zadajte valídnu URL"
 
-#: ckanext/dataset/plugin.py:63
+#: ckanext/dataset/plugin.py:307
 msgid "Please select a location"
 msgstr "Prosím zvoľte lokalitu"
+
+#: ckanext/dataset/plugin.py:313
+msgid "The possible values for status are \"private\" or \"public\""
+msgstr "Prípustné hodnoty pre atribút status sú \"private\" a \"public\""
+
+#: ckanext/dataset/plugin.py:416
+msgid "yearly"
+msgstr "ročne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "semiyearly"
+msgstr "polročne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "quaterly"
+msgstr "štvrťročne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "monthly"
+msgstr "mesačne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "weekly"
+msgstr "týždenne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "daily"
+msgstr "denne"
+
+#: ckanext/dataset/plugin.py:416
+msgid "other"
+msgstr "iné"
+
+#: ckanext/dataset/plugin.py:416
+msgid "undefined"
+msgstr "Nedefinované"
+
+#: ckanext/dataset/templates/header.html:8
+msgid "Hide"
+msgstr ""
+
+#: ckanext/dataset/templates/header.html:28
+#: ckanext/dataset/templates/header.html:39
+msgid "Show"
+msgstr ""
+
+#: ckanext/dataset/templates/package/activity.html:6
+#: ckanext/dataset/templates/package/history.html:6
+#: ckanext/dataset/templates/package/read.html:6
+msgid "History"
+msgstr ""
+
+#: ckanext/dataset/templates/package/activity.html:7
+#: ckanext/dataset/templates/package/history.html:7
+#: ckanext/dataset/templates/package/read.html:7
+msgid "Permanent URL"
+msgstr "Permanentná URL"
 
 #: ckanext/dataset/templates/package/resource_read.html:5
 #: ckanext/dataset/templates/package/snippets/web2.html:2
@@ -45,44 +178,52 @@ msgstr "Vložte si tento widget do svojej vlastnej webovej stránky."
 msgid ""
 "Copy the HTML in the box below and you can display this visualisation on "
 "your own website."
-msgstr "Skopírujte si HTML kód uvedený nižšie a vizualizácia bude zobrazená na vašej stránke."
+msgstr ""
+"Skopírujte si HTML kód uvedený nižšie a vizualizácia bude zobrazená na "
+"vašej stránke."
 
-#: ckanext/dataset/templates/package/resource_read.html:12
+#: ckanext/dataset/templates/package/resource_read.html:14
+#: ckanext/dataset/templates/package/snippets/resource_form.html:86
+#: ckanext/dataset/templates/package/snippets/resource_item.html:6
+msgid "Private"
+msgstr "Súkromné"
+
+#: ckanext/dataset/templates/package/resource_read.html:21
 #, fuzzy
 msgid "Additional Information"
 msgstr "Dodatočné informácie"
 
-#: ckanext/dataset/templates/package/resource_read.html:16
+#: ckanext/dataset/templates/package/resource_read.html:25
 #: ckanext/dataset/templates/package/snippets/additional_info.html:8
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:6
 msgid "Field"
 msgstr "Pole"
 
-#: ckanext/dataset/templates/package/resource_read.html:17
+#: ckanext/dataset/templates/package/resource_read.html:26
 #: ckanext/dataset/templates/package/snippets/additional_info.html:9
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:7
 msgid "Value"
 msgstr "Hodnota"
 
-#: ckanext/dataset/templates/package/resource_read.html:22
+#: ckanext/dataset/templates/package/resource_read.html:31
 msgid "Last updated"
 msgstr "Naposledy upravené"
 
-#: ckanext/dataset/templates/package/resource_read.html:23
-#: ckanext/dataset/templates/package/resource_read.html:27
-#: ckanext/dataset/templates/package/resource_read.html:31
+#: ckanext/dataset/templates/package/resource_read.html:32
+#: ckanext/dataset/templates/package/resource_read.html:36
+#: ckanext/dataset/templates/package/resource_read.html:40
 msgid "unknown"
 msgstr "neznáme"
 
-#: ckanext/dataset/templates/package/resource_read.html:26
+#: ckanext/dataset/templates/package/resource_read.html:35
 msgid "Created"
 msgstr "Vytvorené"
 
-#: ckanext/dataset/templates/package/resource_read.html:30
+#: ckanext/dataset/templates/package/resource_read.html:39
 msgid "Format"
 msgstr "Formát"
 
-#: ckanext/dataset/templates/package/resource_read.html:34
+#: ckanext/dataset/templates/package/resource_read.html:43
 msgid "License"
 msgstr "Licencia"
 
@@ -97,79 +238,159 @@ msgid "Source"
 msgstr "Zdroj"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:23
+#: ckanext/dataset/templates/package/snippets/additional_info.html:28
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:21
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:26
 #: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:13
 msgid "Author"
 msgstr "Autor"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:28
-msgid "Author custom"
-msgstr "Autor"
-
 #: ckanext/dataset/templates/package/snippets/additional_info.html:35
+#: ckanext/dataset/templates/package/snippets/additional_info.html:40
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
 #: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:27
 msgid "Maintainer"
 msgstr "Správca"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:40
-msgid "Maintainer custom"
-msgstr "Autor"
-
 #: ckanext/dataset/templates/package/snippets/additional_info.html:46
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr "Verzia"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:53
-#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:51
+#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:5
+msgid "Spatial"
+msgstr "Lokalita"
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:59
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
 msgid "State"
 msgstr "Stav"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:5
-msgid "Spatial"
-msgstr "lokalita"
-
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:9
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:10
+#: ckanext/dataset/templates/package/snippets/resource_form.html:70
 msgid "Undefined"
 msgstr "Nedefinované"
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
+msgid "Enter custom GeoJSON"
+msgstr "Zadajte špeciálnyGeoJSON"
 
 #: ckanext/dataset/templates/package/snippets/package_metadata_form.html:9
 msgid "Finish"
 msgstr "Dokončiť"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:4
+#: ckanext/dataset/templates/package/snippets/resource_form.html:22
 msgid "Schema"
 msgstr "Schéma"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:4
+#: ckanext/dataset/templates/package/snippets/resource_form.html:22
 msgid "url"
 msgstr "url"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:5
+#: ckanext/dataset/templates/package/snippets/resource_form.html:24
+msgid "Validity"
+msgstr "Platnosť dát"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:26
+msgid "Valid permanently"
+msgstr "Permanentne platné"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:27
+msgid "Validness in data"
+msgstr "Platnosť uvedená v dátach"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:28
+msgid "Other"
+msgstr "iné"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:32
+msgid "Description of data column"
+msgstr "Popis dátovej kolónky"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:32
+#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+msgid "description"
+msgstr "Popis"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
 msgid "Valid from"
 msgstr "Platný od"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:5
-#: ckanext/dataset/templates/package/snippets/resource_form.html:6
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
+#: ckanext/dataset/templates/package/snippets/resource_form.html:37
+#: ckanext/dataset/templates/package/snippets/resource_form.html:46
+#: ckanext/dataset/templates/package/snippets/resource_form.html:47
 msgid "today"
 msgstr "dnes"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:6
+#: ckanext/dataset/templates/package/snippets/resource_form.html:37
 msgid "Valid to"
 msgstr "Platný do"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:70
+#: ckanext/dataset/templates/package/snippets/resource_form.html:46
+#, fuzzy
+msgid "Active from"
+msgstr "Aktívny od"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:47
+msgid "Active to"
+msgstr "Aktívny do"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:52
 #, fuzzy
 msgid "Periodicity"
 msgstr "Periodicita"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:63
+msgid "Periodicity description"
+msgstr "Popis perioditici"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+msgid "Data correctness"
+msgstr "Správnosť dát"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:71
+msgid "correct and exact"
+msgstr "správne a presné"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:72
+msgid "incorrect or inexact"
+msgstr "nesprávne alebo nepresné"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:73
+msgid "stated in data"
+msgstr "uvedené v dátach"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+msgid "Description"
+msgstr "Popis"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:83
+msgid "Status"
+msgstr "Status"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:87
+msgid "Public"
+msgstr "Verejný"
 
 #: ckanext/dataset/templates/snippets/social.html:26
 msgid "Social"
 msgstr "Sociálny"
 
-msgid "Permanent URL"
-msgstr "Permanentná URL"
+#: ckanext/dataset/templates/snippets/social.html:35
+msgid "add to profile"
+msgstr "pridať do profilu"
+
+#: ckanext/dataset/templates/snippets/social.html:35
+msgid "Add to profile"
+msgstr "Pridať do profilu"
+
+#~ msgid "Author custom"
+#~ msgstr "Autor"
+
+#~ msgid "Maintainer custom"
+#~ msgstr "Správca"
 
