@@ -69,7 +69,7 @@ def resource_validator(key, data, errors, context):
 
 def owner_org_validator(key, data, errors, context):
     roles = tk.get_action('enum_roles')(data_dict={})
-    if roles.ROLE_DATA_CURATOR in tk.get_action('user_custom_roles')(context):
+    if roles.MOD_R_DATA in tk.get_action('user_custom_roles')(context):
         model = context['model']
         value = data.get(key)
         group = model.Group.get(value)
@@ -144,13 +144,14 @@ def validator_date(key, data, errors, context):
     missing = _is_missing(key, data)
     value = data[key]
     validity_value = _retrieve_key_value('validity', key, data)
+    status = _retrieve_key_value('status', key, data)
     if validity_value == validity_possible_values[2]:
         if missing:
             errors[key].append(_('Missing attribute {0}!').format(key[2]))
             data.pop(key, None)
             raise StopOnError
         else:
-            if (value != '' and _retrieve_key_value('status', key, data) =='private') or _retrieve_key_value('status', key, data) =='public':
+            if (value != '' and status =='private') or status =='public':
                 try:
                     valid_date = tk.get_validator('isodate')(value, context)
                     if not valid_date or not isinstance(valid_date, datetime.datetime):
@@ -160,25 +161,32 @@ def validator_date(key, data, errors, context):
     else:
         if not missing:
             data[key] = ''
+        if missing and status =='private':
+            data.pop(key, None)
+            raise StopOnError
 
 def validator_validity_descr(key, data, errors, context):
     global validity_possible_values
     missing = _is_missing(key, data)
     value = data[key]
     validity_value = _retrieve_key_value('validity', key, data)
+    status = _retrieve_key_value('status', key, data)
     if validity_value == validity_possible_values[1]:
         if missing:
             errors[key].append(_('Missing attribute {0}!').format(key[2]))
             data.pop(key, None)
             raise StopOnError
         else:
-            if (value != '' and _retrieve_key_value('status', key, data) =='private') or _retrieve_key_value('status', key, data) =='public':
+            if (value != '' and status =='private') or status =='public':
                 #TODO REGEX
                 if len(value)<1:
                     errors[key].append(_('Please provide an explanation of validity'))
     else:
         if not missing:
             data[key] = ''
+        if missing and status =='private':
+            data.pop(key, None)
+            raise StopOnError
             
 def validator_periodicity(key, data, errors, context):
     periodicity_possible_values = periodicities()
@@ -262,7 +270,7 @@ def validator_spatial(key, data, errors, context):
         data[key]='undefined'
     log.info('spatial value in validator: %s', value)
     log.info('value type: %s', type(value))
-    private = data[('private',)]
+    private = data.get(('private',), False)
     missing = _is_missing(key, data)
     if not missing:
         if not private and (not value or value=='undefined'):
@@ -273,7 +281,7 @@ def validator_spatial(key, data, errors, context):
         #    data[key] = '{ "type": "Polygon", "coordinates": []}'
     else:
         if not private:
-            errors[key].append(_('Missing attribute {0}!').format(key[2]))
+            errors[key].append(_('Missing attribute!'))
         data.pop(key, None)
         raise StopOnError
         
@@ -472,8 +480,10 @@ def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
     return users, tk.c.user
 def get_name(login):
-    name = model.Session.query(model.User).filter(model.User.name == login).first().fullname
-    return name
+    user_obj = model.Session.query(model.User).filter(model.User.name == login).first()
+    if user_obj:
+        return user_obj.fullname
+    return login
 
 
 

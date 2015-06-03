@@ -14,7 +14,8 @@ import ckan.lib.plugins as lib_plugins
 import sqlalchemy
 import ckan.model.misc as misc
 import logging
-
+from pylons import session
+import ckan.plugins.toolkit as toolkit
 log = logging.getLogger(__name__)
 
 _or_ = sqlalchemy.or_
@@ -25,6 +26,47 @@ NotFound = logic.NotFound
 ValidationError = logic.ValidationError
 _get_or_bust = logic.get_or_bust
 _ = toolkit._
+
+def audit_helper(context, input_data_dict, event):
+    try:
+        environ = toolkit.request.environ
+    except TypeError:
+        return  # no audit required for local actions
+    #may be called via paster command
+    environ = toolkit.request.environ
+    log.info('audit helper environ: %s', environ)
+    path = environ.get('PATH_INFO', '')
+    
+    #check whether action was called via API
+    if path.startswith('/api/'):
+        audit_dict = {}
+        api_key = environ.get('HTTP_AUTHORIZATION', '')
+        if api_key:
+            audit_dict['description'] = 'API KEY: ' + api_key
+        user = context.get('user')
+        log.info('user: %s', user)
+        if user:
+            convert_user_name_or_id_to_id = toolkit.get_converter('convert_user_name_or_id_to_id')
+            user_id = convert_user_name_or_id_to_id(user, context)
+            audit_dict['subject'] = user_id
+        else:
+            audit_dict['subject'] = 'Anonymous user'
+        actor_id = input_data_dict.get('actor_id', None)
+        if not actor_id:
+            actor_id = session.get('ckanext-cas-actorid', None)
+        if actor_id:
+            audit_dict['authorized_user'] = actor_id
+        else:
+            audit_dict['authorized_user'] = audit_dict['subject']
+        audit_dict['event_name'] = event
+        audit_dict['debug_level'] = 2
+        audit_dict['error_code'] = 0
+        if event.startswith('package'):
+            audit_dict['object_reference'] = 'PackageID://' + context['package'].id
+        else:
+            audit_dict['object_reference'] = 'ResourceID://' + context['resource'].id
+        log.info('dict for auditlog send: %s', audit_dict)
+        toolkit.get_action('auditlog_send')(data_dict=audit_dict)
 
 @ckan.logic.side_effect_free
 def package_show(context, data_dict):
@@ -134,8 +176,37 @@ def package_show(context, data_dict):
 
     for item in plugins.PluginImplementations(plugins.IPackageController):
         item.after_show(context, package_dict)
-
+    audit_helper(context, data_dict, 'package_show')
     return package_dict
+
+def resource_show(context, data_dict):
+    '''Return the metadata of a resource.
+
+    :param id: the id of the resource
+    :type id: string
+
+    :rtype: dictionary
+
+    '''
+    model = context['model']
+    id = _get_or_bust(data_dict, 'id')
+
+    resource = model.Resource.get(id)
+    context['resource'] = resource
+
+    if not resource:
+        raise NotFound
+
+    _check_access('resource_show', context, data_dict)
+    resource_dict = model_dictize.resource_dictize(resource, context)
+
+    _add_tracking_summary_to_resource_dict(resource_dict, model)
+
+    for item in plugins.PluginImplementations(plugins.IResourceController):
+        resource_dict = item.before_show(resource_dict)
+    
+    audit_helper(context, data_dict, 'resource_show')
+    return resource_dict
 
 def _add_tracking_summary_to_resource_dict(resource_dict, model):
     '''Add page-view tracking summary data to the given resource dict.
