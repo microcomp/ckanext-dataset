@@ -1,0 +1,26 @@
+{%ckan_extends%}
+
+{% block primary_content %}
+{{super()}}
+<script>
+function showURL() {
+    var person = prompt("{{_('Permanent URL:')}}", "{{request.host_url}}/dataset/{{c.pkg_dict.id}}");
+}
+</script>
+{%endblock%}
+
+
+{% block content_primary_nav %}
+  {{super()}}
+
+  <li ><a onclick="showURL()"> {{_('Permanent URL')}}</a></li>
+<noscript>
+{{_('Permanent URL')}}:<input type="text" name="permanentURL" value="{{request.host_url}}/dataset/{{c.pkg_dict.id}}" ></input>
+</noscript>
+{% if c.action == 'history' %}  <li class="active" > <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
+{%else%}
+<li> <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
+{%endif%}
+
+
+{% endblock %}
