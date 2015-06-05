@@ -15,6 +15,7 @@ import db
 import dataset_logic
 import ckan.logic
 
+
 _ = tk._
 missing = df.missing
 StopOnError = df.StopOnError
@@ -492,9 +493,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     plugins.implements(plugins.IDatasetForm, inherit=False)
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
     plugins.implements(plugins.IActions, inherit=False)
-    #plugins.implements(plugins.IResourceController, inherit=True)
-    #plugins.implements(plugins.IValidators, inherit=False)
-    #plugins.implements(plugins.IPackageController, inherit=True)
+    plugins.implements(plugins.IResourceController, inherit=True)
     
     num_times_new_template_called = 0
     num_times_read_template_called = 0
@@ -503,22 +502,25 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     num_times_history_template_called = 0
     num_times_package_form_called = 0
     num_times_check_data_dict_called = 0
-    num_times_setup_template_variables_called = 0  
-    
-    #def get_validators(self):
-    #    return {}
-    
-    #def before_show(self, resource_dict):
-    #    log.info("resource before show: %s", resource_dict)
-    #    if resource_dict.get('status','')=='private':
-    #        del(resource_dict)
+    num_times_setup_template_variables_called = 0
+
+    def before_show(self, resource_dict):
+        log.info("resource before show: %s", resource_dict)
+        try:
+            ckan.logic.check_access('resource_show', {},resource_dict)
+            return resource_dict
+        except tk.NotAuthorized, e:
+            resource_dict.clear()
+            return resource_dict
+
     def get_actions(self):
         return {'ckanext_dataset_create_tag_info' : insert_tag_info,
                 'ckanext_dataset_get_tag_info' : get_tag_info,
                 'ckanext_dataset_delete_tag_info' : delete_tag_info,
                 'package_show' : dataset_logic.package_show,
                 'resource_search' : dataset_logic.resource_search,
-                'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources}
+                'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources,
+                'is_resource_public' : dataset_logic.is_resource_dict_public}
     
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so

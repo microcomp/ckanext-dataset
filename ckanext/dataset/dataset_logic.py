@@ -27,6 +27,17 @@ ValidationError = logic.ValidationError
 _get_or_bust = logic.get_or_bust
 _ = toolkit._
 
+def is_resource_dict_public(context, resource_dict):
+    '''
+    when a resource doesnt include a status attr, default is private status.
+    only when status is set to true the resource is published
+    '''
+    status = resource_dict.get('status', '')
+    if status=='public':
+        return True
+    else:
+        return False
+
 def audit_helper(context, input_data_dict, event):
     try:
         environ = toolkit.request.environ
@@ -36,7 +47,7 @@ def audit_helper(context, input_data_dict, event):
     environ = toolkit.request.environ
     log.info('audit helper environ: %s', environ)
     path = environ.get('PATH_INFO', '')
-    
+
     #check whether action was called via API
     if path.startswith('/api/'):
         audit_dict = {}
@@ -86,7 +97,7 @@ def package_show(context, data_dict):
     name_or_id = data_dict.get("id") or _get_or_bust(data_dict, 'name_or_id')
 
     pkg = model.Package.get(name_or_id)
-
+    log.info('package show: %s', pkg)
     if pkg is None:
         raise NotFound
 
@@ -120,25 +131,11 @@ def package_show(context, data_dict):
             # truncate to 22 charactors to get good enough match
             if metadata_modified[:22] != search_metadata_modified[:22]:
                 package_dict = None
-
+    log.debug('debug start')
     if not package_dict:
         package_dict = model_dictize.package_dictize(pkg, context)
         package_dict_validated = False
-    
-    #filter valid resources
-    authorized_to_view_private_resources = False
-    try:
-        toolkit.check_access('package_update', context, data_dict)
-        authorized_to_view_private_resources = True
-    except toolkit.NotAuthorized, e:
-        authorized_to_view_private_resources = False
-    valid_resources = []
-    #for resource_dict in package_dict['resources']:
-    #    if not (resource_dict.get('status','') == 'private' and not authorized_to_view_private_resources):
-    #        valid_resources.append(resource_dict)
-    #    else:
-    #        log.info('Private resource %s has to stay hidden for user %s.', resource_dict['id'], context.get('user'))
-    #package_dict['resources'] = valid_resources
+    log.debug('debug end')
     # Add page-view tracking summary data to the package dict.
     # If the package_dict came from the Solr cache then it will already have a
     # potentially outdated tracking_summary, this will overwrite it with a
@@ -147,12 +144,8 @@ def package_show(context, data_dict):
         package_dict['id'])
     
     for resource_dict in package_dict['resources']:
-        if not (resource_dict.get('status','') == 'private' and not authorized_to_view_private_resources):
-            _add_tracking_summary_to_resource_dict(resource_dict, model)
-            valid_resources.append(resource_dict)
-        else:
-            log.info('Private resource %s has to stay hidden for user %s.', resource_dict['id'], context.get('user'))
-    package_dict['resources'] = valid_resources
+        _add_tracking_summary_to_resource_dict(resource_dict, model)
+
     if context.get('for_view'):
         for item in plugins.PluginImplementations(plugins.IPackageController):
             package_dict = item.before_view(package_dict)
@@ -160,9 +153,18 @@ def package_show(context, data_dict):
     for item in plugins.PluginImplementations(plugins.IPackageController):
         item.read(pkg)
 
+    valid_resources = []
     for resource_dict in package_dict['resources']:
         for item in plugins.PluginImplementations(plugins.IResourceController):
             resource_dict = item.before_show(resource_dict)
+            if item.name=='dataset':
+                log.info('after show resource: %s', resource_dict)
+                if resource_dict:
+                    log.info('adding resource: %s', resource_dict)
+                    valid_resources.append(resource_dict)
+                else:
+                    log.info('skipping resource')
+    package_dict['resources'] = valid_resources
 
     if not package_dict_validated:
         package_plugin = lib_plugins.lookup_package_plugin(package_dict['type'])
@@ -394,10 +396,10 @@ def resource_search(context, data_dict):
         log.info('resource result: %s', result)
         if isinstance(result, tuple) and isinstance(result[0], model.DomainObject):
             # This is the case for order_by rank due to the add_column.
-            if result[0].extras.get('status', '')!='private':
+            if toolkit.get_action('is_resource_public')(context, result[0].extras):
                 results.append(result[0])
         else:
-            if result.extras.get('status', '')!='private':
+            if toolkit.get_action('is_resource_public')(context, result.extras):
                 results.append(result)
 
     # If run in the context of a search query, then don't dictize the results.
@@ -462,7 +464,7 @@ def _package_list_with_resources(context, package_revision_list):
         log.info('package resources: %s', result_dict)
         valid_resources = []
         for resource in result_dict['resources']:
-            if resource.get('status','') != 'private':
+            if toolkit.get_action('is_resource_public')(context, resource):
                 valid_resources.append(resource)
         result_dict['resources'] = valid_resources    
         package_list.append(result_dict)
