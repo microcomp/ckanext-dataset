@@ -267,19 +267,11 @@ def validator_data_correctness_descr(key, data, errors, context):
 
 def validator_spatial(key, data, errors, context):
     value = data[key]
-    if value=='None':
-        data[key]='undefined'
-    log.info('spatial value in validator: %s', value)
-    log.info('value type: %s', type(value))
     private = data.get(('private',), False)
     missing = _is_missing(key, data)
     if not missing:
         if not private and (not value or value=='undefined'):
             errors[key].append(_('Please select an appropriate option!'))
-        #elif not value or value=='undefined':
-            #data.pop(key, None)
-            #raise StopOnError
-        #    data[key] = '{ "type": "Polygon", "coordinates": []}'
     else:
         if not private:
             errors[key].append(_('Missing attribute!'))
