@@ -307,7 +307,7 @@ def validator_status(value, context):
 
 def create_tag_info_table(context):
     if not db.tag_info_table.exists():
-        db.init_db(context['model'])
+        db.tag_info_table.create()
 
 @ckan.logic.side_effect_free
 def insert_tag_info(context, data_dict):
@@ -334,12 +334,6 @@ def get_tag_info(context, data_dict):
 
 @ckan.logic.side_effect_free
 def delete_tag_info(context, data_dict):
-    #model = context['model']
-    #res = db.TagInfo.get(**data_dict)
-    #if res:
-    #    for t in res:
-    #       t.delete()
-    #        model.repo.commit()
     tag_id = data_dict['tag_id']
     db.tag_info_table.delete(db.TagInfo.tag_id==tag_id).execute()
     
@@ -380,14 +374,16 @@ def create_geo_tags():
         data = {'name': 'geo_tags'}
         vocab = tk.get_action('vocabulary_create')(context, data)
         for tag in extract_data():
-            #logging.info("Adding tag {0} to vocab 'periodicities'".format(tag[0]))
             data = {'name': tag[0], 'vocabulary_id': vocab['id']}
-            new_tag = tk.get_action('tag_create')(context, data)
-            tag_id = new_tag.get('id')
-            data = {'key' : 'spatial', 'value' : tag[2], 'tag_id' : tag_id}
-            tk.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
-            data = {'key' : 'ref', 'value' : tag[1], 'tag_id' : tag_id}
-            tk.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
+            try:
+                new_tag = tk.get_action('tag_create')(context, data)
+                tag_id = new_tag.get('id')
+                data = {'key' : 'spatial', 'value' : tag[2], 'tag_id' : tag_id}
+                tk.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
+                data = {'key' : 'ref', 'value' : tag[1], 'tag_id' : tag_id}
+                tk.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
+            except tk.ValidationError:
+                log.info('tag already in vocab')
             
     
 def geo_tags():
