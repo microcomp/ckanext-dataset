@@ -61,17 +61,14 @@ msgid "Date format incorrect"
 msgstr "Nesprávny formát dátumu"
 
 #: ckanext/dataset/plugin.py:184
-#, fuzzy
 msgid "Please provide an explanation of validity"
 msgstr "Prosím zadajte vysvetlenie k atribútu valídnosť"
 
 #: ckanext/dataset/plugin.py:201
-#, fuzzy
 msgid "Please enter a valid value!"
 msgstr "Prosím zadajte valídnu hodnotu!"
 
 #: ckanext/dataset/plugin.py:204
-#, fuzzy
 msgid "Please select an option!"
 msgstr "Prosím vyberte možnosť!"
 
@@ -80,7 +77,6 @@ msgid "Please enter a periodicity description!"
 msgstr "Zadajte prosím pravideľnosť popisu"
 
 #: ckanext/dataset/plugin.py:238
-#, fuzzy
 msgid "Please enter a valid option!"
 msgstr "Prosím zadajte správnu možnosť!"
 
@@ -93,12 +89,10 @@ msgid "Please fill in this field!"
 msgstr "Prosím vyplnte toto pole!"
 
 #: ckanext/dataset/plugin.py:280
-#, fuzzy
 msgid "Please select an appropriate option!"
 msgstr "Prosím vyberte vhodnú možnosť!"
 
 #: ckanext/dataset/plugin.py:289
-#, fuzzy
 msgid "Missing attribute!"
 msgstr "Chýbajúci atribút!"
 
@@ -172,8 +166,6 @@ msgid "Permanent URL"
 msgstr "Permanentná URL"
 
 #: ckanext/dataset/templates/package/read_base.html:7
-#, fuzzy
-#| msgid "Permanent URL"
 msgid "Permanent URL:"
 msgstr "Permanentná URL:"
 
@@ -198,7 +190,6 @@ msgid "Private"
 msgstr "Súkromné"
 
 #: ckanext/dataset/templates/package/resource_read.html:21
-#, fuzzy
 msgid "Additional Information"
 msgstr "Dodatočné informácie"
 
@@ -306,8 +297,6 @@ msgid "Public"
 msgstr "Verejný"
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:121
-#, fuzzy
-#| msgid "Active to"
 msgid "Active"
 msgstr "Aktívny"
 
@@ -368,7 +357,6 @@ msgid "Valid to"
 msgstr "Platný do"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:46
-#, fuzzy
 msgid "Active from"
 msgstr "Aktívny od"
 
@@ -377,7 +365,6 @@ msgid "Active to"
 msgstr "Aktívny do"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:52
-#, fuzzy
 msgid "Periodicity"
 msgstr "Periodicita"
 

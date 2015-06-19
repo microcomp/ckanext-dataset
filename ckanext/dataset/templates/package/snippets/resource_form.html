@@ -38,10 +38,9 @@ $("#field-image-upload").change(function(){
 	</div>
 	<div class="control-group">
 	<div class="controls">
-	<label class="checkbox"><input id="field-active" type="checkbox" name="field-active" value="active">Active time not same as valid time</label>
+	<label class="checkbox"><input id="field-active" type="checkbox" name="field-active" value="active">{{ _('Active time not same as valid time') }}</label>
 	</div>
 	</div>
-	{#{{ form.checkbox('active', label=_('Active time different from valid time'), id='field-active', value='active', error=errors.active_from, classes=['control-medium']) }}#}
 	<div id="date_active">
 	{{ form.input('active_from', label=_('Active from'), id='field-active_from', placeholder=_('today'), type=date, value=data.active_from, error=errors.active_from, classes=['control-medium']) }}
 	{{ form.input('active_to', label=_('Active to'), id='field-active_to', placeholder=_('today'), type=date, value=data.active_to, error=errors.active_to, classes=['control-medium']) }}
