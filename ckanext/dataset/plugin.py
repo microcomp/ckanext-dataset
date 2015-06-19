@@ -315,6 +315,7 @@ def insert_tag_info(context, data_dict):
     This function inserts an extra value for given tag_id in the form key:value.
     data_dict must have keys tag_id, key, value.
     '''
+    create_tag_info_table(context)
     info = db.TagInfo()
     info.tag_id = data_dict.get('tag_id')
     info.key = data_dict.get('key')
