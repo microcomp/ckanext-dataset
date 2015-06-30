@@ -12,7 +12,7 @@ function showURL() {
 
 {% block content_primary_nav %}
   {{super()}}
-
+	
   <li ><a onclick="showURL()"> {{_('Permanent URL')}}</a></li>
 <noscript>
 {{_('Permanent URL')}}:<input type="text" name="permanentURL" value="{{request.host_url}}/dataset/{{c.pkg_dict.id}}" ></input>
@@ -21,6 +21,20 @@ function showURL() {
 {%else%}
 <li> <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
 {%endif%}
-
+{%if c.userobj.id %}
+		  {%set res = h.liked(c.userobj.id, c.pkg_dict.id) %}
+		  {% if res['is'] == False %}
+		<li ><a href='/dataset/like?dataset_id={{c.pkg_dict.id}}'><i class="fa fa-thumbs-o-up"></i> {{_('Like this')}}</a></li>
+		{%else%}
+			{% if res['type'] == 'like' %}
+				{% set type = 'dislike' %}
+			{%else%}
+				{% set type = 'like' %}		
+			{%endif%}
+			<li ><a href='/dataset/{{type}}?dataset_id={{c.pkg_dict.id}}'>
+				<i class="fa fa-thumbs-o-{% if type == 'like'%}up"></i> {{_('Like this')}}{%else%}down"></i> {{_('Dislike this')}}{%endif%}</a></li>
+			
+		{%endif%}
+		{%endif%}
 
 {% endblock %}
