@@ -21,7 +21,7 @@ missing = df.missing
 StopOnError = df.StopOnError
 data_path = "/data/"
 validity_possible_values = ['perm_valid', 'custom_valid', 'other']
-correctness_possible_values = ['correct and exact', 'incorrect or inexact', 'stated in data', 'Undefined']
+correctness_possible_values = ['correct and exact', 'incorrect or inexact', 'stated in data']
 
 
 log = logging.getLogger(__name__)
@@ -64,6 +64,7 @@ def resource_validator(key, data, errors, context):
     log.info('key: %s', key)
     log.info('status key: %s', status_key)
     log.info('status value: %s', status_value)
+    log.info('status value type: %s', type(status_value))
     if _is_missing(status_key, data) or not status_value in ['private', 'public']:
         data[status_key] = unicode('private')
         
@@ -137,7 +138,7 @@ def validator_validity(key, data, errors, context):
             raise StopOnError
         else:
         #if key is present, it has to have reasonable value
-            if not value in validity_possible_values:
+            if not value in validity_possible_values and value!='':
                 errors[key].append(_('Please select the type of validity!'))
 
 def validator_date(key, data, errors, context):
@@ -197,10 +198,10 @@ def validator_periodicity(key, data, errors, context):
     status = _retrieve_key_value('status', key, data)
     missing = _is_missing(key, data)
     if not missing:
-        if not value in periodicity_possible_values:
+        if not value in periodicity_possible_values and value!='':
             errors[key].append(_('Please enter a valid value!'))
         else:
-            if value=='undefined' and status =='public':
+            if value=='' and status =='public':
                 errors[key].append(_('Please select an option!'))
     else:
         if status=='public':
@@ -213,7 +214,7 @@ def validator_periodicity_descr(key, data, errors, context):
     status = _retrieve_key_value('status', key, data)
     value = data[key]
     missing = _is_missing(key, data)
-    if periodicity == 'iné':
+    if periodicity == 'other':
         if missing:
             errors[key].append(_('Missing attribute {0}!').format(key[2]))
             data.pop(key, None)
@@ -237,7 +238,7 @@ def validator_data_correctness(key, data, errors, context):
         if value != '' and not value in correctness_possible_values:
             errors[key].append(_('Please enter a valid option!'))
         #undefined or empty
-        if value == '' or (value == correctness_possible_values[3] and status=='public'):
+        if value == '' and status=='public':
             errors[key].append(_('Please select appropriate option!'))
     else:
         if status=='public':
@@ -403,8 +404,8 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    just_for_translation = (_('yearly'), _('semiyearly'), _('quaterly'), _('monthly'), _('weekly'), _('daily'), _('other'), _('undefined'))
-    p = ( u'yearly', u'semiyearly', u'quaterly', u'monthly', u'weekly', u'daily', u'other', u'undefined')
+    just_for_translation = (_('yearly'), _('semiyearly'), _('quaterly'), _('monthly'), _('weekly'), _('daily'), _('irregularly'), _('other'))
+    p = ( u'yearly', u'semiyearly', u'quaterly', u'monthly', u'weekly', u'daily', u'irregularly', u'other')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
@@ -553,7 +554,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'valid_to' : [validator_date, unicode],
                         'active_from' : [validator_date, unicode],
                         'active_to' : [validator_date, unicode],
-                        'custom_valid_text' : [validator_validity_descr, unicode],
+                        'validity_description' : [validator_validity_descr, unicode],
                         #'periodicity' : [validator_periodicity, tk.get_converter('convert_to_tags')('periodicities')],
                         'periodicity' : [validator_periodicity, unicode],
                         'periodicity_description' : [validator_periodicity_descr, unicode],
@@ -589,7 +590,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'valid_to' : [validator_date, unicode],
                         'active_from' : [validator_date, unicode],
                         'active_to' : [validator_date, unicode],
-                        'custom_valid_text' : [validator_validity_descr, unicode],
+                        'validity_description' : [validator_validity_descr, unicode],
                         #'periodicity' : [tk.get_converter('convert_from_tags')('periodicities'),validator_periodicity],
                         'periodicity' : [validator_periodicity, unicode],
                         'periodicity_description' : [validator_periodicity_descr, unicode],

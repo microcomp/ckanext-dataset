@@ -16,7 +16,7 @@
 	{% endif %}	
 	{{ super() }}
 {% endblock %}
-{% block resource_additional_information_inner %}
+{% block resource_additional_information %}
 <div class="module-content">
 <h2>{{ _('Additional Information') }}</h2>
 <table class="table table-striped table-bordered table-condensed" data-module="table-toggle-more">
@@ -43,7 +43,55 @@
 <th scope="row">{{ _('License') }}</th>
 <td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
 </tr>
-{% for key, value in h.format_resource_items(res.items()) %}
+<tr>
+{% set metadata = h.format_resource_items(res.items()) %}
+<th scope="row">{{ _('Status')}}</th>
+<td>{% if res.status=='public' %} {{_('Public')}} {% else %} {{_('Private')}} {% endif %} </td>
+</tr>
+{% if res.validity %}
+<tr>
+<th scope="row">{{ _('Validity')}}</th>
+<td>
+{% if res.validity=='perm_valid' %}{{_('Valid permanently')}}{% endif %}
+{% if res.validity=='custom_valid' %}{{res.validity_description}}{% endif %}
+{% if res.validity=='other' %}{{ h.render_datetime(res.valid_from) }} - {{ h.render_datetime(res.valid_to) }}{% endif %}
+</td>
+</tr>
+{% endif %}
+{% if res.validity=='other' %}
+<tr>
+<th scope="row">{{ _('Activity')}}</th>
+<td>
+{{ h.render_datetime(res.active_from) }} - {{ h.render_datetime(res.active_to) }}
+</td>
+</tr>
+{% endif %}
+{% if res.periodicity %}
+<tr>
+<th scope="row">{{ _('Periodicity')}}</th>
+<td>
+{% if res.periodicity=='other' %}
+	{{ res.periodicity_description}}
+{% else%}
+	{{ _(res.periodicity) }}
+{% endif %}
+</td>
+</tr>
+{% endif %}
+{% if res.data_correctness %}
+<tr>
+<th scope="row">{{ _('Data correctness')}}</th>
+<td>
+{% if res.data_correctness=='stated in data' %}
+	{{ res.data_correctness_description}}
+{% else%}
+	{{ _(res.data_correctness) }}
+{% endif %}
+</td>
+</tr>
+{% endif %}
+
+{% for key, value in  metadata %}
 <tr class="toggle-more"><th scope="row">{{ _(key) }}</th><td>{{ _(value) }}</td></tr>
 {% endfor %}
 </tbody>

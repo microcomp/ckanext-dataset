@@ -23,13 +23,13 @@ $("#field-image-upload").change(function(){
 <div class="control-group">
 	<label class="control-label">{{ _("Validity") }}</label>
 	<div class="controls">
-		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') or not data.get('validity', '') %} checked="checked" {% endif %}>{{_('Valid permanently')}}</label>
+		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Valid permanently')}}</label>
 		  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid" {% if 'custom_valid' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Validness in data')}}</label>
 		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Other')}}</label>
 	</div>
 </div>
 <div id="valid_text_input">
-		{{ form.input('custom_valid_text', label=_('Description of data column'), id='field-custom_valid_text', placeholder=_('description'), value=data.custom_valid_text, error=errors.custom_valid_text, classes=['control-medium']) }}
+		{{ form.input('validity_description', label=_('Description of data column'), id='field-validity_description', placeholder=_('description'), value=data.validity_description, error=errors.validity_description, classes=['control-medium']) }}
 </div>
 <div id="dates">
 	<div id="date_valid">
@@ -51,6 +51,7 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
 <div class="controls">
 <select id="field-periodicity" name="periodicity" data-module="autocomplete">
+<option value="" selected="selected">{{ _("Undefined") }}</option>
 {% set data_per = data.get('periodicity', []) %}
 {% for periodicity in h.periodicities() %}
 <option value="{{ periodicity }}" {% if periodicity in data_per or (periodicity == 'undefined' and not data_per) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
@@ -66,7 +67,7 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-data_correctness">{{ _("Data correctness") }}</label>
 <div class="controls">
 <select id="field-data_correctness" name="data_correctness" data-module="autocomplete">
-<option value="Undefined" selected="selected">{{ _("Undefined") }}</option>
+<option value="" selected="selected">{{ _("Undefined") }}</option>
 <option value="correct and exact" {% if "correct and exact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('correct and exact') }}</option>
 <option value="incorrect or inexact" {% if "incorrect or inexact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('incorrect or inexact') }}</option>
 <option value="stated in data" {% if "stated in data" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('stated in data') }}</option>
@@ -82,7 +83,7 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-status">{{ _("Status") }}</label>
 <div class="controls">
 <select id="field-status" name="status" data-module="autocomplete">
-<option value="private" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Private') }}</option>
+<option value="" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Private') }}</option>
 <option value="public" {% if "public" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Public') }}</option>
 </select>
 </div>
@@ -96,24 +97,35 @@ $("#field-image-upload").change(function(){
 //copy dates
 $(document).ready(function () {
 	var $active_from = $("#field-active_from");
+	var $switch = $("input[id='field-active']")
 	$("#field-valid_from").keyup(function() {
-	    $active_from.val( this.value );
+		if (!($switch.prop('checked'))) {
+			$active_from.val( this.value );	
+		}
 	});	
 	$("#field-valid_from").blur(function() {
-	    $active_from.val( this.value );
+		if (!($switch.prop('checked'))) {
+	    	$active_from.val( this.value );
+		}
 	});
 	
 	var $active_to = $("#field-active_to");
 	$("#field-valid_to").keyup(function() {
-	    $active_to.val( this.value );
+		if (!($switch.prop('checked'))) {
+			$active_to.val( this.value );
+		}
 	});	
 	$("#field-valid_to").blur(function() {
-	    $active_to.val( this.value );
+		if (!($switch.prop('checked'))) {
+			$active_to.val( this.value );
+		}
 	});
 });
 
 //onload hide/show
 $(document).ready(function() {
+	$("#dates").hide();
+	$("#valid_text_input").hide();
 	if ($("input[type=radio][value='other']")[0].checked) {
 		$("#dates").show();
 		$("#valid_text_input").hide();
@@ -131,7 +143,7 @@ $(document).ready(function() {
 	} else {
 		$("#date_active").hide();
 	}
-	if ($("#field-periodicity").val()=="nepravidelne") {
+	if ($("#field-periodicity").val()=="other") {
 		$("#periodicity_text").show();
 	} else {
 		$("#periodicity_text").hide();
@@ -141,12 +153,21 @@ $(document).ready(function() {
 	} else {
 		$("#correctness_text").hide();
 	}
+	var $valid_from = $("#field-valid_from");
+	var $valid_to = $("#field-valid_to");
+	var $active_from = $("#field-active_from");
+	var $active_to = $("#field-active_to");
+	if ($active_to.val()!=$valid_to.val()  || $active_from.val()!=$valid_from.val()) {
+		$("#date_active").show();
+		$("input[id='field-active']").prop("checked", true);
+	}
+	
 	
 	});
 
 $(document).ready(function(){
 	$("#field-periodicity").change(function() {
-	if ($(this).val()=="nepravidelne") {
+	if ($(this).val()=="other") {
 	         $("#periodicity_text").show();
 	} else {
 			$("#periodicity_text").hide();
