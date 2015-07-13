@@ -480,7 +480,7 @@ def query_changes(context, data_dict):
 
     :param id: resource id
     :type id: string
-    :param changed_since: timestamp, all changes after this date will be listed in results
+    :param changed_since: timestamp, all changes after this date will be listed in results, if not stated, all rows are listed (optional)
     :type changed_since: string or unicode
     :param alias_modified_timestamp: name of column where the timestamp of last modification is defined (default value is 'modified_timestamp') (optional)
     :type alias_modified_timestamp: string
@@ -498,14 +498,21 @@ def query_changes(context, data_dict):
     :type records: list of dictionaries
     '''
     resource_id = _get_or_bust(data_dict, 'id')
-    changed_since = _get_or_bust(data_dict, 'changed_since')
+    changed_since = data_dict.get('changed_since', None)
     alias_modified_timestamp = data_dict.get('alias_modified_timestamp', 'modified_timestamp')
     alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', 'deleted_timestamp')
-    sql_query = '''SELECT * FROM "{resource_id}" 
-                   WHERE {alias_modified_timestamp}>='{changed_since}' OR {alias_deleted_timestamp}>='{changed_since}';'''
-    sql_query = sql_query.format(resource_id=resource_id, changed_since=changed_since,
-                                 alias_modified_timestamp = alias_modified_timestamp,
-                                 alias_deleted_timestamp = alias_deleted_timestamp)
+    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY {alias_modified_timestamp} ASC;'''
+    sql_query_extended = '''SELECT * FROM "{resource_id}"
+                   WHERE {alias_modified_timestamp}>='{changed_since}' OR {alias_deleted_timestamp}>='{changed_since}'
+                   ORDER BY {alias_modified_timestamp} ASC;'''
+    if changed_since:
+        sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
+                                              alias_modified_timestamp = alias_modified_timestamp,
+                                              alias_deleted_timestamp = alias_deleted_timestamp)
+    else:
+        sql_query = sql_query_base.format(resource_id=resource_id,
+                                          alias_modified_timestamp = alias_modified_timestamp
+                                          )
+
     datastore_sql_search = toolkit.get_action('datastore_search_sql')
-    result = datastore_sql_search(data_dict={'sql' : sql_query})
-    return result
+    return datastore_sql_search(data_dict={'sql' : sql_query})
