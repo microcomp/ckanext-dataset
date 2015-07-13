@@ -16,6 +16,7 @@ import ckan.model.misc as misc
 import logging
 from pylons import session
 import ckan.plugins.toolkit as toolkit
+from _ast import alias
 log = logging.getLogger(__name__)
 
 _or_ = sqlalchemy.or_
@@ -470,3 +471,41 @@ def _package_list_with_resources(context, package_revision_list):
         package_list.append(result_dict)
     return package_list
 
+@ckan.logic.side_effect_free
+def query_changes(context, data_dict):
+    '''Query changes of given resource ID since given timestamp in the DataStore.
+
+    .. note:: This action is only available when using PostgreSQL 9.X and using a read-only user on the database.
+        It is not available in :ref:`legacy mode<legacy-mode>`.
+
+    :param id: resource id
+    :type id: string
+    :param changed_since: timestamp, all changes after this date will be listed in results
+    :type changed_since: string or unicode
+    :param alias_modified_timestamp: name of column where the timestamp of last modification is defined (default value is 'modified_timestamp') (optional)
+    :type alias_modified_timestamp: string
+    :param alias_deleted_timestamp: name of column where the timestamp of deletion is defined (default value is 'deleted_timestamp') (optional)
+    :type alias_deleted_timestamp: string
+
+    **Results:**
+
+    The result of this action is a dictionary with the following keys:
+
+    :rtype: A dictionary with the following keys
+    :param fields: fields/columns and their extra metadata
+    :type fields: list of dictionaries
+    :param records: list of matching results
+    :type records: list of dictionaries
+    '''
+    resource_id = _get_or_bust(data_dict, 'id')
+    changed_since = _get_or_bust(data_dict, 'changed_since')
+    alias_modified_timestamp = data_dict.get('alias_modified_timestamp', 'modified_timestamp')
+    alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', 'deleted_timestamp')
+    sql_query = '''SELECT * FROM "{resource_id}" 
+                   WHERE {alias_modified_timestamp}>='{changed_since}' OR {alias_deleted_timestamp}>='{changed_since}';'''
+    sql_query = sql_query.format(resource_id=resource_id, changed_since=changed_since,
+                                 alias_modified_timestamp = alias_modified_timestamp,
+                                 alias_deleted_timestamp = alias_deleted_timestamp)
+    datastore_sql_search = toolkit.get_action('datastore_search_sql')
+    result = datastore_sql_search(data_dict={'sql' : sql_query})
+    return result

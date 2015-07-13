@@ -510,7 +510,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 'package_show' : dataset_logic.package_show,
                 'resource_search' : dataset_logic.resource_search,
                 'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources,
-                'is_resource_public' : dataset_logic.is_resource_dict_public}
+                'is_resource_public' : dataset_logic.is_resource_dict_public,
+                'query_changes' : dataset_logic.query_changes}
     
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
