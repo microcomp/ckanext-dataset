@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-06-12 17:36+0200\n"
+"POT-Creation-Date: 2015-07-14 08:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,124 +18,124 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ckanext/dataset/dataset_logic.py:305
+#: ckanext/dataset/dataset_logic.py:306
 msgid "Missing value"
 msgstr ""
 
-#: ckanext/dataset/dataset_logic.py:309
+#: ckanext/dataset/dataset_logic.py:310
 msgid "Do not specify if using \"query\" parameter"
 msgstr ""
 
-#: ckanext/dataset/dataset_logic.py:318
+#: ckanext/dataset/dataset_logic.py:319
 msgid "Must be <field>:<value> pair(s)"
 msgstr ""
 
-#: ckanext/dataset/dataset_logic.py:349
+#: ckanext/dataset/dataset_logic.py:350
 msgid "Field \"{field}\" not recognised in resource_search."
 msgstr ""
 
-#: ckanext/dataset/plugin.py:78
+#: ckanext/dataset/plugin.py:79
 msgid "Organization does not exist"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:103 ckanext/dataset/plugin.py:122
+#: ckanext/dataset/plugin.py:104 ckanext/dataset/plugin.py:123
 msgid "Please insert a description. The mimimal length is {0} characters"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:112 ckanext/dataset/plugin.py:132
-#: ckanext/dataset/plugin.py:141
+#: ckanext/dataset/plugin.py:113 ckanext/dataset/plugin.py:133
+#: ckanext/dataset/plugin.py:142
 msgid "Please select the type of validity!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:130 ckanext/dataset/plugin.py:151
-#: ckanext/dataset/plugin.py:177 ckanext/dataset/plugin.py:207
-#: ckanext/dataset/plugin.py:218 ckanext/dataset/plugin.py:244
-#: ckanext/dataset/plugin.py:256
+#: ckanext/dataset/plugin.py:131 ckanext/dataset/plugin.py:152
+#: ckanext/dataset/plugin.py:178 ckanext/dataset/plugin.py:208
+#: ckanext/dataset/plugin.py:219 ckanext/dataset/plugin.py:245
+#: ckanext/dataset/plugin.py:257
 msgid "Missing attribute {0}!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:159 ckanext/dataset/plugin.py:161
+#: ckanext/dataset/plugin.py:160 ckanext/dataset/plugin.py:162
 msgid "Date format incorrect"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:184
+#: ckanext/dataset/plugin.py:185
 msgid "Please provide an explanation of validity"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:201
+#: ckanext/dataset/plugin.py:202
 msgid "Please enter a valid value!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:204
+#: ckanext/dataset/plugin.py:205
 msgid "Please select an option!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:222
+#: ckanext/dataset/plugin.py:223
 msgid "Please enter a periodicity description!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:238
+#: ckanext/dataset/plugin.py:239
 msgid "Please enter a valid option!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:241
+#: ckanext/dataset/plugin.py:242
 msgid "Please select appropriate option!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:260
+#: ckanext/dataset/plugin.py:261
 msgid "Please fill in this field!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:280
+#: ckanext/dataset/plugin.py:275
 msgid "Please select an appropriate option!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:289
+#: ckanext/dataset/plugin.py:278
 msgid "Missing attribute!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:308
+#: ckanext/dataset/plugin.py:297
 msgid "Please provide a valid URL"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:312
+#: ckanext/dataset/plugin.py:301
 msgid "Please select a location"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:318
+#: ckanext/dataset/plugin.py:307
 msgid "The possible values for status are \"private\" or \"public\""
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "yearly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "semiyearly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "quaterly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "monthly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "weekly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
+#: ckanext/dataset/plugin.py:407
 msgid "daily"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
-msgid "other"
+#: ckanext/dataset/plugin.py:407
+msgid "irregularly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:421
-msgid "undefined"
+#: ckanext/dataset/plugin.py:407
+msgid "other"
 msgstr ""
 
 #: ckanext/dataset/templates/header.html:8
@@ -147,24 +147,27 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
-#: ckanext/dataset/templates/package/activity.html:6
-#: ckanext/dataset/templates/package/history.html:6
-#: ckanext/dataset/templates/package/read.html:6
-#: ckanext/dataset/templates/package/read_base.html:20
-#: ckanext/dataset/templates/package/read_base.html:22
-msgid "History"
+#: ckanext/dataset/templates/package/read_base.html:7
+msgid "Permanent URL:"
 msgstr ""
 
-#: ckanext/dataset/templates/package/activity.html:7
-#: ckanext/dataset/templates/package/history.html:7
-#: ckanext/dataset/templates/package/read.html:7
 #: ckanext/dataset/templates/package/read_base.html:16
 #: ckanext/dataset/templates/package/read_base.html:18
 msgid "Permanent URL"
 msgstr ""
 
-#: ckanext/dataset/templates/package/read_base.html:7
-msgid "Permanent URL:"
+#: ckanext/dataset/templates/package/read_base.html:20
+#: ckanext/dataset/templates/package/read_base.html:22
+msgid "History"
+msgstr ""
+
+#: ckanext/dataset/templates/package/read_base.html:27
+#: ckanext/dataset/templates/package/read_base.html:35
+msgid "Like this"
+msgstr ""
+
+#: ckanext/dataset/templates/package/read_base.html:35
+msgid "Dislike this"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:5
@@ -179,7 +182,8 @@ msgid ""
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:14
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:102
+#: ckanext/dataset/templates/package/resource_read.html:49
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
 #: ckanext/dataset/templates/package/snippets/resource_form.html:86
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
@@ -223,6 +227,41 @@ msgstr ""
 msgid "License"
 msgstr ""
 
+#: ckanext/dataset/templates/package/resource_read.html:48
+#: ckanext/dataset/templates/package/snippets/resource_form.html:83
+msgid "Status"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:49
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
+#: ckanext/dataset/templates/package/snippets/resource_form.html:87
+msgid "Public"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:53
+#: ckanext/dataset/templates/package/snippets/resource_form.html:24
+msgid "Validity"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:55
+#: ckanext/dataset/templates/package/snippets/resource_form.html:26
+msgid "Valid permanently"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:63
+msgid "Activity"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:71
+#: ckanext/dataset/templates/package/snippets/resource_form.html:51
+msgid "Periodicity"
+msgstr ""
+
+#: ckanext/dataset/templates/package/resource_read.html:83
+#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+msgid "Data correctness"
+msgstr ""
+
 #: ckanext/dataset/templates/package/snippets/additional_info.html:4
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:2
 msgid "Additional Info"
@@ -262,11 +301,12 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:59
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:118
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:119
 msgid "State"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:10
+#: ckanext/dataset/templates/package/snippets/resource_form.html:54
 #: ckanext/dataset/templates/package/snippets/resource_form.html:70
 msgid "Undefined"
 msgstr ""
@@ -275,28 +315,23 @@ msgstr ""
 msgid "Enter custom GeoJSON"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:80
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:81
 msgid "Organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:84
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
 msgid "No organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:99
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:100
 msgid "Visibility"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:102
-#: ckanext/dataset/templates/package/snippets/resource_form.html:87
-msgid "Public"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:121
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:122
 msgid "Active"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:122
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:123
 msgid "Deleted"
 msgstr ""
 
@@ -310,14 +345,6 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:22
 msgid "url"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:24
-msgid "Validity"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:26
-msgid "Valid permanently"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:27
@@ -343,8 +370,8 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:36
 #: ckanext/dataset/templates/package/snippets/resource_form.html:37
+#: ckanext/dataset/templates/package/snippets/resource_form.html:45
 #: ckanext/dataset/templates/package/snippets/resource_form.html:46
-#: ckanext/dataset/templates/package/snippets/resource_form.html:47
 msgid "today"
 msgstr ""
 
@@ -352,24 +379,20 @@ msgstr ""
 msgid "Valid to"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:46
+#: ckanext/dataset/templates/package/snippets/resource_form.html:41
+msgid "Active time not same as valid time"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:45
 msgid "Active from"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:47
+#: ckanext/dataset/templates/package/snippets/resource_form.html:46
 msgid "Active to"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:52
-msgid "Periodicity"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:63
 msgid "Periodicity description"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:67
-msgid "Data correctness"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:71
@@ -386,9 +409,5 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:79
 msgid "Description"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:83
-msgid "Status"
 msgstr ""
 
