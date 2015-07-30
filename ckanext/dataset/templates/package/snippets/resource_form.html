@@ -21,15 +21,19 @@ $("#field-image-upload").change(function(){
 
 {{ form.input('schema', label=_('Schema'), id='field-schema', placeholder=_('url'), value=data.schema, error=errors.schema, classes=['control-medium']) }}
 <div class="control-group">
-	<label class="control-label">{{ _("Validity") }}</label>
+	<label class="control-label"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Validity") }}</label>
 	<div class="controls">
+		  <span class="info-block info-inline">
+			<i class="icon-info-sign"></i>
+			<a href="#" target="_blank">{{_('Instructions')}}</a>
+		  </span>
 		  <label class="radio"><input id="field-perm_valid" type="radio" name="validity" value="perm_valid" {% if 'perm_valid' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Valid permanently')}}</label>
 		  <label class="radio"><input id="field-custom_valid" type="radio" name="validity" value="custom_valid" {% if 'custom_valid' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Validness in data')}}</label>
-		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Other')}}</label>
+		  <label class="radio"><input id="other" type="radio" name="validity" value="other" {% if 'other' == data.get('validity', '') %} checked="checked" {% endif %}>{{_('Define validity')}}</label>
 	</div>
 </div>
 <div id="valid_text_input">
-		{{ form.input('validity_description', label=_('Description of data column'), id='field-validity_description', placeholder=_('description'), value=data.validity_description, error=errors.validity_description, classes=['control-medium']) }}
+	{{ form.input('validity_description', label=_('Description of data column'), id='field-validity_description', placeholder=_('description'), value=data.validity_description, error=errors.validity_description, classes=['control-medium']) }}
 </div>
 <div id="dates">
 	<div id="date_valid">
@@ -38,17 +42,18 @@ $("#field-image-upload").change(function(){
 	</div>
 	<div class="control-group">
 	<div class="controls">
-	<label class="checkbox"><input id="field-active" type="checkbox" name="field-active" value="active">{{ _('Active time not same as valid time') }}</label>
+	<label class="checkbox"><input id="field-active" type="checkbox" name="field-active" value="active">{{ _('Effective time not same as valid time') }}</label>
 	</div>
 	</div>
 	<div id="date_active">
-	{{ form.input('active_from', label=_('Active from'), id='field-active_from', placeholder=_('today'), type=date, value=data.active_from, error=errors.active_from, classes=['control-medium']) }}
-	{{ form.input('active_to', label=_('Active to'), id='field-active_to', placeholder=_('today'), type=date, value=data.active_to, error=errors.active_to, classes=['control-medium']) }}
+	{{ form.input('active_from', label=_('Effective from'), id='field-active_from', placeholder=_('today'), type=date, value=data.active_from, error=errors.active_from, classes=['control-medium']) }}
+	{{ form.input('active_to', label=_('Effective to'), id='field-active_to', placeholder=_('today'), type=date, value=data.active_to, error=errors.active_to, classes=['control-medium']) }}
 	</div>
 </div>
 
 <div class="control-group">
-<label class="control-label" for="field-periodicity">{{ _("Periodicity") }}</label>
+{% set error = errors.periodicity %}
+<label class="control-label" for="field-periodicity"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Periodicity of actualization") }}</label>
 <div class="controls">
 <select id="field-periodicity" name="periodicity" data-module="autocomplete">
 <option value="" selected="selected">{{ _("Undefined") }}</option>
@@ -57,6 +62,11 @@ $("#field-image-upload").change(function(){
 <option value="{{ periodicity }}" {% if periodicity in data_per or (periodicity == 'undefined' and not data_per) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
 {% endfor %}
 </select>
+<span class="info-block info-inline">
+	<i class="icon-info-sign"></i>
+	<a href="#" target="_blank">{{_('Instructions')}}</a>
+</span>
+{% if error %}<span class="error-block">{{ error[0] }}</span>{% endif %}
 </div>
 </div>
 <div id="periodicity_text">
@@ -64,7 +74,8 @@ $("#field-image-upload").change(function(){
 </div>
 
 <div class="control-group">
-<label class="control-label" for="field-data_correctness">{{ _("Data correctness") }}</label>
+{% set error = errors.data_correctness %}
+<label class="control-label" for="field-data_correctness"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Data correctness") }}</label>
 <div class="controls">
 <select id="field-data_correctness" name="data_correctness" data-module="autocomplete">
 <option value="" selected="selected">{{ _("Undefined") }}</option>
@@ -72,6 +83,11 @@ $("#field-image-upload").change(function(){
 <option value="incorrect or inexact" {% if "incorrect or inexact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('incorrect or inexact') }}</option>
 <option value="stated in data" {% if "stated in data" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('stated in data') }}</option>
 </select>
+<span class="info-block info-inline">
+	<i class="icon-info-sign"></i>
+	<a href="#" target="_blank">{{_('Instructions')}}</a>
+</span>
+{% if error %}<span class="error-block">{{ error[0] }}</span>{% endif %}
 </div>
 </div>
 
@@ -80,12 +96,16 @@ $("#field-image-upload").change(function(){
 </div>
 
 <div class="control-group">
-<label class="control-label" for="field-status">{{ _("Status") }}</label>
+<label class="control-label" for="field-status"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Status") }}</label>
 <div class="controls">
 <select id="field-status" name="status" data-module="autocomplete">
 <option value="" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Private') }}</option>
 <option value="public" {% if "public" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Public') }}</option>
 </select>
+<span class="info-block info-inline">
+	<i class="icon-info-sign"></i>
+	<a href="#" target="_blank">{{_('Instructions')}}</a>
+</span>
 </div>
 </div>
 
@@ -290,4 +310,9 @@ $('#reset').click(function(){
 });
 </script>
 
+{% endblock %}
+
+{% block delete_button %}
+{{ super() }}
+{{ form.required_message() }}
 {% endblock %}

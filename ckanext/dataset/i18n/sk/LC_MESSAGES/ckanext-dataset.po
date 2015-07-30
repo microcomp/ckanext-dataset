@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-14 08:53+0200\n"
+"POT-Creation-Date: 2015-07-15 16:36+0200\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -187,8 +187,8 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:14
 #: ckanext/dataset/templates/package/resource_read.html:49
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
-#: ckanext/dataset/templates/package/snippets/resource_form.html:86
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/resource_form.html:102
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr "Súkromné"
@@ -228,17 +228,18 @@ msgid "Format"
 msgstr "Formát"
 
 #: ckanext/dataset/templates/package/resource_read.html:43
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:68
 msgid "License"
 msgstr "Licencia"
 
 #: ckanext/dataset/templates/package/resource_read.html:48
-#: ckanext/dataset/templates/package/snippets/resource_form.html:83
+#: ckanext/dataset/templates/package/snippets/resource_form.html:99
 msgid "Status"
 msgstr "Status"
 
 #: ckanext/dataset/templates/package/resource_read.html:49
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
-#: ckanext/dataset/templates/package/snippets/resource_form.html:87
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "Public"
 msgstr "Verejný"
 
@@ -248,21 +249,21 @@ msgid "Validity"
 msgstr "Platnosť dát"
 
 #: ckanext/dataset/templates/package/resource_read.html:55
-#: ckanext/dataset/templates/package/snippets/resource_form.html:26
+#: ckanext/dataset/templates/package/snippets/resource_form.html:30
 msgid "Valid permanently"
 msgstr "Permanentne platné"
 
 #: ckanext/dataset/templates/package/resource_read.html:63
-msgid "Activity"
+msgid "Efficiency"
 msgstr "Účinnosť"
 
 #: ckanext/dataset/templates/package/resource_read.html:71
-#: ckanext/dataset/templates/package/snippets/resource_form.html:51
-msgid "Periodicity"
-msgstr "Periodicita"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:56
+msgid "Periodicity of actualization"
+msgstr "Periodicita aktualizácie"
 
 #: ckanext/dataset/templates/package/resource_read.html:83
-#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+#: ckanext/dataset/templates/package/snippets/resource_form.html:78
 msgid "Data correctness"
 msgstr "Správnosť dát"
 
@@ -299,43 +300,72 @@ msgstr "Verzia"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:52
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:5
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr "Lokalita"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:59
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:119
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
 msgid "State"
 msgstr "Stav"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:10
-#: ckanext/dataset/templates/package/snippets/resource_form.html:54
-#: ckanext/dataset/templates/package/snippets/resource_form.html:70
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
+#: ckanext/dataset/templates/package/snippets/resource_form.html:24
+#: ckanext/dataset/templates/package/snippets/resource_form.html:56
+#: ckanext/dataset/templates/package/snippets/resource_form.html:78
+#: ckanext/dataset/templates/package/snippets/resource_form.html:99
+msgid "This field is required"
+msgstr "Povinné pole"
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
+#: ckanext/dataset/templates/package/snippets/resource_form.html:59
+#: ckanext/dataset/templates/package/snippets/resource_form.html:81
 msgid "Undefined"
 msgstr "Nedefinované"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:12
 msgid "Enter custom GeoJSON"
 msgstr "Zadajte špeciálnyGeoJSON"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:81
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:19
+#: ckanext/dataset/templates/package/snippets/resource_form.html:28
+#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+#: ckanext/dataset/templates/package/snippets/resource_form.html:88
+#: ckanext/dataset/templates/package/snippets/resource_form.html:107
+msgid "Instructions"
+msgstr "Inštrukcie"
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:72
+msgid "recommended"
+msgstr "odporúčaná"
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:78
+msgid ""
+"\n"
+"        License definitions and additional information can be found\n"
+"        at <a "
+"href=\"http://opendefinition.org/licenses/\">opendefinition.org</a>\n"
+"      "
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:108
 msgid "Organization"
 msgstr "Organizácia"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:112
 msgid "No organization"
 msgstr "Žiadna organizácia"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:100
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:127
 msgid "Visibility"
 msgstr "Viditeľnosť"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:122
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:149
 msgid "Active"
 msgstr "Aktívny"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:123
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:150
 msgid "Deleted"
 msgstr "Vymazaný"
 
@@ -351,70 +381,67 @@ msgstr "Schéma"
 msgid "url"
 msgstr "url"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:27
+#: ckanext/dataset/templates/package/snippets/resource_form.html:31
 msgid "Validness in data"
 msgstr "Platnosť uvedená v dátach"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:28
-msgid "Other"
-msgstr "iné"
-
 #: ckanext/dataset/templates/package/snippets/resource_form.html:32
+msgid "Define validity"
+msgstr "Definovať platnosť"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
 msgid "Description of data column"
 msgstr "Popis dátovej kolónky"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:32
-#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
+#: ckanext/dataset/templates/package/snippets/resource_form.html:95
 msgid "description"
 msgstr "Popis"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:36
+#: ckanext/dataset/templates/package/snippets/resource_form.html:40
 msgid "Valid from"
 msgstr "Platný od"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:36
-#: ckanext/dataset/templates/package/snippets/resource_form.html:37
-#: ckanext/dataset/templates/package/snippets/resource_form.html:45
-#: ckanext/dataset/templates/package/snippets/resource_form.html:46
+#: ckanext/dataset/templates/package/snippets/resource_form.html:40
+#: ckanext/dataset/templates/package/snippets/resource_form.html:41
+#: ckanext/dataset/templates/package/snippets/resource_form.html:49
+#: ckanext/dataset/templates/package/snippets/resource_form.html:50
 msgid "today"
 msgstr "dnes"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:37
+#: ckanext/dataset/templates/package/snippets/resource_form.html:41
 msgid "Valid to"
 msgstr "Platný do"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:41
-msgid "Active time not same as valid time"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:45
+msgid "Effective time not same as valid time"
 msgstr "Účinnosť nie je rovnaká ako platnosť"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:45
-msgid "Active from"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:49
+msgid "Effective from"
 msgstr "Účinný od"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:46
-msgid "Active to"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:50
+msgid "Effective to"
 msgstr "Účinný do"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:63
+#: ckanext/dataset/templates/package/snippets/resource_form.html:73
 msgid "Periodicity description"
 msgstr "Popis perioditici"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:71
+#: ckanext/dataset/templates/package/snippets/resource_form.html:82
 msgid "correct and exact"
 msgstr "správne a presné"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:72
+#: ckanext/dataset/templates/package/snippets/resource_form.html:83
 msgid "incorrect or inexact"
 msgstr "nesprávne alebo nepresné"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:73
+#: ckanext/dataset/templates/package/snippets/resource_form.html:84
 msgid "stated in data"
 msgstr "uvedené v dátach"
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+#: ckanext/dataset/templates/package/snippets/resource_form.html:95
 msgid "Description"
 msgstr "Popis"
-
-#~ msgid "undefined"
-#~ msgstr "Nedefinované"
 

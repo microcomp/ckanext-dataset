@@ -6,5 +6,11 @@
 	{{ _('Private') }}
 	</span>
 {% endif%}
+{% if h.package_is_locked(pkg.id) %}
+	<span class="dataset-private label label-inverse pull-left">
+	<i class="icon-lock"></i>
+	{{ _('Locked') }}
+	</span>
+{% endif%}
 {{ super() }}
 {% endblock %}

@@ -1,4 +1,5 @@
 {% ckan_extends %}
+
 {% block data_preview %}
         {{ super() }}
         <div class="embedhint" style="padding-left: 15px;">
@@ -7,14 +8,43 @@
         	<textarea style="width:97%">&lt;iframe src="{{ request.url }}/preview" frameborder="0" width="100%" height="600px"&gt;&lt;/iframe&gt;</textarea>
         </div>
 {% endblock %}
+
 {% block resource_content %}
 	{% if res.status=='private' %}
 	<span class="dataset-private label label-inverse pull-right">
 	<i class="icon-lock"></i>
 	{{ _('Private') }}
 	</span>
-	{% endif %}	
+	{% endif %}
 	{{ super() }}
+{% endblock %}
+
+{% block resource_actions_inner %}
+     {% if h.check_access('package_update', {'id':pkg.id }) %}
+     	{% if h.package_is_locked(pkg.id) %}
+       		<li>{% link_for _('Unlock'), controller='ckanext.edem.dataset_controller:DatasetLockController', action='unlock', id=pkg.id, resource_id=res.id, class_='btn', icon='wrench' %}</li>
+       	{% else %}
+       		<li>{% link_for _('Manage'), controller='package', action='resource_edit', id=pkg.name, resource_id=res.id, class_='btn', icon='wrench' %}</li>
+       	{% endif %}
+     {% endif %}
+     {% if res.url %}
+       <li>
+         <a class="btn btn-primary resource-url-analytics resource-type-{{ res.resource_type }}" href="{{ res.url }}">
+           {% if res.resource_type in ('listing', 'service') %}
+             <i class="icon-eye-open"></i> {{ _('View') }}
+           {% elif  res.resource_type == 'api' %}
+             <i class="icon-key"></i> {{ _('API Endpoint') }}
+           {% elif not res.can_be_previewed %}
+             <i class="icon-external-link"></i> {{ _('Go to resource') }}
+           {% else %}
+             <i class="icon-download"></i> {{ _('Download') }}
+           {% endif %}
+         </a>
+       </li>
+     {% endif %}
+     {% if 'datastore' in g.plugins %}
+       <li>{% snippet 'package/snippets/data_api_button.html', resource=res, datastore_root_url=c.datastore_api %}</li>
+     {% endif %}
 {% endblock %}
 {% block resource_additional_information %}
 <div class="module-content">
@@ -60,7 +90,7 @@
 {% endif %}
 {% if res.validity=='other' %}
 <tr>
-<th scope="row">{{ _('Activity')}}</th>
+<th scope="row">{{ _('Efficiency')}}</th>
 <td>
 {{ h.render_datetime(res.active_from) }} - {{ h.render_datetime(res.active_to) }}
 </td>
@@ -68,7 +98,7 @@
 {% endif %}
 {% if res.periodicity %}
 <tr>
-<th scope="row">{{ _('Periodicity')}}</th>
+<th scope="row">{{ _('Periodicity of actualization')}}</th>
 <td>
 {% if res.periodicity=='other' %}
 	{{ res.periodicity_description}}

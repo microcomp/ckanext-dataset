@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-14 08:53+0200\n"
+"POT-Creation-Date: 2015-07-15 16:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -183,8 +183,8 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:14
 #: ckanext/dataset/templates/package/resource_read.html:49
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
-#: ckanext/dataset/templates/package/snippets/resource_form.html:86
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/resource_form.html:102
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr ""
@@ -224,17 +224,18 @@ msgid "Format"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:43
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:68
 msgid "License"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:48
-#: ckanext/dataset/templates/package/snippets/resource_form.html:83
+#: ckanext/dataset/templates/package/snippets/resource_form.html:99
 msgid "Status"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:49
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:103
-#: ckanext/dataset/templates/package/snippets/resource_form.html:87
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "Public"
 msgstr ""
 
@@ -244,21 +245,21 @@ msgid "Validity"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:55
-#: ckanext/dataset/templates/package/snippets/resource_form.html:26
+#: ckanext/dataset/templates/package/snippets/resource_form.html:30
 msgid "Valid permanently"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:63
-msgid "Activity"
+msgid "Efficiency"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:71
-#: ckanext/dataset/templates/package/snippets/resource_form.html:51
-msgid "Periodicity"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:56
+msgid "Periodicity of actualization"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:83
-#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+#: ckanext/dataset/templates/package/snippets/resource_form.html:78
 msgid "Data correctness"
 msgstr ""
 
@@ -295,43 +296,72 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:52
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:5
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:59
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:119
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
 msgid "State"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:10
-#: ckanext/dataset/templates/package/snippets/resource_form.html:54
-#: ckanext/dataset/templates/package/snippets/resource_form.html:70
-msgid "Undefined"
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
+#: ckanext/dataset/templates/package/snippets/resource_form.html:24
+#: ckanext/dataset/templates/package/snippets/resource_form.html:56
+#: ckanext/dataset/templates/package/snippets/resource_form.html:78
+#: ckanext/dataset/templates/package/snippets/resource_form.html:99
+msgid "This field is required"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
+#: ckanext/dataset/templates/package/snippets/resource_form.html:59
+#: ckanext/dataset/templates/package/snippets/resource_form.html:81
+msgid "Undefined"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:12
 msgid "Enter custom GeoJSON"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:81
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:19
+#: ckanext/dataset/templates/package/snippets/resource_form.html:28
+#: ckanext/dataset/templates/package/snippets/resource_form.html:67
+#: ckanext/dataset/templates/package/snippets/resource_form.html:88
+#: ckanext/dataset/templates/package/snippets/resource_form.html:107
+msgid "Instructions"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:72
+msgid "recommended"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:78
+msgid ""
+"\n"
+"        License definitions and additional information can be found\n"
+"        at <a "
+"href=\"http://opendefinition.org/licenses/\">opendefinition.org</a>\n"
+"      "
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:108
 msgid "Organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:112
 msgid "No organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:100
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:127
 msgid "Visibility"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:122
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:149
 msgid "Active"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:123
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:150
 msgid "Deleted"
 msgstr ""
 
@@ -347,67 +377,67 @@ msgstr ""
 msgid "url"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:27
+#: ckanext/dataset/templates/package/snippets/resource_form.html:31
 msgid "Validness in data"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:28
-msgid "Other"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:32
+msgid "Define validity"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:32
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
 msgid "Description of data column"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:32
-#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+#: ckanext/dataset/templates/package/snippets/resource_form.html:36
+#: ckanext/dataset/templates/package/snippets/resource_form.html:95
 msgid "description"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:36
+#: ckanext/dataset/templates/package/snippets/resource_form.html:40
 msgid "Valid from"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:36
-#: ckanext/dataset/templates/package/snippets/resource_form.html:37
-#: ckanext/dataset/templates/package/snippets/resource_form.html:45
-#: ckanext/dataset/templates/package/snippets/resource_form.html:46
+#: ckanext/dataset/templates/package/snippets/resource_form.html:40
+#: ckanext/dataset/templates/package/snippets/resource_form.html:41
+#: ckanext/dataset/templates/package/snippets/resource_form.html:49
+#: ckanext/dataset/templates/package/snippets/resource_form.html:50
 msgid "today"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:37
+#: ckanext/dataset/templates/package/snippets/resource_form.html:41
 msgid "Valid to"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:41
-msgid "Active time not same as valid time"
-msgstr ""
-
 #: ckanext/dataset/templates/package/snippets/resource_form.html:45
-msgid "Active from"
+msgid "Effective time not same as valid time"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:46
-msgid "Active to"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:49
+msgid "Effective from"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:63
-msgid "Periodicity description"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:71
-msgid "correct and exact"
-msgstr ""
-
-#: ckanext/dataset/templates/package/snippets/resource_form.html:72
-msgid "incorrect or inexact"
+#: ckanext/dataset/templates/package/snippets/resource_form.html:50
+msgid "Effective to"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:73
+msgid "Periodicity description"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:82
+msgid "correct and exact"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:83
+msgid "incorrect or inexact"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:84
 msgid "stated in data"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/resource_form.html:79
+#: ckanext/dataset/templates/package/snippets/resource_form.html:95
 msgid "Description"
 msgstr ""
 
