@@ -69,4 +69,21 @@ class DatasetCmd(CkanCommand):
             except toolkit.ObjectNotFound:
                 log.warn('Vocabulary "geo_tags" does not exist!')
 
-                
+        if cmd == 'vocab-per-add-tag':
+            import ckan.plugins.toolkit as toolkit
+            log.info('adding tag to vocabulary periodicity')
+            tag_name = self.args[1]
+            vocab = toolkit.get_action('vocabulary_show')(data_dict={'id': 'periodicities'})
+            new_tag = toolkit.get_action('tag_create')(data_dict={'name' : tag_name,'vocabulary_id': vocab['id']})
+            log.info('tag created with ID: %s', new_tag['id'])
+
+        if cmd == 'vocab-geo-add-tag':
+            import ckan.plugins.toolkit as toolkit
+            log.info('adding tag to vocabulary geo_tags')
+            tag_name = self.args[1]
+            tag_geojson = self.args[2]
+            vocab = toolkit.get_action('vocabulary_show')(data_dict={'id': 'geo_tags'})
+            new_tag = toolkit.get_action('tag_create')(data_dict={'name' : tag_name,'vocabulary_id': vocab['id']})
+            data = {'key' : 'spatial', 'value' : tag_geojson, 'tag_id' : new_tag['id']}
+            toolkit.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
+            log.info('tag created with ID: %s', new_tag['id']) 
