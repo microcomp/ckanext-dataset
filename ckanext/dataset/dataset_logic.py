@@ -486,7 +486,11 @@ def query_changes(context, data_dict):
     :type alias_modified_timestamp: string
     :param alias_deleted_timestamp: name of column where the timestamp of deletion is defined (default value is 'deleted_timestamp') (optional)
     :type alias_deleted_timestamp: string
-
+    :param limit: limit if returned changes (default value is 100) (optional)
+    :type limit: int
+    :param offset: if limit given, offset define page where to start (default value is 0) (optional)
+    :type offset: int    
+    
     **Results:**
 
     The result of this action is a dictionary with the following keys:
@@ -500,19 +504,35 @@ def query_changes(context, data_dict):
     resource_id = _get_or_bust(data_dict, 'id')
     changed_since = data_dict.get('changed_since', None)
     alias_modified_timestamp = data_dict.get('alias_modified_timestamp', 'modified_timestamp')
-    alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', 'deleted_timestamp')
-    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY {alias_modified_timestamp} ASC;'''
-    sql_query_extended = '''SELECT * FROM "{resource_id}"
-                   WHERE {alias_modified_timestamp}>='{changed_since}' OR {alias_deleted_timestamp}>='{changed_since}'
-                   ORDER BY {alias_modified_timestamp} ASC;'''
+    alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', alias_modified_timestamp)
+    limit = data_dict.get('limit', 100)
+    offset = data_dict.get('offset', 0)
+    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY "{alias_modified_timestamp}" ASC LIMIT {limit} OFFSET {offset};'''
+    sql_query_extended = '''SELECT * FROM {resource_id}
+                   WHERE "{alias_modified_timestamp}">={changed_since} OR "{alias_deleted_timestamp}">={changed_since}
+                   ORDER BY "{alias_modified_timestamp}" ASC
+                   LIMIT {limit} OFFSET {offset};'''
+    sql_query_extended_same = '''SELECT * FROM "{resource_id}"
+                   WHERE "{alias_modified_timestamp}">={changed_since}
+                   ORDER BY "{alias_modified_timestamp}" ASC
+                   LIMIT {limit} OFFSET {offset};'''
     if changed_since:
-        sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
-                                              alias_modified_timestamp = alias_modified_timestamp,
-                                              alias_deleted_timestamp = alias_deleted_timestamp)
+        if alias_modified_timestamp != alias_deleted_timestamp:
+            sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
+                                                  alias_modified_timestamp = alias_modified_timestamp,
+                                                  alias_deleted_timestamp = alias_deleted_timestamp,
+                                                  limit = limit,
+                                                  offset = offset)
+        else:
+            sql_query = sql_query_extended_same.format(resource_id=resource_id, changed_since=changed_since,
+                                      alias_modified_timestamp = alias_modified_timestamp,
+                                      limit = limit,
+                                      offset = offset)
     else:
         sql_query = sql_query_base.format(resource_id=resource_id,
-                                          alias_modified_timestamp = alias_modified_timestamp
-                                          )
+                                          alias_modified_timestamp = alias_modified_timestamp,
+                                          limit = limit,
+                                          offset = offset)
 
     datastore_sql_search = toolkit.get_action('datastore_search_sql')
     return datastore_sql_search(data_dict={'sql' : sql_query})
