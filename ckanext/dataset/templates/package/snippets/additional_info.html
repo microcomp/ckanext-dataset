@@ -57,7 +57,15 @@
         {% if h.check_access('package_update',{'id':pkg_dict.id}) %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("State") }}</th>
-            <td class="dataset-details">{{ pkg_dict.state }}</td>
+            <td class="dataset-details">
+            {% if pkg_dict.state.startswith('draft') %}
+          	{{ _('draft') }}
+          	{% elif pkg_dict.state.startswith('active') %}
+          	{{ _('active') }}
+          	{% elif pkg_dict.state.startswith('deleted') %}
+          	{{ _('deleted') }}
+        	{% endif %}
+            </td>
           </tr>
         {% endif %}
 
