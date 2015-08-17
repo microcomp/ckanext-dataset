@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-07-15 16:36+0200\n"
+"POT-Creation-Date: 2015-08-17 14:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -147,118 +147,128 @@ msgstr ""
 msgid "Show"
 msgstr ""
 
+#: ckanext/dataset/templates/package/read.html:12
+#: ckanext/dataset/templates/package/resource_read.html:27
+msgid "This dataset is currently edited by"
+msgstr ""
+
+#: ckanext/dataset/templates/package/read.html:14
+#: ckanext/dataset/templates/package/resource_read.html:29
+msgid "currently edited"
+msgstr ""
+
 #: ckanext/dataset/templates/package/read_base.html:7
 msgid "Permanent URL:"
 msgstr ""
 
-#: ckanext/dataset/templates/package/read_base.html:16
-#: ckanext/dataset/templates/package/read_base.html:18
+#: ckanext/dataset/templates/package/read_base.html:15
+#: ckanext/dataset/templates/package/read_base.html:17
 msgid "Permanent URL"
 msgstr ""
 
-#: ckanext/dataset/templates/package/read_base.html:20
-#: ckanext/dataset/templates/package/read_base.html:22
+#: ckanext/dataset/templates/package/read_base.html:19
+#: ckanext/dataset/templates/package/read_base.html:21
 msgid "History"
 msgstr ""
 
-#: ckanext/dataset/templates/package/read_base.html:27
-#: ckanext/dataset/templates/package/read_base.html:35
+#: ckanext/dataset/templates/package/read_base.html:26
+#: ckanext/dataset/templates/package/read_base.html:34
 msgid "Like this"
 msgstr ""
 
-#: ckanext/dataset/templates/package/read_base.html:35
+#: ckanext/dataset/templates/package/read_base.html:34
 msgid "Dislike this"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:5
+#: ckanext/dataset/templates/package/resource_read.html:6
 #: ckanext/dataset/templates/package/snippets/web2.html:2
 msgid "Embed this visualisation in your own website..."
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:6
+#: ckanext/dataset/templates/package/resource_read.html:7
 msgid ""
 "Copy the HTML in the box below and you can display this visualisation on your"
 " own website."
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:14
-#: ckanext/dataset/templates/package/resource_read.html:49
+#: ckanext/dataset/templates/package/resource_read.html:21
+#: ckanext/dataset/templates/package/resource_read.html:66
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
 #: ckanext/dataset/templates/package/snippets/resource_form.html:102
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:21
+#: ckanext/dataset/templates/package/resource_read.html:38
 msgid "Additional Information"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:25
+#: ckanext/dataset/templates/package/resource_read.html:42
 #: ckanext/dataset/templates/package/snippets/additional_info.html:8
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:6
 msgid "Field"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:26
+#: ckanext/dataset/templates/package/resource_read.html:43
 #: ckanext/dataset/templates/package/snippets/additional_info.html:9
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:7
 msgid "Value"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:31
+#: ckanext/dataset/templates/package/resource_read.html:48
 msgid "Last updated"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:32
-#: ckanext/dataset/templates/package/resource_read.html:36
-#: ckanext/dataset/templates/package/resource_read.html:40
+#: ckanext/dataset/templates/package/resource_read.html:49
+#: ckanext/dataset/templates/package/resource_read.html:53
+#: ckanext/dataset/templates/package/resource_read.html:57
 msgid "unknown"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:35
+#: ckanext/dataset/templates/package/resource_read.html:52
 msgid "Created"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:39
+#: ckanext/dataset/templates/package/resource_read.html:56
 msgid "Format"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:43
+#: ckanext/dataset/templates/package/resource_read.html:60
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:68
 msgid "License"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:48
+#: ckanext/dataset/templates/package/resource_read.html:65
 #: ckanext/dataset/templates/package/snippets/resource_form.html:99
 msgid "Status"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:49
+#: ckanext/dataset/templates/package/resource_read.html:66
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
 #: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "Public"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:53
+#: ckanext/dataset/templates/package/resource_read.html:70
 #: ckanext/dataset/templates/package/snippets/resource_form.html:24
 msgid "Validity"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:55
+#: ckanext/dataset/templates/package/resource_read.html:72
 #: ckanext/dataset/templates/package/snippets/resource_form.html:30
 msgid "Valid permanently"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:63
+#: ckanext/dataset/templates/package/resource_read.html:80
 msgid "Efficiency"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:71
+#: ckanext/dataset/templates/package/resource_read.html:88
 #: ckanext/dataset/templates/package/snippets/resource_form.html:56
 msgid "Periodicity of actualization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:83
+#: ckanext/dataset/templates/package/resource_read.html:100
 #: ckanext/dataset/templates/package/snippets/resource_form.html:78
 msgid "Data correctness"
 msgstr ""
@@ -304,6 +314,18 @@ msgstr ""
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
 msgid "State"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:62
+msgid "draft"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:64
+msgid "active"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:66
+msgid "deleted"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6

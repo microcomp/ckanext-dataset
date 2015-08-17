@@ -1,15 +1,5 @@
 {%ckan_extends%}
 
-{% block content_action %}
-  {% if h.check_access('package_update', {'id':pkg.id }) %}
-  	    {% if h.package_is_locked(pkg.id) %}
-       		{% link_for _('Unlock'), controller='ckanext.edem.dataset_controller:DatasetLockController', action='unlock', id=pkg.id, class_='btn', icon='wrench' %}
-       	{% else %}
-       		{% link_for _('Manage'), controller='package', action='edit', id=pkg.name, class_='btn', icon='wrench' %}
-       	{% endif %}
-  {% endif %}
-{% endblock %}
-
 {% block primary_content %}
 {{super()}}
 <script>
