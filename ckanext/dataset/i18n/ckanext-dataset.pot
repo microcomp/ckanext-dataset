@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-17 14:57+0200\n"
+"POT-Creation-Date: 2015-08-17 15:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,7 +194,6 @@ msgstr ""
 #: ckanext/dataset/templates/package/resource_read.html:21
 #: ckanext/dataset/templates/package/resource_read.html:66
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
-#: ckanext/dataset/templates/package/snippets/resource_form.html:102
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr ""
@@ -245,7 +244,6 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:66
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
-#: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "Public"
 msgstr ""
 
@@ -464,5 +462,13 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:95
 msgid "Description"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:102
+msgid "private"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:103
+msgid "public"
 msgstr ""
 

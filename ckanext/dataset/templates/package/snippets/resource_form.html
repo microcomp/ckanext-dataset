@@ -99,8 +99,8 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-status"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Status") }}</label>
 <div class="controls">
 <select id="field-status" name="status" data-module="autocomplete">
-<option value="" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Private') }}</option>
-<option value="public" {% if "public" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('Public') }}</option>
+<option value="" {% if "private" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('private') }}</option>
+<option value="public" {% if "public" in data.get('status', '') %}selected="selected"{% endif %}>{{ _('public') }}</option>
 </select>
 <span class="info-block info-inline">
 	<i class="icon-info-sign"></i>
