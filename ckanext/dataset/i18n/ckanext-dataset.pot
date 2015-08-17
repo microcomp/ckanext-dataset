@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-17 14:19+0200\n"
+"POT-Creation-Date: 2015-08-17 14:57+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -337,8 +337,6 @@ msgid "This field is required"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
-#: ckanext/dataset/templates/package/snippets/resource_form.html:59
-#: ckanext/dataset/templates/package/snippets/resource_form.html:81
 msgid "Undefined"
 msgstr ""
 
@@ -441,6 +439,11 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:50
 msgid "Effective to"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:59
+#: ckanext/dataset/templates/package/snippets/resource_form.html:81
+msgid "undefined"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:73

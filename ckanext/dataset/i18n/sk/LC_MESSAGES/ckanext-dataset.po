@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-17 14:19+0200\n"
+"POT-Creation-Date: 2015-08-17 14:57+0200\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -326,13 +326,11 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:64
 #, fuzzy
-#| msgid "Active"
 msgid "active"
 msgstr "Aktívny"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:66
 #, fuzzy
-#| msgid "Deleted"
 msgid "deleted"
 msgstr "Vymazaný"
 
@@ -345,8 +343,6 @@ msgid "This field is required"
 msgstr "Povinné pole"
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:11
-#: ckanext/dataset/templates/package/snippets/resource_form.html:59
-#: ckanext/dataset/templates/package/snippets/resource_form.html:81
 msgid "Undefined"
 msgstr "Nedefinované"
 
@@ -450,6 +446,11 @@ msgstr "Účinný od"
 #: ckanext/dataset/templates/package/snippets/resource_form.html:50
 msgid "Effective to"
 msgstr "Účinný do"
+
+#: ckanext/dataset/templates/package/snippets/resource_form.html:59
+#: ckanext/dataset/templates/package/snippets/resource_form.html:81
+msgid "undefined"
+msgstr "nedefinované"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:73
 msgid "Periodicity description"

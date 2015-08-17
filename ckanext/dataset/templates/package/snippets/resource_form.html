@@ -56,7 +56,7 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-periodicity"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Periodicity of actualization") }}</label>
 <div class="controls">
 <select id="field-periodicity" name="periodicity" data-module="autocomplete">
-<option value="" selected="selected">{{ _("Undefined") }}</option>
+<option value="" selected="selected">{{ _("undefined") }}</option>
 {% set data_per = data.get('periodicity', []) %}
 {% for periodicity in h.periodicities() %}
 <option value="{{ periodicity }}" {% if periodicity in data_per or (periodicity == 'undefined' and not data_per) %}selected="selected"{% endif %}>{{ _(periodicity) }}</option>
@@ -78,7 +78,7 @@ $("#field-image-upload").change(function(){
 <label class="control-label" for="field-data_correctness"><span class="control-required" title="{{_('This field is required')}}">*</span>{{ _("Data correctness") }}</label>
 <div class="controls">
 <select id="field-data_correctness" name="data_correctness" data-module="autocomplete">
-<option value="" selected="selected">{{ _("Undefined") }}</option>
+<option value="" selected="selected">{{ _("undefined") }}</option>
 <option value="correct and exact" {% if "correct and exact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('correct and exact') }}</option>
 <option value="incorrect or inexact" {% if "incorrect or inexact" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('incorrect or inexact') }}</option>
 <option value="stated in data" {% if "stated in data" in data.get('data_correctness', '') %}selected="selected"{% endif %}>{{ _('stated in data') }}</option>
