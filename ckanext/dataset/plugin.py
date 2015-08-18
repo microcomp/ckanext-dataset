@@ -404,8 +404,8 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    just_for_translation = (_('yearly'), _('semiyearly'), _('quaterly'), _('monthly'), _('weekly'), _('daily'), _('irregularly'), _('other'))
-    p = ( u'yearly', u'semiyearly', u'quaterly', u'monthly', u'weekly', u'daily', u'irregularly', u'other')
+    just_for_translation = (_('annually'), _('semi-annually'), _('quarterly'), _('monthly'), _('weekly'), _('daily'), _('irregularly'), _('other'))
+    p = ( u'annually', u'semi-annually', u'quarterly', u'monthly', u'weekly', u'daily', u'irregularly', u'other')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:

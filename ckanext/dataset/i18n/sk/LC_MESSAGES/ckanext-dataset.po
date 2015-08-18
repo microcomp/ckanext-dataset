@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-17 15:25+0200\n"
+"POT-Creation-Date: 2015-08-18 09:42+0200\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -109,15 +109,15 @@ msgid "The possible values for status are \"private\" or \"public\""
 msgstr "Prípustné hodnoty pre atribút status sú \"private\" a \"public\""
 
 #: ckanext/dataset/plugin.py:407
-msgid "yearly"
+msgid "annually"
 msgstr "ročne"
 
 #: ckanext/dataset/plugin.py:407
-msgid "semiyearly"
+msgid "semi-annually"
 msgstr "polročne"
 
 #: ckanext/dataset/plugin.py:407
-msgid "quaterly"
+msgid "quarterly"
 msgstr "štvrťročne"
 
 #: ckanext/dataset/plugin.py:407
@@ -320,17 +320,15 @@ msgstr "Stav"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:62
 msgid "draft"
-msgstr ""
+msgstr "rozpracovaný"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:64
-#, fuzzy
 msgid "active"
-msgstr "Aktívny"
+msgstr "aktívny"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:66
-#, fuzzy
 msgid "deleted"
-msgstr "Vymazaný"
+msgstr "vymazaný"
 
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 #: ckanext/dataset/templates/package/snippets/resource_form.html:24
@@ -402,7 +400,7 @@ msgid "url"
 msgstr "url"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:31
-msgid "Validness in data"
+msgid "Validity described in data"
 msgstr "Platnosť uvedená v dátach"
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:32
@@ -477,4 +475,7 @@ msgstr "súkromný"
 #: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "public"
 msgstr "verejný"
+
+#~ msgid "yearly"
+#~ msgstr "ročne"
 

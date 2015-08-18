@@ -61,10 +61,7 @@ class DatasetCmd(CkanCommand):
                 for tag in tags:
                     toolkit.get_action('ckanext_dataset_delete_tag_info')(data_dict={'tag_id': tag['id']})
                     toolkit.get_action('tag_delete')(data_dict={'id': tag['id']})
-            #        #log.info(res)
-            #    log.info(vocab)
                 res = toolkit.get_action('vocabulary_delete')(data_dict={'id' : vocab['id']})
-            #    #log.info(res)
                 log.info('vocabulary deleted')
             except toolkit.ObjectNotFound:
                 log.warn('Vocabulary "geo_tags" does not exist!')

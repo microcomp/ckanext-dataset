@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-08-17 15:25+0200\n"
+"POT-Creation-Date: 2015-08-18 09:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,15 +107,15 @@ msgid "The possible values for status are \"private\" or \"public\""
 msgstr ""
 
 #: ckanext/dataset/plugin.py:407
-msgid "yearly"
+msgid "annually"
 msgstr ""
 
 #: ckanext/dataset/plugin.py:407
-msgid "semiyearly"
+msgid "semi-annually"
 msgstr ""
 
 #: ckanext/dataset/plugin.py:407
-msgid "quaterly"
+msgid "quarterly"
 msgstr ""
 
 #: ckanext/dataset/plugin.py:407
@@ -396,7 +396,7 @@ msgid "url"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:31
-msgid "Validness in data"
+msgid "Validity described in data"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/resource_form.html:32
