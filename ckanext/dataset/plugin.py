@@ -60,11 +60,6 @@ def resource_validator(key, data, errors, context):
     origin_key_list[2]='status'
     status_key = tuple(origin_key_list)
     status_value = data.get(status_key,'')
-    log.info('resource validator')
-    log.info('key: %s', key)
-    log.info('status key: %s', status_key)
-    log.info('status value: %s', status_value)
-    log.info('status value type: %s', type(status_value))
     if _is_missing(status_key, data) or not status_value in ['private', 'public']:
         data[status_key] = unicode('private')
         
@@ -345,7 +340,6 @@ def extract_data():
         data = json.load(json_data)
         for entry in data['features']:
             s = (entry['properties']['TXT'], entry['properties']['REF'], json.dumps(entry['geometry']))
-            log.info(s)
             entries.append(s)
         json_data.close()
         return entries
@@ -411,18 +405,7 @@ def create_periodicities():
     try:
         data = {'id': 'periodicities'}
         res = tk.get_action('vocabulary_show')(context, data)
-        v = res.get('tags')
-        tag_names = [tag.get('display_name') for tag in v]
-        log.info('---tag names---')
-        log.info(tag_names)
-        if len(tag_names)!=len(p):
-            for name in p:
-                if name not in tag_names:
-                    log.info("Adding tag {0} to vocab 'periodicities'".format(name))
-                    data = {'name': name, 'vocabulary_id': res['id']}
-                    tk.get_action('tag_create')(context, data)
-        else:
-            log.info("Periodicities vocabulary already exists, skipping.")
+        log.info("Periodicities vocabulary already exists, skipping.")
     except tk.ObjectNotFound:
         log.info("Creating vocab 'periodicities'")
         data = {'name': 'periodicities'}
@@ -436,11 +419,7 @@ def periodicities():
     '''Return the list of country codes from the country codes vocabulary.'''
     create_periodicities()
     try:
-        #res=tk.get_action('tag_autocomplete')(data_dict={'query' : 'y', 'vocabulary_id' : 'periodicities'})
-        #log.info(res)
-        periodicity = tk.get_action('tag_list')(
-        data_dict={'vocabulary_id': 'periodicities'})
-        log.info(periodicity)
+        periodicity = tk.get_action('tag_list')(data_dict={'vocabulary_id': 'periodicities'})
         periodicity_translated = [name for name in periodicity] 
         return periodicity_translated
     except tk.ObjectNotFound:
@@ -495,7 +474,6 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     num_times_setup_template_variables_called = 0
 
     def before_show(self, resource_dict):
-        log.info("resource before show: %s", resource_dict)
         try:
             ckan.logic.check_access('resource_show', {},resource_dict)
             return resource_dict

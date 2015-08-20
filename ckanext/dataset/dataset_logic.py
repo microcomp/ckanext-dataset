@@ -46,7 +46,6 @@ def audit_helper(context, input_data_dict, event):
         return  # no audit required for local actions
     #may be called via paster command
     environ = toolkit.request.environ
-    log.info('audit helper environ: %s', environ)
     path = environ.get('PATH_INFO', '')
 
     #check whether action was called via API
@@ -56,7 +55,6 @@ def audit_helper(context, input_data_dict, event):
         if api_key:
             audit_dict['description'] = 'API KEY: ' + api_key
         user = context.get('user')
-        log.info('user: %s', user)
         if user:
             convert_user_name_or_id_to_id = toolkit.get_converter('convert_user_name_or_id_to_id')
             user_id = convert_user_name_or_id_to_id(user, context)
@@ -77,7 +75,6 @@ def audit_helper(context, input_data_dict, event):
             audit_dict['object_reference'] = 'PackageID://' + context['package'].id
         else:
             audit_dict['object_reference'] = 'ResourceID://' + context['resource'].id
-        log.info('dict for auditlog send: %s', audit_dict)
         toolkit.get_action('auditlog_send')(data_dict=audit_dict)
 
 @ckan.logic.side_effect_free
@@ -98,7 +95,6 @@ def package_show(context, data_dict):
     name_or_id = data_dict.get("id") or _get_or_bust(data_dict, 'name_or_id')
 
     pkg = model.Package.get(name_or_id)
-    log.info('package show: %s', pkg)
     if pkg is None:
         raise NotFound
 
@@ -159,7 +155,6 @@ def package_show(context, data_dict):
         for item in plugins.PluginImplementations(plugins.IResourceController):
             resource_dict = item.before_show(resource_dict)
             if item.name=='dataset':
-                log.info('after show resource: %s', resource_dict)
                 if resource_dict:
                     log.info('adding resource: %s', resource_dict)
                     valid_resources.append(resource_dict)
@@ -394,7 +389,6 @@ def resource_search(context, data_dict):
 
     results = []
     for result in q:
-        log.info('resource result: %s', result)
         if isinstance(result, tuple) and isinstance(result[0], model.DomainObject):
             # This is the case for order_by rank due to the add_column.
             if toolkit.get_action('is_resource_public')(context, result[0].extras):
@@ -455,7 +449,6 @@ def current_package_list_with_resources(context, data_dict):
         query = query.limit(limit)
     query = query.offset(offset)
     pack_rev = query.all()
-    log.info('filtered packages: %s', pack_rev)
     return _package_list_with_resources(context, pack_rev)
 
 def _package_list_with_resources(context, package_revision_list):

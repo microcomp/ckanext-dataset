@@ -1,6 +1,8 @@
 from ckan.lib.cli import CkanCommand
 import sys
 import logging
+from pprint import pprint
+
 log = logging.getLogger('ckanext')
 log.setLevel(logging.DEBUG)
 import db
@@ -83,4 +85,38 @@ class DatasetCmd(CkanCommand):
             new_tag = toolkit.get_action('tag_create')(data_dict={'name' : tag_name,'vocabulary_id': vocab['id']})
             data = {'key' : 'spatial', 'value' : tag_geojson, 'tag_id' : new_tag['id']}
             toolkit.get_action('ckanext_dataset_create_tag_info')(data_dict=data)
-            log.info('tag created with ID: %s', new_tag['id']) 
+            log.info('tag created with ID: %s', new_tag['id'])
+
+        if cmd == 'force-data-migration':
+            import ckan.plugins.toolkit as toolkit
+            import ckan.model as model
+            log.info('process of data migration has started')
+            user = toolkit.get_action('get_site_user')({'ignore_auth': True}, {})
+            context = {'model': model, 'session': model.Session, 'ignore_auth': True, 'user': user['name']}
+            vocab_periodicity_tags = toolkit.get_action('vocabulary_show')(data_dict={'id': 'periodicities'})['tags']
+            periodicity_values = [tag['name'] for tag in vocab_periodicity_tags]
+            organization_list = toolkit.get_action('organization_list')(context, {})
+            # access model directly to get around validators etc...
+            for org in organization_list:
+                org_detail = toolkit.get_action('organization_show')(context, {'id' : org})
+                for package in org_detail['packages']:
+                    log.info('migrating dataset: %s', package['name'])
+                    dataset = model.Package.get(unicode(package['name']))
+                    for resource in dataset.resources:
+                        per_value = resource.extras.get('periodicity')
+                        status = resource.extras.get('status')
+                        arg = self.args[1]
+                        if arg == 'set':
+                            resource.extras['periodicity'] = 'daily'
+                        if not status in ['private', 'public']:
+                            resource.extras['status'] = 'private'
+                        if not per_value in periodicity_values and not per_value=='':
+                            #set undefined
+                            if status == 'private':
+                                resource.extras['periodicity'] = ''
+                            else:
+                                #set annually is default valid option for public resources
+                                resource.extras['periodicity'] = 'annually'
+                    rev = model.repo.new_revision()
+                    dataset.save()
+            log.info('process of data migration successfully finished')
