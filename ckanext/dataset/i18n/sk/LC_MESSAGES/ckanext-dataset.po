@@ -152,7 +152,7 @@ msgstr "Zobraziť"
 #: ckanext/dataset/templates/package/read.html:12
 #: ckanext/dataset/templates/package/resource_read.html:27
 msgid "This dataset is currently edited by"
-msgstr "Tento dataset je práve editovaný používateľmi:"
+msgstr "Tento dataset je práve editovaný používateľmi"
 
 #: ckanext/dataset/templates/package/read.html:14
 #: ckanext/dataset/templates/package/resource_read.html:29
