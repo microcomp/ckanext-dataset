@@ -104,8 +104,11 @@ class DatasetCmd(CkanCommand):
                     dataset = model.Package.get(unicode(package['name']))
                     for resource in dataset.resources:
                         per_value = resource.extras.get('periodicity')
+                        correctness_value = resource.extras.get('data_correctness')
                         status = resource.extras.get('status')
-                        arg = self.args[1]
+                        arg = None
+                        if len(self.args)==2:
+                            arg = self.args[1]
                         if arg == 'set':
                             resource.extras['periodicity'] = 'daily'
                         if not status in ['private', 'public']:
@@ -117,6 +120,14 @@ class DatasetCmd(CkanCommand):
                             else:
                                 #set annually is default valid option for public resources
                                 resource.extras['periodicity'] = 'annually'
+                        if not correctness_value in ['correct and exact', 'incorrect or inexact', 'stated in data'] and not correctness_value=='':
+                            #set undefined
+                            if status == 'private':
+                                resource.extras['data_correctness'] = ''
+                            else:
+                                #set 'correct and exact' is default valid option for public resources
+                                resource.extras['data_correctness'] = 'correct and exact'
+                        
                     rev = model.repo.new_revision()
                     dataset.save()
             log.info('process of data migration successfully finished')
