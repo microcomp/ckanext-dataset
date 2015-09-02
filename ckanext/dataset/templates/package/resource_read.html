@@ -65,6 +65,28 @@
 <th scope="row">{{ _('Status')}}</th>
 <td>{% if res.status=='public' %} {{_('Public')}} {% else %} {{_('Private')}} {% endif %} </td>
 </tr>
+<tr>
+<th scope="row">{{ _('Transformed data')}}</th>
+<td>
+{% if res.transformed %}
+	{{ _('Yes') }}
+{% else%}
+	{{ _('No') }}
+{% endif %}
+</td>
+</tr>
+{% if res.transformed %}
+<tr>
+<th scope="row">{{ _('Transformation executor')}}</th>
+<td>
+{% if res.transformation_executor %}
+	{{ h.get_name(res.transformation_executor) }}
+{% else %}
+	{{_('Not stated')}}
+{% endif %}
+</td>
+</tr>
+{% endif %}
 {% if res.validity %}
 <tr>
 <th scope="row">{{ _('Validity')}}</th>
