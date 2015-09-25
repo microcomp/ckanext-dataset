@@ -155,12 +155,12 @@ def validator_date(key, data, errors, context):
                             errors[key].append(_('Date format incorrect'))
                 except (TypeError, ValueError), e:
                     errors[key].append(_('Date format incorrect'))
-    else:
-        if not missing:
-            data[key] = ''
-        if missing and status =='private':
+    else:   
+        if missing:
             data.pop(key, None)
             raise StopOnError
+        else:
+            data[key] = ''
 
 def validator_validity_descr(key, data, errors, context):
     global validity_possible_values
@@ -179,11 +179,11 @@ def validator_validity_descr(key, data, errors, context):
                 if len(value)<1:
                     errors[key].append(_('Please provide an explanation of validity'))
     else:
-        if not missing:
-            data[key] = ''
-        if missing and status =='private':
+        if missing:
             data.pop(key, None)
             raise StopOnError
+        else:
+            data[key] = ''
             
 def validator_periodicity(key, data, errors, context):
     periodicity_possible_values = periodicities()
