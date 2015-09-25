@@ -46,7 +46,6 @@ def audit_helper(context, input_data_dict, event):
         return  # no audit required for local actions
     #may be called via paster command
     environ = toolkit.request.environ
-    log.info('audit helper environ: %s', environ)
     path = environ.get('PATH_INFO', '')
 
     #check whether action was called via API
@@ -56,7 +55,6 @@ def audit_helper(context, input_data_dict, event):
         if api_key:
             audit_dict['description'] = 'API KEY: ' + api_key
         user = context.get('user')
-        log.info('user: %s', user)
         if user:
             convert_user_name_or_id_to_id = toolkit.get_converter('convert_user_name_or_id_to_id')
             user_id = convert_user_name_or_id_to_id(user, context)
@@ -77,7 +75,6 @@ def audit_helper(context, input_data_dict, event):
             audit_dict['object_reference'] = 'PackageID://' + context['package'].id
         else:
             audit_dict['object_reference'] = 'ResourceID://' + context['resource'].id
-        log.info('dict for auditlog send: %s', audit_dict)
         toolkit.get_action('auditlog_send')(data_dict=audit_dict)
 
 @ckan.logic.side_effect_free
@@ -98,7 +95,6 @@ def package_show(context, data_dict):
     name_or_id = data_dict.get("id") or _get_or_bust(data_dict, 'name_or_id')
 
     pkg = model.Package.get(name_or_id)
-    log.info('package show: %s', pkg)
     if pkg is None:
         raise NotFound
 
@@ -159,7 +155,6 @@ def package_show(context, data_dict):
         for item in plugins.PluginImplementations(plugins.IResourceController):
             resource_dict = item.before_show(resource_dict)
             if item.name=='dataset':
-                log.info('after show resource: %s', resource_dict)
                 if resource_dict:
                     log.info('adding resource: %s', resource_dict)
                     valid_resources.append(resource_dict)
@@ -394,7 +389,6 @@ def resource_search(context, data_dict):
 
     results = []
     for result in q:
-        log.info('resource result: %s', result)
         if isinstance(result, tuple) and isinstance(result[0], model.DomainObject):
             # This is the case for order_by rank due to the add_column.
             if toolkit.get_action('is_resource_public')(context, result[0].extras):
@@ -455,7 +449,6 @@ def current_package_list_with_resources(context, data_dict):
         query = query.limit(limit)
     query = query.offset(offset)
     pack_rev = query.all()
-    log.info('filtered packages: %s', pack_rev)
     return _package_list_with_resources(context, pack_rev)
 
 def _package_list_with_resources(context, package_revision_list):
@@ -486,7 +479,11 @@ def query_changes(context, data_dict):
     :type alias_modified_timestamp: string
     :param alias_deleted_timestamp: name of column where the timestamp of deletion is defined (default value is 'deleted_timestamp') (optional)
     :type alias_deleted_timestamp: string
-
+    :param limit: limit if returned changes (default value is 100) (optional)
+    :type limit: int
+    :param offset: if limit given, offset define page where to start (default value is 0) (optional)
+    :type offset: int    
+    
     **Results:**
 
     The result of this action is a dictionary with the following keys:
@@ -500,19 +497,35 @@ def query_changes(context, data_dict):
     resource_id = _get_or_bust(data_dict, 'id')
     changed_since = data_dict.get('changed_since', None)
     alias_modified_timestamp = data_dict.get('alias_modified_timestamp', 'modified_timestamp')
-    alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', 'deleted_timestamp')
-    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY {alias_modified_timestamp} ASC;'''
-    sql_query_extended = '''SELECT * FROM "{resource_id}"
-                   WHERE {alias_modified_timestamp}>='{changed_since}' OR {alias_deleted_timestamp}>='{changed_since}'
-                   ORDER BY {alias_modified_timestamp} ASC;'''
+    alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', alias_modified_timestamp)
+    limit = data_dict.get('limit', 100)
+    offset = data_dict.get('offset', 0)
+    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY "{alias_modified_timestamp}" ASC LIMIT {limit} OFFSET {offset};'''
+    sql_query_extended = '''SELECT * FROM {resource_id}
+                   WHERE "{alias_modified_timestamp}">={changed_since} OR "{alias_deleted_timestamp}">={changed_since}
+                   ORDER BY "{alias_modified_timestamp}" ASC
+                   LIMIT {limit} OFFSET {offset};'''
+    sql_query_extended_same = '''SELECT * FROM "{resource_id}"
+                   WHERE "{alias_modified_timestamp}">={changed_since}
+                   ORDER BY "{alias_modified_timestamp}" ASC
+                   LIMIT {limit} OFFSET {offset};'''
     if changed_since:
-        sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
-                                              alias_modified_timestamp = alias_modified_timestamp,
-                                              alias_deleted_timestamp = alias_deleted_timestamp)
+        if alias_modified_timestamp != alias_deleted_timestamp:
+            sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
+                                                  alias_modified_timestamp = alias_modified_timestamp,
+                                                  alias_deleted_timestamp = alias_deleted_timestamp,
+                                                  limit = limit,
+                                                  offset = offset)
+        else:
+            sql_query = sql_query_extended_same.format(resource_id=resource_id, changed_since=changed_since,
+                                      alias_modified_timestamp = alias_modified_timestamp,
+                                      limit = limit,
+                                      offset = offset)
     else:
         sql_query = sql_query_base.format(resource_id=resource_id,
-                                          alias_modified_timestamp = alias_modified_timestamp
-                                          )
+                                          alias_modified_timestamp = alias_modified_timestamp,
+                                          limit = limit,
+                                          offset = offset)
 
     datastore_sql_search = toolkit.get_action('datastore_search_sql')
     return datastore_sql_search(data_dict={'sql' : sql_query})

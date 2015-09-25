@@ -1,0 +1,19 @@
+{% ckan_extends %}
+
+{% block package_description %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+{% if h.check_access('package_update', {'id':pkg.id }) %}
+	{% set editors = h.package_is_locked(pkg.id) %}
+	{% if editors %}
+		<span class="dataset-private label label-inverse pull-right" data-toggle="tooltip" data-placement="left" data-html="true" data-original-title="<em>{{_('This dataset is currently edited by')}}</em>: <ul> {% for editor in editors %}<li>{{editor}}</li> {% endfor %} <ul>">
+		<i class="icon-lock"></i>
+		{{ _('currently edited') }}
+		</span>
+	{% endif %}
+	{% endif %}
+{{ super() }}
+{% endblock %}

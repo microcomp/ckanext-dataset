@@ -60,11 +60,6 @@ def resource_validator(key, data, errors, context):
     origin_key_list[2]='status'
     status_key = tuple(origin_key_list)
     status_value = data.get(status_key,'')
-    log.info('resource validator')
-    log.info('key: %s', key)
-    log.info('status key: %s', status_key)
-    log.info('status value: %s', status_value)
-    log.info('status value type: %s', type(status_value))
     if _is_missing(status_key, data) or not status_value in ['private', 'public']:
         data[status_key] = unicode('private')
         
@@ -160,12 +155,12 @@ def validator_date(key, data, errors, context):
                             errors[key].append(_('Date format incorrect'))
                 except (TypeError, ValueError), e:
                     errors[key].append(_('Date format incorrect'))
-    else:
-        if not missing:
-            data[key] = ''
-        if missing and status =='private':
+    else:   
+        if missing:
             data.pop(key, None)
             raise StopOnError
+        else:
+            data[key] = ''
 
 def validator_validity_descr(key, data, errors, context):
     global validity_possible_values
@@ -184,11 +179,11 @@ def validator_validity_descr(key, data, errors, context):
                 if len(value)<1:
                     errors[key].append(_('Please provide an explanation of validity'))
     else:
-        if not missing:
-            data[key] = ''
-        if missing and status =='private':
+        if missing:
             data.pop(key, None)
             raise StopOnError
+        else:
+            data[key] = ''
             
 def validator_periodicity(key, data, errors, context):
     periodicity_possible_values = periodicities()
@@ -345,7 +340,6 @@ def extract_data():
         data = json.load(json_data)
         for entry in data['features']:
             s = (entry['properties']['TXT'], entry['properties']['REF'], json.dumps(entry['geometry']))
-            log.info(s)
             entries.append(s)
         json_data.close()
         return entries
@@ -404,25 +398,14 @@ def create_periodicities():
     and once they are created you can edit them (e.g. to add and remove
     possible dataset country code values) using the API.
     '''
-    just_for_translation = (_('yearly'), _('semiyearly'), _('quaterly'), _('monthly'), _('weekly'), _('daily'), _('irregularly'), _('other'))
-    p = ( u'yearly', u'semiyearly', u'quaterly', u'monthly', u'weekly', u'daily', u'irregularly', u'other')
+    just_for_translation = (_('annually'), _('semi-annually'), _('quarterly'), _('monthly'), _('weekly'), _('daily'), _('irregularly'), _('other'))
+    p = ( u'annually', u'semi-annually', u'quarterly', u'monthly', u'weekly', u'daily', u'irregularly', u'other')
     user = tk.get_action('get_site_user')({'ignore_auth': True}, {})
     context = {'user': user['name']}
     try:
         data = {'id': 'periodicities'}
         res = tk.get_action('vocabulary_show')(context, data)
-        v = res.get('tags')
-        tag_names = [tag.get('display_name') for tag in v]
-        log.info('---tag names---')
-        log.info(tag_names)
-        if len(tag_names)!=len(p):
-            for name in p:
-                if name not in tag_names:
-                    log.info("Adding tag {0} to vocab 'periodicities'".format(name))
-                    data = {'name': name, 'vocabulary_id': res['id']}
-                    tk.get_action('tag_create')(context, data)
-        else:
-            log.info("Periodicities vocabulary already exists, skipping.")
+        log.info("Periodicities vocabulary already exists, skipping.")
     except tk.ObjectNotFound:
         log.info("Creating vocab 'periodicities'")
         data = {'name': 'periodicities'}
@@ -436,11 +419,7 @@ def periodicities():
     '''Return the list of country codes from the country codes vocabulary.'''
     create_periodicities()
     try:
-        #res=tk.get_action('tag_autocomplete')(data_dict={'query' : 'y', 'vocabulary_id' : 'periodicities'})
-        #log.info(res)
-        periodicity = tk.get_action('tag_list')(
-        data_dict={'vocabulary_id': 'periodicities'})
-        log.info(periodicity)
+        periodicity = tk.get_action('tag_list')(data_dict={'vocabulary_id': 'periodicities'})
         periodicity_translated = [name for name in periodicity] 
         return periodicity_translated
     except tk.ObjectNotFound:
@@ -470,11 +449,11 @@ def retrieve_geojson(data_extras):
 def get_users(data):
     users = tk.get_action('user_list')(data_dict={})
     return users, tk.c.user
-def get_name(login):
-    user_obj = model.Session.query(model.User).filter(model.User.name == login).first()
+def get_name(user_reference):
+    user_obj = model.User.get(user_reference)
     if user_obj:
         return user_obj.fullname
-    return login
+    return user_reference
 
 
 
@@ -484,18 +463,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     plugins.implements(plugins.ITemplateHelpers, inherit=False)
     plugins.implements(plugins.IActions, inherit=False)
     plugins.implements(plugins.IResourceController, inherit=True)
-    
-    num_times_new_template_called = 0
-    num_times_read_template_called = 0
-    num_times_edit_template_called = 0
-    num_times_search_template_called = 0
-    num_times_history_template_called = 0
-    num_times_package_form_called = 0
-    num_times_check_data_dict_called = 0
-    num_times_setup_template_variables_called = 0
 
     def before_show(self, resource_dict):
-        log.info("resource before show: %s", resource_dict)
         try:
             ckan.logic.check_access('resource_show', {},resource_dict)
             return resource_dict
@@ -511,7 +480,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                 'resource_search' : dataset_logic.resource_search,
                 'current_package_list_with_resources' : dataset_logic.current_package_list_with_resources,
                 'is_resource_public' : dataset_logic.is_resource_dict_public,
-                'query_changes' : dataset_logic.query_changes}
+                'datastore_query_changes' : dataset_logic.query_changes}
     
     def update_config(self, config):
         # Add this plugin's templates dir to CKAN's extra_template_paths, so
@@ -556,13 +525,14 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'active_from' : [validator_date, unicode],
                         'active_to' : [validator_date, unicode],
                         'validity_description' : [validator_validity_descr, unicode],
-                        #'periodicity' : [validator_periodicity, tk.get_converter('convert_to_tags')('periodicities')],
                         'periodicity' : [validator_periodicity, unicode],
                         'periodicity_description' : [validator_periodicity_descr, unicode],
                         'schema': [tk.get_validator('ignore_missing'), validator_url],
                         'data_correctness' : [validator_data_correctness, unicode],
                         'data_correctness_description' : [validator_data_correctness_descr, unicode],
-                        'status' : [tk.get_validator('ignore_missing'), validator_status]
+                        'status' : [tk.get_validator('ignore_missing'), validator_status],
+                        'transformed' : [tk.get_validator('ignore_missing'), tk.get_validator('boolean_validator')],
+                        'transformation_executor' : [tk.get_validator('ignore_missing'), unicode]
             })
         
         return schema
@@ -592,53 +562,39 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'active_from' : [validator_date, unicode],
                         'active_to' : [validator_date, unicode],
                         'validity_description' : [validator_validity_descr, unicode],
-                        #'periodicity' : [tk.get_converter('convert_from_tags')('periodicities'),validator_periodicity],
                         'periodicity' : [validator_periodicity, unicode],
                         'periodicity_description' : [validator_periodicity_descr, unicode],
                         'schema': [tk.get_validator('ignore_missing'), validator_url],
                         'data_correctness' : [validator_data_correctness, unicode],
                         'data_correctness_description' : [validator_data_correctness_descr, unicode],
-                        'status' : [tk.get_validator('ignore_missing'), validator_status]
+                        'status' : [tk.get_validator('ignore_missing'), validator_status],
+                        'transformed' : [tk.get_validator('ignore_missing'), tk.get_validator('boolean_validator')],
+                        'transformation_executor' : [tk.get_validator('ignore_missing'), unicode]
             })
         
         return schema
 
-    # These methods just record how many times they're called, for testing
-    # purposes.
-    # TODO: It might be better to test that custom templates returned by
-    # these methods are actually used, not just that the methods get
-    # called.
-
     def setup_template_variables(self, context, data_dict):
-        ExtendedDatasetPlugin.num_times_setup_template_variables_called += 1
         return super(ExtendedDatasetPlugin, self).setup_template_variables(
                 context, data_dict)
 
     def new_template(self):
-        ExtendedDatasetPlugin.num_times_new_template_called += 1
         return super(ExtendedDatasetPlugin, self).new_template()
 
     def read_template(self):
-        ExtendedDatasetPlugin.num_times_read_template_called += 1
         return super(ExtendedDatasetPlugin, self).read_template()
 
     def edit_template(self):
-        ExtendedDatasetPlugin.num_times_edit_template_called += 1
         return super(ExtendedDatasetPlugin, self).edit_template()
 
     def search_template(self):
-        ExtendedDatasetPlugin.num_times_search_template_called += 1
         return super(ExtendedDatasetPlugin, self).search_template()
 
     def history_template(self):
-        ExtendedDatasetPlugin.num_times_history_template_called += 1
         return super(ExtendedDatasetPlugin, self).history_template()
 
     def package_form(self):
-        ExtendedDatasetPlugin.num_times_package_form_called += 1
         return super(ExtendedDatasetPlugin, self).package_form()
 
-    # check_data_dict() is deprecated, this method is only here to test that
-    # legacy support for the deprecated method works.
     def check_data_dict(self, data_dict, schema=None):
-        ExtendedDatasetPlugin.num_times_check_data_dict_called += 1
+        pass
