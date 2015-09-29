@@ -500,15 +500,17 @@ def query_changes(context, data_dict):
     alias_deleted_timestamp = data_dict.get('alias_deleted_timestamp', alias_modified_timestamp)
     limit = data_dict.get('limit', 100)
     offset = data_dict.get('offset', 0)
-    sql_query_base = '''SELECT * FROM "{resource_id}" ORDER BY "{alias_modified_timestamp}" ASC LIMIT {limit} OFFSET {offset};'''
-    sql_query_extended = '''SELECT * FROM {resource_id}
-                   WHERE "{alias_modified_timestamp}">={changed_since} OR "{alias_deleted_timestamp}">={changed_since}
-                   ORDER BY "{alias_modified_timestamp}" ASC
-                   LIMIT {limit} OFFSET {offset};'''
-    sql_query_extended_same = '''SELECT * FROM "{resource_id}"
-                   WHERE "{alias_modified_timestamp}">={changed_since}
-                   ORDER BY "{alias_modified_timestamp}" ASC
-                   LIMIT {limit} OFFSET {offset};'''
+    sql_query_base = ('SELECT * FROM "{resource_id}" '
+                      'ORDER BY {alias_modified_timestamp} ASC '
+                      'LIMIT {limit} OFFSET {offset};')
+    sql_query_extended = ('SELECT * FROM "{resource_id}" '
+                          'WHERE {alias_modified_timestamp}>\'{changed_since}\' OR {alias_deleted_timestamp}>\'{changed_since}\' '
+                          'ORDER BY {alias_modified_timestamp} ASC '
+                          'LIMIT {limit} OFFSET {offset};')
+    sql_query_extended_same = ('SELECT * FROM "{resource_id}" '
+                               'WHERE {alias_modified_timestamp}>\'{changed_since}\' '
+                               'ORDER BY {alias_modified_timestamp} ASC '
+                               'LIMIT {limit} OFFSET {offset};')
     if changed_since:
         if alias_modified_timestamp != alias_deleted_timestamp:
             sql_query = sql_query_extended.format(resource_id=resource_id, changed_since=changed_since,
