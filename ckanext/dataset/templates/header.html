@@ -5,7 +5,7 @@
 <script>
 
 	var rows = document.getElementsByTagName('td')
-	var x = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3><a onclick='hide()' alt='hide content' class='btn btn-primary'>{{_('Hide')}}</a><br />"
+	var x = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3><a onclick='hide()' alt='hide content' class='btn btn-primary' id='show_sp_button' style='float: right; margin-top:-20px;'>{{_('Hide')}}</a><br />"
 	var ii = 0
 	for(var i=0; i < rows.length; i++){
 		var text = rows[i].innerHTML
@@ -25,7 +25,7 @@
 		if(text.substring(0,34)=='{"type": "Polygon", "coordinates":'){
 			x += text
 			ii = i
-			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3> <a onclick='show_spatial()' alt='show text' class='btn btn-primary'>{{_('Show')}}</a>"
+			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3> <a onclick='show_spatial()' alt='show text' class='btn btn-primary' id='show_sp_button' style='float: right; margin-top:-20px;'>{{_('Show')}}</a>"
 			
 		}
 		
@@ -36,11 +36,12 @@
 			rows[ii].innerHTML = x
 	}
 	function hide(){
-			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3>  <a onclick='show_spatial()' alt='show text' class='btn btn-primary'>{{_('Show')}}</a>"
+			rows[ii].innerHTML = "<h3>{{  h.convert_geojson_to_name(c.pkg_dict.get('spatial', None)) }}</h3>  <a onclick='show_spatial()' alt='show text' class='btn btn-primary' id='show_sp_button' style='float: right; margin-top:-20px;'>{{_('Show')}}</a>"
 	}
 	window.onload = start
 	
 </script>
+
 {%endif%}{%endif%}
 {{super()}}
 {%endblock%}
