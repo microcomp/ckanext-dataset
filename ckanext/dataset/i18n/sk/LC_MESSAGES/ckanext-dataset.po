@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-02 14:28+0200\n"
+"POT-Creation-Date: 2015-11-13 12:48+0100\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -322,31 +322,35 @@ msgid "Maintainer"
 msgstr "Správca"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:46
+msgid "Unique identifier of dataset's provider"
+msgstr "Jednoznačný identifikátor poskytovateľa datasetu"
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:52
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr "Verzia"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/additional_info.html:58
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr "Lokalita"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:59
+#: ckanext/dataset/templates/package/snippets/additional_info.html:65
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
 msgid "State"
 msgstr "Stav"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:62
+#: ckanext/dataset/templates/package/snippets/additional_info.html:68
 msgid "draft"
 msgstr "rozpracovaný"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:64
+#: ckanext/dataset/templates/package/snippets/additional_info.html:70
 msgid "active"
 msgstr "aktívny"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:66
+#: ckanext/dataset/templates/package/snippets/additional_info.html:72
 msgid "deleted"
 msgstr "vymazaný"
 

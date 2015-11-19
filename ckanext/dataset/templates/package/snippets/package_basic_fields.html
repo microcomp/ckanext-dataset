@@ -72,7 +72,7 @@ $(document).ready(function() {
         <option value="{{ license_id }}" {% if data.get('license_id', 'notspecified') == license_id %}selected="selected"{% endif %}>{{ license_desc }} {% if license_id=='cc-zero' %} ({{_('recommended')}}) {% endif %}</option>
       {% endfor %}
     </select>
-    {% if error %}<span class="error-block">{{ error }}</span>{% endif %}
+    {% if error %}<span class="error-block">{{ error[0] }}</span>{% endif %}
     <span class="info-block info-inline">
       <i class="icon-info-sign"></i>
       {% trans %}
@@ -82,6 +82,57 @@ $(document).ready(function() {
     </span>
   </div>
 </div>
+{{ form.input('publish_date', label=_('Date of the first publication'), id='field-publish_date', placeholder=_('RRRR-MM-DD'), type=date, value=data.publish_date.split()[0] if data.publish_date else data.publish_date, error=errors.publish_date, classes=['control-medium']) }}
+
+<link rel="stylesheet" type="text/css" href="/jquery.datetimepicker.css"/>
+<script src="/jquery.js"></script>
+<script src="/jquery.datetimepicker.js"></script>
+<script>
+$('#datetimepicker').datetimepicker({
+	dayOfWeekStart : 1,
+	lang:'en',
+	disabledDates:['1986/01/08','1986/01/09','1986/01/10'],
+	startDate:	'1986/01/05'
+	});
+	$('#datetimepicker').datetimepicker({value:'2015/04/15 05:03',step:10});
+
+	$('.some_class').datetimepicker();
+
+	$('#default_datetimepicker').datetimepicker({
+		formatTime:'H:i',
+		formatDate:'d.m.Y',
+		defaultDate:'8.12.1986', // it's my birthday
+		defaultTime:'10:00',
+		timepickerScrollbar:false
+	});
+
+	$('#datetimepicker_mask').datetimepicker({
+		mask:'9999/19/39 29:59'
+	});
+
+	$('#field-publish_date').datetimepicker({
+		yearOffset:0,
+		lang:'sk',
+		timepicker:false,
+		format:'Y-m-d',
+		formatDate:'Y-m-d',
+		closeOnDateSelect: true,
+		
+	});
+
+	$('#open').click(function(){
+		$('#datetimepicker4').datetimepicker('show');
+	});
+	$('#close').click(function(){
+		$('#datetimepicker4').datetimepicker('hide');
+	});
+	$('#reset').click(function(){
+		$('#datetimepicker4').datetimepicker('reset');
+	});
+</script>
+
+
+
 {% endblock %}
 
 {% block package_basic_fields_org %}

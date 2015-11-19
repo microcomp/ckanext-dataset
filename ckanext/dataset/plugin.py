@@ -273,8 +273,42 @@ def validator_spatial(key, data, errors, context):
             errors[key].append(_('Missing attribute!'))
         data.pop(key, None)
         raise StopOnError
-        
-        
+
+def validator_licence(key, data, errors, context):
+    value = data[key]
+    private_str = data.get(('private',), False)
+    if private_str=='False':
+        private = False
+    else:
+        private = True
+    missing = _is_missing(key, data)
+    if not missing:
+        if not private and value=='notspecified':
+            errors[key].append(_('Please select an appropriate option!'))
+    else:
+        if not private:
+            errors[key].append(_('Missing attribute!'))
+        data.pop(key, None)
+        raise StopOnError
+   
+def validator_publish_date(key, data, errors, context):
+    private = data.get(('private',), False)
+    missing = _is_missing(key, data)
+    if not private and (not data[key] or missing):
+        data[key] = str(datetime.date.today())
+    value = data[key]
+    if not missing:
+        if value:
+            try:
+                valid_date = tk.get_validator('isodate')(value, context)
+                if not valid_date or not isinstance(valid_date, datetime.datetime):
+                    errors[key].append(_('Date format incorrect'))
+            except (TypeError, ValueError), e:
+                errors[key].append(_('Date format incorrect'))
+    else:
+        if private:
+            data.pop(key, None)
+            raise StopOnError
 
 def validator_url(value, context):
     if value=='':
@@ -426,7 +460,6 @@ def periodicities():
         return None
 
 def retrieve_name_of_geojson(json_value):
-    log.info('retrieve name to geojson: %s', json_value)
     if json_value:
         res = tk.get_action('ckanext_dataset_get_tag_info')(data_dict={'value': json_value})
         if res:
@@ -514,7 +547,10 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
         schema.update({
                 #'spatial': [tk.get_validator('ignore_missing'), validator_selected_option, tk.get_converter('convert_to_extras')],
                 'spatial': [validator_spatial, tk.get_converter('convert_to_extras')],
-                'owner_org': [tk.get_validator('ignore_missing'), owner_org_validator]
+                'owner_org': [tk.get_validator('ignore_missing'), owner_org_validator],
+                #'publish_date' : [tk.get_validator('ignore_missing'),tk.get_validator('isodate'), unicode, tk.get_converter('convert_to_extras')],
+                'publish_date' : [validator_publish_date, tk.get_converter('convert_to_extras')],
+                'license_id': [validator_licence, unicode],
                 })
         
         schema['resources'].update({
@@ -550,7 +586,8 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
     def show_package_schema(self):
         schema = super(ExtendedDatasetPlugin, self).show_package_schema()
         schema.update({
-            'spatial': [tk.get_converter('convert_from_extras'), validator_spatial]
+            'spatial': [tk.get_converter('convert_from_extras'), validator_spatial],
+            'publish_date' : [tk.get_converter('convert_from_extras'), tk.get_validator('ignore_missing')]
                 })
                 
         schema['tags']['__extras'].append(tk.get_converter('free_tags_only'))
