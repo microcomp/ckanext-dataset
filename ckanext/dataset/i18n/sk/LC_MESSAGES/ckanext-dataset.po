@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-13 12:48+0100\n"
+"POT-Creation-Date: 2015-11-19 10:59+0100\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -57,6 +57,7 @@ msgid "Missing attribute {0}!"
 msgstr "Chýbajúce atribúty"
 
 #: ckanext/dataset/plugin.py:155 ckanext/dataset/plugin.py:157
+#: ckanext/dataset/plugin.py:305 ckanext/dataset/plugin.py:307
 msgid "Date format incorrect"
 msgstr "Nesprávny formát dátumu"
 
@@ -88,55 +89,55 @@ msgstr "Prosím vyberte vhodnú možnosť!"
 msgid "Please fill in this field!"
 msgstr "Prosím vyplnte toto pole!"
 
-#: ckanext/dataset/plugin.py:270
+#: ckanext/dataset/plugin.py:270 ckanext/dataset/plugin.py:287
 msgid "Please select an appropriate option!"
 msgstr "Prosím vyberte vhodnú možnosť!"
 
-#: ckanext/dataset/plugin.py:273
+#: ckanext/dataset/plugin.py:273 ckanext/dataset/plugin.py:290
 msgid "Missing attribute!"
 msgstr "Chýbajúci atribút!"
 
-#: ckanext/dataset/plugin.py:292
+#: ckanext/dataset/plugin.py:326
 msgid "Please provide a valid URL"
 msgstr "Prosím zadajte valídnu URL"
 
-#: ckanext/dataset/plugin.py:296
+#: ckanext/dataset/plugin.py:330
 msgid "Please select a location"
 msgstr "Prosím zvoľte lokalitu"
 
-#: ckanext/dataset/plugin.py:302
+#: ckanext/dataset/plugin.py:336
 msgid "The possible values for status are \"private\" or \"public\""
 msgstr "Prípustné hodnoty pre atribút status sú \"private\" a \"public\""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "annually"
 msgstr "ročne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "semi-annually"
 msgstr "polročne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "quarterly"
 msgstr "štvrťročne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "monthly"
 msgstr "mesačne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "weekly"
 msgstr "týždenne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "daily"
 msgstr "denne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "irregularly"
 msgstr "nepravidelne"
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "other"
 msgstr "iné"
 
@@ -197,7 +198,7 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:21
 #: ckanext/dataset/templates/package/resource_read.html:66
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr "Súkromné"
@@ -247,7 +248,7 @@ msgid "Status"
 msgstr "Status"
 
 #: ckanext/dataset/templates/package/resource_read.html:66
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 msgid "Public"
 msgstr "Verejný"
 
@@ -326,31 +327,36 @@ msgid "Unique identifier of dataset's provider"
 msgstr "Jednoznačný identifikátor poskytovateľa datasetu"
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+msgid "Date of the first publication"
+msgstr "Dátum prvého zverejnenia"
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:58
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr "Verzia"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:58
+#: ckanext/dataset/templates/package/snippets/additional_info.html:64
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr "Lokalita"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:65
+#: ckanext/dataset/templates/package/snippets/additional_info.html:71
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:197
 msgid "State"
 msgstr "Stav"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:68
+#: ckanext/dataset/templates/package/snippets/additional_info.html:74
 msgid "draft"
 msgstr "rozpracovaný"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:70
+#: ckanext/dataset/templates/package/snippets/additional_info.html:76
 msgid "active"
 msgstr "aktívny"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:72
+#: ckanext/dataset/templates/package/snippets/additional_info.html:78
 msgid "deleted"
 msgstr "vymazaný"
 
@@ -391,23 +397,27 @@ msgid ""
 "      "
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:108
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+msgid "RRRR-MM-DD"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:159
 msgid "Organization"
 msgstr "Organizácia"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:112
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:163
 msgid "No organization"
 msgstr "Žiadna organizácia"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:127
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:178
 msgid "Visibility"
 msgstr "Viditeľnosť"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:149
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:200
 msgid "Active"
 msgstr "Aktívny"
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:150
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:201
 msgid "Deleted"
 msgstr "Vymazaný"
 
