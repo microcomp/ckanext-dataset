@@ -156,7 +156,7 @@ def package_show(context, data_dict):
             resource_dict = item.before_show(resource_dict)
             if item.name=='dataset':
                 if resource_dict:
-                    log.info('adding resource: %s', resource_dict)
+                    #log.info('adding resource: %s', resource_dict)
                     valid_resources.append(resource_dict)
                 else:
                     log.info('skipping resource')
