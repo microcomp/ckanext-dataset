@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-09-02 14:28+0200\n"
+"POT-Creation-Date: 2015-11-19 10:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,6 +55,7 @@ msgid "Missing attribute {0}!"
 msgstr ""
 
 #: ckanext/dataset/plugin.py:155 ckanext/dataset/plugin.py:157
+#: ckanext/dataset/plugin.py:305 ckanext/dataset/plugin.py:307
 msgid "Date format incorrect"
 msgstr ""
 
@@ -86,55 +87,55 @@ msgstr ""
 msgid "Please fill in this field!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:270
+#: ckanext/dataset/plugin.py:270 ckanext/dataset/plugin.py:287
 msgid "Please select an appropriate option!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:273
+#: ckanext/dataset/plugin.py:273 ckanext/dataset/plugin.py:290
 msgid "Missing attribute!"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:292
+#: ckanext/dataset/plugin.py:326
 msgid "Please provide a valid URL"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:296
+#: ckanext/dataset/plugin.py:330
 msgid "Please select a location"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:302
+#: ckanext/dataset/plugin.py:336
 msgid "The possible values for status are \"private\" or \"public\""
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "annually"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "semi-annually"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "quarterly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "monthly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "weekly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "daily"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "irregularly"
 msgstr ""
 
-#: ckanext/dataset/plugin.py:401
+#: ckanext/dataset/plugin.py:435
 msgid "other"
 msgstr ""
 
@@ -193,7 +194,7 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:21
 #: ckanext/dataset/templates/package/resource_read.html:66
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
 msgstr ""
@@ -243,7 +244,7 @@ msgid "Status"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:66
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:130
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 msgid "Public"
 msgstr ""
 
@@ -318,31 +319,40 @@ msgid "Maintainer"
 msgstr ""
 
 #: ckanext/dataset/templates/package/snippets/additional_info.html:46
+msgid "Unique identifier of dataset's provider"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+msgid "Date of the first publication"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/additional_info.html:58
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/additional_info.html:64
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:59
+#: ckanext/dataset/templates/package/snippets/additional_info.html:71
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:146
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:197
 msgid "State"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:62
+#: ckanext/dataset/templates/package/snippets/additional_info.html:74
 msgid "draft"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:64
+#: ckanext/dataset/templates/package/snippets/additional_info.html:76
 msgid "active"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:66
+#: ckanext/dataset/templates/package/snippets/additional_info.html:78
 msgid "deleted"
 msgstr ""
 
@@ -383,23 +393,27 @@ msgid ""
 "      "
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:108
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
+msgid "RRRR-MM-DD"
+msgstr ""
+
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:159
 msgid "Organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:112
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:163
 msgid "No organization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:127
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:178
 msgid "Visibility"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:149
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:200
 msgid "Active"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:150
+#: ckanext/dataset/templates/package/snippets/package_basic_fields.html:201
 msgid "Deleted"
 msgstr ""
 

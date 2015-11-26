@@ -41,13 +41,25 @@
              <td class="dataset-details" property="dc:contributor"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.maintainer) }}" target="_blank" >{{ h.get_name(pkg_dict.maintainer) }}</a></td>
           </tr>
         {% endif %}
+        {% if pkg_dict.owner_org %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Unique identifier of dataset's provider") }}</th>
+            <td class="dataset-details">{{ pkg_dict.owner_org }}</td>
+          </tr>
+        {% endif %}
+        {% if pkg_dict.publish_date %}
+          <tr>
+            <th scope="row" class="dataset-label">{{ _("Date of the first publication") }}</th>
+            <td class="dataset-details">{{h.render_datetime(pkg_dict.publish_date)}}</td>
+          </tr>
+        {% endif %}
         {% if pkg_dict.version %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Version") }}</th>
             <td class="dataset-details">{{ pkg_dict.version }}</td>
           </tr>
         {% endif %}
-		{% if pkg_dict.spatial %}
+		{% if pkg_dict.spatial and pkg_dict.spatial!='undefined' %}
           <tr>
             <th scope="row" class="dataset-label">{{ _("Spatial") }}</th>
             <td class="dataset-details">{{ pkg_dict.spatial }}</td>
