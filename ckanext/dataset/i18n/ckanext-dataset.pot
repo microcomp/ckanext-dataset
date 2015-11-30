@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ckanext-dataset 0.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-19 10:59+0100\n"
+"POT-Creation-Date: 2015-11-30 14:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -249,45 +249,51 @@ msgid "Public"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:69
+#: ckanext/dataset/templates/package/snippets/resource_form.html:113
 msgid "Transformed data"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:72
+#: ckanext/dataset/templates/package/snippets/resource_form.html:117
 msgid "Yes"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:74
+#: ckanext/dataset/templates/package/snippets/resource_form.html:116
 msgid "No"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:80
-msgid "Transformation executor"
+#: ckanext/dataset/templates/package/resource_read.html:79
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
+#: ckanext/dataset/templates/package/snippets/resource_form.html:127
+msgid "Maintainer"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:85
+#: ckanext/dataset/templates/package/resource_read.html:84
 msgid "Not stated"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:92
+#: ckanext/dataset/templates/package/resource_read.html:90
 #: ckanext/dataset/templates/package/snippets/resource_form.html:24
 msgid "Validity"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:94
+#: ckanext/dataset/templates/package/resource_read.html:92
 #: ckanext/dataset/templates/package/snippets/resource_form.html:30
 msgid "Valid permanently"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:102
+#: ckanext/dataset/templates/package/resource_read.html:100
 msgid "Efficiency"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:110
+#: ckanext/dataset/templates/package/resource_read.html:108
 #: ckanext/dataset/templates/package/snippets/resource_form.html:56
 msgid "Periodicity of actualization"
 msgstr ""
 
-#: ckanext/dataset/templates/package/resource_read.html:122
+#: ckanext/dataset/templates/package/resource_read.html:120
 #: ckanext/dataset/templates/package/snippets/resource_form.html:78
 msgid "Data correctness"
 msgstr ""
@@ -310,49 +316,45 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:35
-#: ckanext/dataset/templates/package/snippets/additional_info.html:40
-#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
-#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
-#: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:27
-msgid "Maintainer"
+#: ckanext/dataset/templates/package/snippets/additional_info.html:34
+msgid "Dataset provider"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:46
+#: ckanext/dataset/templates/package/snippets/additional_info.html:40
 msgid "Unique identifier of dataset's provider"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/additional_info.html:46
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
 msgid "Date of the first publication"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:58
+#: ckanext/dataset/templates/package/snippets/additional_info.html:52
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:64
+#: ckanext/dataset/templates/package/snippets/additional_info.html:58
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:71
+#: ckanext/dataset/templates/package/snippets/additional_info.html:65
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:197
 msgid "State"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:74
+#: ckanext/dataset/templates/package/snippets/additional_info.html:68
 msgid "draft"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:76
+#: ckanext/dataset/templates/package/snippets/additional_info.html:70
 msgid "active"
 msgstr ""
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:78
+#: ckanext/dataset/templates/package/snippets/additional_info.html:72
 msgid "deleted"
 msgstr ""
 
@@ -377,6 +379,7 @@ msgstr ""
 #: ckanext/dataset/templates/package/snippets/resource_form.html:67
 #: ckanext/dataset/templates/package/snippets/resource_form.html:88
 #: ckanext/dataset/templates/package/snippets/resource_form.html:107
+#: ckanext/dataset/templates/package/snippets/resource_form.html:121
 msgid "Instructions"
 msgstr ""
 

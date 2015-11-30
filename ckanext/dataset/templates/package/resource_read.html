@@ -75,18 +75,16 @@
 {% endif %}
 </td>
 </tr>
-{% if res.transformed %}
 <tr>
-<th scope="row">{{ _('Transformation executor')}}</th>
+<th scope="row">{{ _('Maintainer')}}</th>
 <td>
-{% if res.transformation_executor %}
-	{{ h.get_name(res.transformation_executor) }}
+{% if res.maintainer %}
+	<a href="{{ h.url_for(controller='user', action='read', id=res.maintainer) }}" target="_blank" >{{ h.get_name(res.maintainer) }}</a>
 {% else %}
 	{{_('Not stated')}}
 {% endif %}
 </td>
 </tr>
-{% endif %}
 {% if res.validity %}
 <tr>
 <th scope="row">{{ _('Validity')}}</th>

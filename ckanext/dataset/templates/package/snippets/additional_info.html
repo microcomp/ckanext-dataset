@@ -29,16 +29,10 @@
             <td class="dataset-details" property="dc:creator"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.author) }}" target="_blank" >{{ h.get_name(pkg_dict.author) }}
           </tr>
         {% endif %}
-
-        {% if pkg_dict.maintainer_email %}
+        {% if pkg_dict.owner_org %}
           <tr>
-            <th scope="row" class="dataset-label">{{ _('Maintainer') }}</th>
-            <td class="dataset-details" property="dc:contributor">{{ h.mail_to(email_address=pkg_dict.maintainer_email, name=pkg_dict.maintainer) }}</td>
-          </tr>
-        {% elif pkg_dict.maintainer %}
-          <tr>
-            <th scope="row" class="dataset-label">{{ _('Maintainer') }}</th>
-             <td class="dataset-details" property="dc:contributor"><a href="{{ h.url_for(controller='user', action='read', id=pkg_dict.maintainer) }}" target="_blank" >{{ h.get_name(pkg_dict.maintainer) }}</a></td>
+            <th scope="row" class="dataset-label">{{ _("Dataset provider") }}</th>
+            <td class="dataset-details"><a href="{{ h.url_for(controller='organization', action='read', id=pkg_dict.owner_org) }}" target="_blank" >{{ h.get_name(pkg_dict.organization.title) }}</a></td>
           </tr>
         {% endif %}
         {% if pkg_dict.owner_org %}
