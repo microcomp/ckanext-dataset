@@ -201,7 +201,7 @@ msgstr ""
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
-msgstr "Súkromné"
+msgstr "Súkromný"
 
 #: ckanext/dataset/templates/package/resource_read.html:38
 msgid "Additional Information"
