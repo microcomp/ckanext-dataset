@@ -37,3 +37,6 @@ function showURL() {
 		{%endif%}
 
 {% endblock %}
+{% block package_license %}
+    {% snippet "snippets/license_secure.html", pkg_dict=pkg %}
+  {% endblock %}
