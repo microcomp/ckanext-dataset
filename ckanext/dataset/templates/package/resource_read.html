@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <th scope="row">{{ _('License') }}</th>
-<td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+<td>{% snippet "snippets/license_secure.html", pkg_dict=pkg, text_only=True %}</td>
 </tr>
 <tr>
 {% set metadata = h.format_resource_items(res.items()) %}
