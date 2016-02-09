@@ -12,13 +12,13 @@ function showURL() {
 {% block content_primary_nav %}
   {{super()}}
 	
-  <li ><a onclick="showURL()"> {{_('Permanent URL')}}</a></li>
+  <li ><a onclick="showURL()" href="#"> {{_('Permanent URL')}}</a></li>
 <noscript>
 {{_('Permanent URL')}}:<input type="text" name="permanentURL" value="{{request.host_url}}/dataset/{{c.pkg_dict.id}}" ></input>
 </noscript>
-{% if c.action == 'history' %}  <li class="active" > <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
+{% if c.action == 'history' %}  <li class="active" > <a href='{{h.url_for(controller="package", action="history", id=c.pkg_dict.id)}}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
 {%else%}
-<li> <a href='/dataset/history/{{c.pkg_dict.name }}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
+<li> <a href='{{h.url_for(controller="package", action="history", id=c.pkg_dict.id)}}'> <i class="fa fa-history"> </i> {{_('History')}}</a></li>
 {%endif%}
 {%if c.userobj.id %}
 		  {%set res = h.liked(c.userobj.id, c.pkg_dict.id) %}
