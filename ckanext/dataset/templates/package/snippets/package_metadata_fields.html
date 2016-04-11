@@ -23,16 +23,5 @@ won't work. #}
 {% endblock %}
 
 {% block package_metadata_fields_maintainer %}
-<div class="control-group">
-<label class="control-label" for="field-maintainer">{{ _("Maintainer") }}</label>
-<div class="controls">
-<select id="field-maintainer" name="maintainer" data-module="autocomplete">
-{% set users, user_name = h.get_users(data) %}
-{% for user in users %}
-<option value="{{ user['name'] }}" {% if user['name']==data.get('maintainer', None) or (user['name']==user_name and data.get('maintainer', None)==None) %}selected="selected"{% endif %}>{{ user['display_name'] }}</option>
-{% endfor %}
-</select>
-</div>
-</div>
 {% endblock %}
 

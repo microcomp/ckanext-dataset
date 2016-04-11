@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  CKANEXT-DATASET\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2015-11-19 10:59+0100\n"
+"POT-Creation-Date: 2015-11-30 14:47+0100\n"
 "PO-Revision-Date: 2015-01-10 16:44+0000\n"
 "Last-Translator: Dominik Kapisinsky <kapisinsky@microcomp.sk>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/ckanext-"
@@ -201,7 +201,7 @@ msgstr ""
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:181
 #: ckanext/dataset/templates/package/snippets/resource_item.html:6
 msgid "Private"
-msgstr "Súkromné"
+msgstr "Súkromný"
 
 #: ckanext/dataset/templates/package/resource_read.html:38
 msgid "Additional Information"
@@ -253,45 +253,51 @@ msgid "Public"
 msgstr "Verejný"
 
 #: ckanext/dataset/templates/package/resource_read.html:69
+#: ckanext/dataset/templates/package/snippets/resource_form.html:113
 msgid "Transformed data"
 msgstr "Transformované dáta"
 
 #: ckanext/dataset/templates/package/resource_read.html:72
+#: ckanext/dataset/templates/package/snippets/resource_form.html:117
 msgid "Yes"
 msgstr "Áno"
 
 #: ckanext/dataset/templates/package/resource_read.html:74
+#: ckanext/dataset/templates/package/snippets/resource_form.html:116
 msgid "No"
 msgstr "Nie"
 
-#: ckanext/dataset/templates/package/resource_read.html:80
-msgid "Transformation executor"
-msgstr "Transformáciu vykonal"
+#: ckanext/dataset/templates/package/resource_read.html:79
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
+#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
+#: ckanext/dataset/templates/package/snippets/resource_form.html:127
+msgid "Maintainer"
+msgstr "Prevádzkovateľ"
 
-#: ckanext/dataset/templates/package/resource_read.html:85
+#: ckanext/dataset/templates/package/resource_read.html:84
 msgid "Not stated"
 msgstr "Nezadané"
 
-#: ckanext/dataset/templates/package/resource_read.html:92
+#: ckanext/dataset/templates/package/resource_read.html:90
 #: ckanext/dataset/templates/package/snippets/resource_form.html:24
 msgid "Validity"
 msgstr "Platnosť dát"
 
-#: ckanext/dataset/templates/package/resource_read.html:94
+#: ckanext/dataset/templates/package/resource_read.html:92
 #: ckanext/dataset/templates/package/snippets/resource_form.html:30
 msgid "Valid permanently"
 msgstr "Permanentne platné"
 
-#: ckanext/dataset/templates/package/resource_read.html:102
+#: ckanext/dataset/templates/package/resource_read.html:100
 msgid "Efficiency"
 msgstr "Účinnosť"
 
-#: ckanext/dataset/templates/package/resource_read.html:110
+#: ckanext/dataset/templates/package/resource_read.html:108
 #: ckanext/dataset/templates/package/snippets/resource_form.html:56
 msgid "Periodicity of actualization"
 msgstr "Periodicita aktualizácie"
 
-#: ckanext/dataset/templates/package/resource_read.html:122
+#: ckanext/dataset/templates/package/resource_read.html:120
 #: ckanext/dataset/templates/package/snippets/resource_form.html:78
 msgid "Data correctness"
 msgstr "Správnosť dát"
@@ -314,49 +320,45 @@ msgstr "Zdroj"
 msgid "Author"
 msgstr "Autor"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:35
-#: ckanext/dataset/templates/package/snippets/additional_info.html:40
-#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:33
-#: ckanext/dataset/templates/package/snippets/custom_additional_info.html:38
-#: ckanext/dataset/templates/package/snippets/package_metadata_fields.html:27
-msgid "Maintainer"
-msgstr "Správca"
+#: ckanext/dataset/templates/package/snippets/additional_info.html:34
+msgid "Dataset provider"
+msgstr "Poskytovateľ datasetu"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:46
+#: ckanext/dataset/templates/package/snippets/additional_info.html:40
 msgid "Unique identifier of dataset's provider"
 msgstr "Jednoznačný identifikátor poskytovateľa datasetu"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:52
+#: ckanext/dataset/templates/package/snippets/additional_info.html:46
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:85
 msgid "Date of the first publication"
 msgstr "Dátum prvého zverejnenia"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:58
+#: ckanext/dataset/templates/package/snippets/additional_info.html:52
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:44
 msgid "Version"
 msgstr "Verzia"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:64
+#: ckanext/dataset/templates/package/snippets/additional_info.html:58
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:56
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:6
 msgid "Spatial"
 msgstr "Lokalita"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:71
+#: ckanext/dataset/templates/package/snippets/additional_info.html:65
 #: ckanext/dataset/templates/package/snippets/custom_additional_info.html:50
 #: ckanext/dataset/templates/package/snippets/package_basic_fields.html:197
 msgid "State"
 msgstr "Stav"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:74
+#: ckanext/dataset/templates/package/snippets/additional_info.html:68
 msgid "draft"
 msgstr "rozpracovaný"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:76
+#: ckanext/dataset/templates/package/snippets/additional_info.html:70
 msgid "active"
 msgstr "aktívny"
 
-#: ckanext/dataset/templates/package/snippets/additional_info.html:78
+#: ckanext/dataset/templates/package/snippets/additional_info.html:72
 msgid "deleted"
 msgstr "vymazaný"
 
@@ -381,6 +383,7 @@ msgstr "Zadajte špeciálnyGeoJSON"
 #: ckanext/dataset/templates/package/snippets/resource_form.html:67
 #: ckanext/dataset/templates/package/snippets/resource_form.html:88
 #: ckanext/dataset/templates/package/snippets/resource_form.html:107
+#: ckanext/dataset/templates/package/snippets/resource_form.html:121
 msgid "Instructions"
 msgstr "Inštrukcie"
 
@@ -509,4 +512,7 @@ msgstr "súkromný"
 #: ckanext/dataset/templates/package/snippets/resource_form.html:103
 msgid "public"
 msgstr "verejný"
+
+#~ msgid "Transformation executor"
+#~ msgstr "Transformáciu vykonal"
 

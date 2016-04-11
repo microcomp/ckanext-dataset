@@ -4,8 +4,8 @@
         {{ super() }}
         <div class="embedhint" style="padding-left: 15px;">
         	<h4>{{_('Embed this visualisation in your own website...')}}</h4>
-        	{{_('Copy the HTML in the box below and you can display this visualisation on your own website.') }}<br />
-        	<textarea style="width:97%">&lt;iframe src="{{ request.url }}/preview" frameborder="0" width="100%" height="600px"&gt;&lt;/iframe&gt;</textarea>
+        	<label for="iframe_textarea"> {{_('Copy the HTML in the box below and you can display this visualisation on your own website.') }}</label>
+        	<textarea id="iframe_textarea" style="width:97%">&lt;iframe src="{{ request.url }}/preview" frameborder="0" width="100%" height="600px"&gt;&lt;/iframe&gt;</textarea>
         </div>
 {% endblock %}
 
@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <th scope="row">{{ _('License') }}</th>
-<td>{% snippet "snippets/license.html", pkg_dict=pkg, text_only=True %}</td>
+<td>{% snippet "snippets/license_secure.html", pkg_dict=pkg, text_only=True %}</td>
 </tr>
 <tr>
 {% set metadata = h.format_resource_items(res.items()) %}
@@ -75,18 +75,16 @@
 {% endif %}
 </td>
 </tr>
-{% if res.transformed %}
 <tr>
-<th scope="row">{{ _('Transformation executor')}}</th>
+<th scope="row">{{ _('Maintainer')}}</th>
 <td>
-{% if res.transformation_executor %}
-	{{ h.get_name(res.transformation_executor) }}
+{% if res.maintainer %}
+	<a href="{{ h.url_for(controller='user', action='read', id=res.maintainer) }}" target="_blank" >{{ h.get_name(res.maintainer) }}</a>
 {% else %}
 	{{_('Not stated')}}
 {% endif %}
 </td>
 </tr>
-{% endif %}
 {% if res.validity %}
 <tr>
 <th scope="row">{{ _('Validity')}}</th>

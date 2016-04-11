@@ -568,7 +568,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'data_correctness_description' : [validator_data_correctness_descr, unicode],
                         'status' : [tk.get_validator('ignore_missing'), validator_status],
                         'transformed' : [tk.get_validator('ignore_missing'), tk.get_validator('boolean_validator')],
-                        'transformation_executor' : [tk.get_validator('ignore_missing'), unicode]
+                        'maintainer' : [tk.get_validator('ignore_missing'), unicode]
             })
         
         return schema
@@ -606,7 +606,7 @@ class ExtendedDatasetPlugin(plugins.SingletonPlugin, tk.DefaultDatasetForm):
                         'data_correctness_description' : [validator_data_correctness_descr, unicode],
                         'status' : [tk.get_validator('ignore_missing'), validator_status],
                         'transformed' : [tk.get_validator('ignore_missing'), tk.get_validator('boolean_validator')],
-                        'transformation_executor' : [tk.get_validator('ignore_missing'), unicode]
+                        'maintainer' : [tk.get_validator('ignore_missing'), unicode]
             })
         
         return schema
