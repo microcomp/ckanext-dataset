@@ -40,33 +40,38 @@
 <thead>
 <tr>
 <th scope="col">{{ _('Field') }}</th>
+<th scope="col">{{ _('API') }}</th>
 <th scope="col">{{ _('Value') }}</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <th scope="row">{{ _('Last updated') }}</th>
+<td>last_modified</td>
 <td>{{ h.render_datetime(res.last_modified) or h.render_datetime(res.revision_timestamp) or h.render_datetime(res.created) or _('unknown') }}</td>
 </tr>
-<tr>
+<!--tr>
 <th scope="row">{{ _('Created') }}</th>
+<td>created</td>
 <td>{{ h.render_datetime(res.created) or _('unknown') }}</td>
-</tr>
-<tr>
+</tr!-->
+<!--tr>
 <th scope="row">{{ _('Format') }}</th>
 <td>{{ res.mimetype_inner or res.mimetype or res.format or _('unknown') }}</td>
 </tr>
-<tr>
+<tr!-->
 <th scope="row">{{ _('License') }}</th>
+<td>license</td>
 <td>{% snippet "snippets/license_secure.html", pkg_dict=pkg, text_only=True %}</td>
 </tr>
-<tr>
+<!--tr!-->
 {% set metadata = h.format_resource_items(res.items()) %}
-<th scope="row">{{ _('Status')}}</th>
+<!--th scope="row">{{ _('Status')}}</th>
 <td>{% if res.status=='public' %} {{_('Public')}} {% else %} {{_('Private')}} {% endif %} </td>
-</tr>
+</tr!-->
 <tr>
 <th scope="row">{{ _('Transformed data')}}</th>
+<td>transformed</td>
 <td>
 {% if res.transformed %}
 	{{ _('Yes') }}
@@ -75,7 +80,7 @@
 {% endif %}
 </td>
 </tr>
-<tr>
+<!--tr>
 <th scope="row">{{ _('Maintainer')}}</th>
 <td>
 {% if res.maintainer %}
@@ -84,8 +89,8 @@
 	{{_('Not stated')}}
 {% endif %}
 </td>
-</tr>
-{% if res.validity %}
+</tr!-->
+{#% if res.validity %}
 <tr>
 <th scope="row">{{ _('Validity')}}</th>
 <td>
@@ -94,8 +99,8 @@
 {% if res.validity=='other' %}{{ h.render_datetime(res.valid_from) }} - {{ h.render_datetime(res.valid_to) }}{% endif %}
 </td>
 </tr>
-{% endif %}
-{% if res.validity=='other' %}
+{% endif %#}
+{#% if res.validity=='other' %}
 <tr>
 <th scope="row">{{ _('Efficiency')}}</th>
 <td>
@@ -119,6 +124,7 @@
 <tr>
 <th scope="row">{{ _('Data correctness')}}</th>
 <td>
+
 {% if res.data_correctness=='stated in data' %}
 	{{ res.data_correctness_description}}
 {% else%}
@@ -126,10 +132,38 @@
 {% endif %}
 </td>
 </tr>
-{% endif %}
+{% endif %#}
+	{%set sk_dict = {"can be previewed": "Možné zobraziť",
+					"changes id": "Id zmien",
+					"created": "Vytvorené",
+					"data correctness": "Správnosť dát",
+					"format": "Formát",
+					"maintainer": "Správca",
+					"periodicity": "Periodicita aktualizácie",
+					"periodicity description": "Popis perioditici",
+					"resource group id": "",
+					"revision id": "Id revízií",
+					"schema": "Schéma",
+					"state": "Stav",
+					"status": "Status",
+					"url type": "Typ url",
+					"validity": "Platnosť",
+					"validity description": "Popis platnosti",
+					"id":"Id"}
 
+ %}
 {% for key, value in  metadata %}
-<tr class="toggle-more"><th scope="row">{{ _(key) }}</th><td>{{ _(value) }}</td></tr>
+<tr ><th scope="row">
+{% if c.language == 'sk' %}
+	{%if sk_dict[key] != '' %}
+			{{ sk_dict[key] }}
+	{% else %}
+		{{ key|title }}
+	{% endif %}
+{% else %}
+{{ key|title }}
+{% endif %}
+</th><td>{{ key|replace(" ","_") }}</td><td>{{ value }}</td></tr>
 {% endfor %}
 </tbody>
 </table>
