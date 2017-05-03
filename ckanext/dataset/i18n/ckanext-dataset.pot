@@ -183,7 +183,7 @@ msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:6
 #: ckanext/dataset/templates/package/snippets/web2.html:2
-msgid "Embed this visualisation in your own website..."
+msgid "isualisation is available at this address:"
 msgstr ""
 
 #: ckanext/dataset/templates/package/resource_read.html:7
