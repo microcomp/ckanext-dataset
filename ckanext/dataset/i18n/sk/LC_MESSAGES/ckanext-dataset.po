@@ -185,8 +185,8 @@ msgstr "Nepáči sa mi to"
 
 #: ckanext/dataset/templates/package/resource_read.html:6
 #: ckanext/dataset/templates/package/snippets/web2.html:2
-msgid "Embed this visualisation in your own website..."
-msgstr "Vložte si tento widget do svojej vlastnej webovej stránky."
+msgid "Visualisation is available at this address:"
+msgstr "Vizualizácia je dostupná na tejto adrese:"
 
 #: ckanext/dataset/templates/package/resource_read.html:7
 msgid ""
